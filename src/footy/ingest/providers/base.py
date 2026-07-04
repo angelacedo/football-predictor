@@ -1,7 +1,7 @@
 """Common contract every data provider adapter satisfies.
 
-A provider does not have to support all three capabilities (e.g. OddAlerts has
-no fixtures endpoint). Adapters that skip a capability inherit
+A provider does not have to support all three capabilities (e.g. The Odds API
+has no fixtures endpoint). Adapters that skip a capability inherit
 :class:`UnsupportedProviderMixin`'s default, which raises :class:`ProviderError`
 naming the gap — callers see one exception type whether a provider errored or
 simply doesn't do that job.

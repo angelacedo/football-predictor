@@ -37,8 +37,8 @@ class OddsQuery:
 
     Carries both the fixtures-provider's numeric id *and* team names/kickoff,
     because odds providers don't all share an id scheme with the fixtures
-    provider. API-Football/OddAlerts key off ``external_fixture_id``; The Odds
-    API has its own event ids and must match on team names + kickoff instead.
+    provider. API-Football keys off ``external_fixture_id``; The Odds API has
+    its own event ids and must match on team names + kickoff instead.
     Each adapter uses whichever field its API actually supports.
     """
 

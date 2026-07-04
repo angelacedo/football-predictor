@@ -63,7 +63,7 @@ def fetch_odds(api_fixture_id: int, provider: Provider | None = None,
             to the configured primary/fallback chain when None.
         is_closing: Force every stored row's ``is_closing`` flag to True
             (e.g. for a manual closing-line snapshot); a provider that already
-            marks its own odds as closing (OddAlerts) sets it regardless.
+            marks its own odds as closing sets it regardless.
 
     Returns:
         Number of odds rows written. 0 if the fixture is unknown locally or

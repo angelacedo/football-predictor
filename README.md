@@ -35,7 +35,6 @@ name.
 | `sportmonks` | ✅ | — | ✅ |
 | `thestatsapi` | — | — | ✅ |
 | `the_odds_api` | — | ✅ (multi-book) | — |
-| `oddalerts` | — | ✅ (historical/closing) | — |
 
 Select via `.env`:
 
@@ -51,8 +50,8 @@ or returns no odds, it tries `ODDS_PROVIDER_FALLBACK` (when set). A default
 install with only `FOOTBALL_API_KEY` set behaves exactly as before this
 feature — `api_football` alone satisfies both fixtures and odds.
 
-**Cross-provider odds matching:** API-Football and OddAlerts key odds by their
-own numeric fixture id; The Odds API has no shared id scheme and is matched by
+**Cross-provider odds matching:** API-Football keys odds by its own numeric
+fixture id; The Odds API has no shared id scheme and is matched by
 `(home_team, away_team)` + a kickoff-time tolerance window instead
 (`OddsQuery` in `schemas.py` carries both). If you mix providers with
 different team-name spellings, matching can silently miss — the adapter logs

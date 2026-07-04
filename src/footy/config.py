@@ -22,7 +22,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 _ODDS_PROVIDER_KEY_FIELDS = {
     "api_football": "football_api_key",
     "the_odds_api": "the_odds_api_key",
-    "oddalerts": "oddalerts_api_key",
 }
 
 
@@ -39,8 +38,6 @@ class Settings(BaseSettings):
         the_odds_api_key: The Odds API key (multi-bookmaker odds).
         the_odds_api_base: The Odds API base URL.
         the_odds_api_sport_key: The Odds API sport key, e.g. 'soccer_epl'.
-        oddalerts_api_key: OddAlerts key (historical/closing odds).
-        oddalerts_api_base: OddAlerts base URL.
         fixtures_provider: Provider name used for fixtures/results sync.
         odds_provider_primary: Provider name tried first for odds.
         odds_provider_fallback: Provider name tried if the primary fails or
@@ -69,9 +66,6 @@ class Settings(BaseSettings):
     the_odds_api_key: str = Field(default="")
     the_odds_api_base: str = Field(default="https://api.the-odds-api.com/v4")
     the_odds_api_sport_key: str = Field(default="soccer_epl")
-
-    oddalerts_api_key: str = Field(default="")
-    oddalerts_api_base: str = Field(default="https://api.oddalerts.com/v1")
 
     fixtures_provider: str = Field(default="api_football")
     odds_provider_primary: str = Field(default="api_football")

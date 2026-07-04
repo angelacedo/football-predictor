@@ -12,7 +12,6 @@ from collections.abc import Callable
 
 from footy.ingest.providers.api_football import ApiFootballProvider
 from footy.ingest.providers.base import Provider, ProviderError
-from footy.ingest.providers.oddalerts import OddAlertsProvider
 from footy.ingest.providers.sportmonks import SportmonksProvider
 from footy.ingest.providers.the_odds_api import TheOddsApiProvider
 from footy.ingest.providers.thestatsapi import TheStatsApiProvider
@@ -22,7 +21,6 @@ _BUILDERS: dict[str, Callable[[], Provider]] = {
     "sportmonks": SportmonksProvider,
     "thestatsapi": TheStatsApiProvider,
     "the_odds_api": TheOddsApiProvider,
-    "oddalerts": OddAlertsProvider,
 }
 
 
