@@ -20,6 +20,35 @@ train_model.py -> predict_upcoming.py + fetch_odds.py -> (match ends) ->
 validate_predictions.py -> run_backtest.py
 ```
 
+## Docker
+
+```bash
+cp .env.example .env   # fill in provider keys; DATABASE_URL is overridden by compose
+docker compose up -d db
+docker compose run --rm app python scripts/init_db.py
+docker compose run --rm app python scripts/train_model.py
+docker compose run --rm app python scripts/predict_upcoming.py
+docker compose run --rm app python scripts/fetch_odds.py
+docker compose run --rm app python scripts/validate_predictions.py
+docker compose run --rm app python scripts/run_backtest.py
+```
+
+Scripts are one-shot CLI jobs, not a server — `app`'s default command
+(`predict_upcoming.py`) is just a placeholder; run any script via
+`docker compose run --rm app python scripts/<name>.py`. `models/` is bind-mounted
+so trained artifacts survive container rebuilds. `ponytail:` no cron/scheduler
+in the image — wire one (host cron, k8s CronJob) only once this runs on a
+real schedule.
+
+### Production (VPS)
+
+`docker-compose.prod.yml` pulls a pre-built image
+(`ghcr.io/angelacedo/football-predictor:latest`, published by
+`.github/workflows/docker-publish.yml` on every push to `main`) instead of
+building from source — the deploy target has no copy of this repo.
+`docker compose -f docker-compose.prod.yml run --rm app python
+scripts/<name>.py` on the server, same as local usage.
+
 ## Providers
 
 Ingestion is provider-agnostic: `matches.py`/`odds.py`/`stats.py` only consume
