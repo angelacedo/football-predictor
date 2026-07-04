@@ -1,8 +1,12 @@
-"""Fetch 1X2 odds for scheduled matches.
+"""Fetch 1X2 odds for scheduled matches using the configured provider chain.
 
 Usage:
     python scripts/fetch_odds.py            # pre-match odds
     python scripts/fetch_odds.py --closing  # tag as closing odds
+
+Provider selection is via ODDS_PROVIDER_PRIMARY/ODDS_PROVIDER_FALLBACK in
+.env — see README "Providers". Unchanged default (only FOOTBALL_API_KEY set)
+behaves exactly as before this feature.
 """
 
 from __future__ import annotations
@@ -13,7 +17,6 @@ import sys
 from sqlalchemy import select
 
 from footy.db import session_scope
-from footy.ingest.client import ApiFootball
 from footy.ingest.odds import fetch_odds
 from footy.orm import Match
 
@@ -27,9 +30,8 @@ def main() -> None:
             select(Match.api_fixture_id).where(Match.status == "SCHEDULED")
         ).all()
 
-    client = ApiFootball()
     for api_fixture_id in fixtures:
-        fetch_odds(api_fixture_id, client=client, is_closing=is_closing)
+        fetch_odds(api_fixture_id, is_closing=is_closing)
 
 
 if __name__ == "__main__":

@@ -30,6 +30,10 @@ class Match(Base):
     status: Mapped[str] = mapped_column(String(10), default="SCHEDULED")
     home_goals: Mapped[int | None] = mapped_column(default=None)
     away_goals: Mapped[int | None] = mapped_column(default=None)
+    xg_home: Mapped[Decimal | None] = mapped_column(Numeric(5, 2), default=None)
+    xg_away: Mapped[Decimal | None] = mapped_column(Numeric(5, 2), default=None)
+    possession_home: Mapped[Decimal | None] = mapped_column(Numeric(5, 2), default=None)
+    possession_away: Mapped[Decimal | None] = mapped_column(Numeric(5, 2), default=None)
 
     def __repr__(self) -> str:
         return (

@@ -15,6 +15,7 @@ from typing import Any
 import httpx
 
 from footy.config import get_settings
+from footy.ingest.providers.base import http_retry
 
 log = logging.getLogger("footy.ingest.client")
 
@@ -29,11 +30,15 @@ class ApiFootball:
         if not self._key:
             raise RuntimeError("FOOTBALL_API_KEY is not set — cannot call API-Football.")
 
+    @http_retry
     def get(self, path: str, params: dict[str, Any]) -> list[dict[str, Any]]:
         """GET ``/{path}`` and return the ``response`` list.
 
+        Retries transport errors / non-2xx responses up to 3 attempts
+        (exponential backoff) before raising.
+
         Raises:
-            httpx.HTTPStatusError: on non-2xx responses.
+            httpx.HTTPStatusError: on non-2xx responses (after retries exhausted).
         """
         url = f"{self._base}/{path.lstrip('/')}"
         headers = {"x-apisports-key": self._key}

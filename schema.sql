@@ -11,10 +11,21 @@ CREATE TABLE IF NOT EXISTS matches (
     kickoff        TIMESTAMP    NOT NULL,
     status         VARCHAR(10)  NOT NULL DEFAULT 'SCHEDULED',  -- SCHEDULED | FINISHED
     home_goals     INTEGER,
-    away_goals     INTEGER
+    away_goals     INTEGER,
+    xg_home         DECIMAL(5, 2),  -- expected goals, from a stats provider
+    xg_away         DECIMAL(5, 2),
+    possession_home DECIMAL(5, 2),  -- percent, 0-100
+    possession_away DECIMAL(5, 2)
 );
 CREATE INDEX IF NOT EXISTS idx_matches_status  ON matches (status);
 CREATE INDEX IF NOT EXISTS idx_matches_kickoff ON matches (kickoff);
+
+-- Idempotent migration for pre-existing databases (fresh installs already get
+-- these via CREATE TABLE above; IF NOT EXISTS makes re-running this file safe).
+ALTER TABLE matches ADD COLUMN IF NOT EXISTS xg_home DECIMAL(5, 2);
+ALTER TABLE matches ADD COLUMN IF NOT EXISTS xg_away DECIMAL(5, 2);
+ALTER TABLE matches ADD COLUMN IF NOT EXISTS possession_home DECIMAL(5, 2);
+ALTER TABLE matches ADD COLUMN IF NOT EXISTS possession_away DECIMAL(5, 2);
 
 CREATE TABLE IF NOT EXISTS predictions (
     id                 SERIAL PRIMARY KEY,

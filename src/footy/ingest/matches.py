@@ -1,49 +1,27 @@
-"""Fetch fixtures/results from API-Football and upsert into ``matches``.
+"""Upsert fixtures/results into ``matches``, provider-agnostic.
 
-Example:
-    >>> parse_fixture(sample)["home_team"]   # doctest: +SKIP
-    'Arsenal'
+This module never touches a specific provider's JSON shape — it only consumes
+:class:`footy.ingest.schemas.FixtureDTO`. Swap providers via
+``FIXTURES_PROVIDER`` in ``.env``; nothing here changes.
 """
 
 from __future__ import annotations
 
 import logging
-from datetime import datetime
-from typing import Any
 
 from sqlalchemy import select
 
+from footy.config import get_settings
 from footy.db import session_scope
-from footy.ingest.client import ApiFootball
+from footy.ingest.providers.base import Provider
+from footy.ingest.providers.registry import build_provider
+from footy.ingest.schemas import FixtureDTO
 from footy.orm import Match
 
 log = logging.getLogger("footy.ingest.matches")
 
-FINISHED_STATUSES = {"FT", "AET", "PEN"}
 
-
-def parse_fixture(item: dict[str, Any]) -> dict[str, Any]:
-    """Map an API-Football fixture object to ``matches`` column values."""
-    fixture = item["fixture"]
-    league = item["league"]
-    teams = item["teams"]
-    goals = item["goals"]
-    status_short = fixture["status"]["short"]
-    finished = status_short in FINISHED_STATUSES
-    return {
-        "api_fixture_id": fixture["id"],
-        "league": league["name"],
-        "season": league["season"],
-        "home_team": teams["home"]["name"],
-        "away_team": teams["away"]["name"],
-        "kickoff": datetime.fromisoformat(fixture["date"].replace("Z", "+00:00")),
-        "status": "FINISHED" if finished else "SCHEDULED",
-        "home_goals": goals["home"] if finished else None,
-        "away_goals": goals["away"] if finished else None,
-    }
-
-
-def upsert_matches(rows: list[dict[str, Any]]) -> int:
+def upsert_matches(fixtures: list[FixtureDTO]) -> int:
     """Insert new matches or update existing ones (keyed by ``api_fixture_id``).
 
     Returns:
@@ -51,10 +29,21 @@ def upsert_matches(rows: list[dict[str, Any]]) -> int:
     """
     written = 0
     with session_scope() as session:
-        for values in rows:
+        for fx in fixtures:
             existing = session.scalar(
-                select(Match).where(Match.api_fixture_id == values["api_fixture_id"])
+                select(Match).where(Match.api_fixture_id == fx.external_id)
             )
+            values = {
+                "api_fixture_id": fx.external_id,
+                "league": fx.league,
+                "season": fx.season,
+                "home_team": fx.home_team,
+                "away_team": fx.away_team,
+                "kickoff": fx.kickoff,
+                "status": "FINISHED" if fx.finished else "SCHEDULED",
+                "home_goals": fx.home_goals,
+                "away_goals": fx.away_goals,
+            }
             if existing is None:
                 session.add(Match(**values))
             else:
@@ -65,8 +54,14 @@ def upsert_matches(rows: list[dict[str, Any]]) -> int:
     return written
 
 
-def sync_league(league_id: int, season: int, client: ApiFootball | None = None) -> int:
-    """Fetch all fixtures for a league/season and upsert them."""
-    api = client or ApiFootball()
-    items = api.get("fixtures", {"league": league_id, "season": season})
-    return upsert_matches([parse_fixture(i) for i in items])
+def sync_league(league_id: int, season: int, provider: Provider | None = None) -> int:
+    """Fetch all fixtures for a league/season and upsert them.
+
+    Args:
+        league_id: Provider-specific league id.
+        season: Season year.
+        provider: Fixtures provider; defaults to ``settings.fixtures_provider``.
+    """
+    active = provider or build_provider(get_settings().fixtures_provider)
+    fixtures = active.get_fixtures(league_id, season)
+    return upsert_matches(fixtures)
