@@ -1,0 +1,192 @@
+{
+  "pyproject.toml": {
+    "mtime": 1783201173.3865654,
+    "ast_hash": "98d7fb042d5c8e7b0b5331c634a6c95d",
+    "semantic_hash": "98d7fb042d5c8e7b0b5331c634a6c95d"
+  },
+  "schema.sql": {
+    "mtime": 1783200609.73362,
+    "ast_hash": "2ec8073c9f60f0f3d9bcb7ca7224df51",
+    "semantic_hash": "2ec8073c9f60f0f3d9bcb7ca7224df51"
+  },
+  "scripts/fetch_odds.py": {
+    "mtime": 1783201025.413365,
+    "ast_hash": "71276e5366221c387288e2f97fda916e",
+    "semantic_hash": "71276e5366221c387288e2f97fda916e"
+  },
+  "scripts/init_db.py": {
+    "mtime": 1783200654.3928778,
+    "ast_hash": "5ff096d9408e74c494c7d7e1a65aec9a",
+    "semantic_hash": "5ff096d9408e74c494c7d7e1a65aec9a"
+  },
+  "scripts/predict_upcoming.py": {
+    "mtime": 1783201011.6488717,
+    "ast_hash": "e47c325cbef241537dcb6f20f40f05da",
+    "semantic_hash": "e47c325cbef241537dcb6f20f40f05da"
+  },
+  "scripts/run_backtest.py": {
+    "mtime": 1783201041.2863665,
+    "ast_hash": "a07345ed35ee10aec3408be30eb7d98f",
+    "semantic_hash": "a07345ed35ee10aec3408be30eb7d98f"
+  },
+  "scripts/train_model.py": {
+    "mtime": 1783201000.8670025,
+    "ast_hash": "541ec839336f85adc1857d558db62cdb",
+    "semantic_hash": "541ec839336f85adc1857d558db62cdb"
+  },
+  "scripts/validate_predictions.py": {
+    "mtime": 1783201015.9834325,
+    "ast_hash": "621536dfaf9a47e5c46510db5328558a",
+    "semantic_hash": "621536dfaf9a47e5c46510db5328558a"
+  },
+  "src/footy/__init__.py": {
+    "mtime": 1783200573.8060088,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/footy/betting/__init__.py": {
+    "mtime": 1783200573.8062925,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/footy/betting/backtest.py": {
+    "mtime": 1783201176.7411895,
+    "ast_hash": "8d786d993270e6a447a75526fb474cc9",
+    "semantic_hash": "8d786d993270e6a447a75526fb474cc9"
+  },
+  "src/footy/betting/bankroll.py": {
+    "mtime": 1783200884.3657298,
+    "ast_hash": "e9fe3b2a649d7baa0bc49ea9675cea90",
+    "semantic_hash": "e9fe3b2a649d7baa0bc49ea9675cea90"
+  },
+  "src/footy/betting/staking.py": {
+    "mtime": 1783200869.3907857,
+    "ast_hash": "a9129a68484a324e8eab1508158a5abe",
+    "semantic_hash": "a9129a68484a324e8eab1508158a5abe"
+  },
+  "src/footy/betting/value.py": {
+    "mtime": 1783200856.6518118,
+    "ast_hash": "16707d9d97a0eb8be25aa5df289be32f",
+    "semantic_hash": "16707d9d97a0eb8be25aa5df289be32f"
+  },
+  "src/footy/config.py": {
+    "mtime": 1783200618.2564056,
+    "ast_hash": "db36831c25f686fa087fa4a01be07af8",
+    "semantic_hash": "db36831c25f686fa087fa4a01be07af8"
+  },
+  "src/footy/data.py": {
+    "mtime": 1783200983.9658062,
+    "ast_hash": "63b5c84691b7e56d793d08c635a75d18",
+    "semantic_hash": "63b5c84691b7e56d793d08c635a75d18"
+  },
+  "src/footy/db.py": {
+    "mtime": 1783200624.560594,
+    "ast_hash": "5280180c0edd47e715fc3e8898af2fb5",
+    "semantic_hash": "5280180c0edd47e715fc3e8898af2fb5"
+  },
+  "src/footy/ingest/__init__.py": {
+    "mtime": 1783200573.806092,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/footy/ingest/client.py": {
+    "mtime": 1783200923.8392572,
+    "ast_hash": "346f1089d51d4dfd92b90a6ee7075876",
+    "semantic_hash": "346f1089d51d4dfd92b90a6ee7075876"
+  },
+  "src/footy/ingest/matches.py": {
+    "mtime": 1783200936.3273923,
+    "ast_hash": "10ce4280b53090f5b12d114fe7d50c40",
+    "semantic_hash": "10ce4280b53090f5b12d114fe7d50c40"
+  },
+  "src/footy/ingest/odds.py": {
+    "mtime": 1783200952.469772,
+    "ast_hash": "86dca7c22e0f41600e3fac64bccb5359",
+    "semantic_hash": "86dca7c22e0f41600e3fac64bccb5359"
+  },
+  "src/footy/ml/__init__.py": {
+    "mtime": 1783200573.8061616,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/footy/ml/features.py": {
+    "mtime": 1783201241.8500023,
+    "ast_hash": "811eea8784415b8c144da1b05389b3bd",
+    "semantic_hash": "811eea8784415b8c144da1b05389b3bd"
+  },
+  "src/footy/ml/predict.py": {
+    "mtime": 1783200755.650759,
+    "ast_hash": "8ddfbf8624353f55bde1d26988df657f",
+    "semantic_hash": "8ddfbf8624353f55bde1d26988df657f"
+  },
+  "src/footy/ml/registry.py": {
+    "mtime": 1783200717.8082337,
+    "ast_hash": "79a19a29cf117272eefb2b3b860e3b9a",
+    "semantic_hash": "79a19a29cf117272eefb2b3b860e3b9a"
+  },
+  "src/footy/ml/train.py": {
+    "mtime": 1783200736.189948,
+    "ast_hash": "801c965efa7c9e817a0535cd95329a7c",
+    "semantic_hash": "801c965efa7c9e817a0535cd95329a7c"
+  },
+  "src/footy/orm.py": {
+    "mtime": 1783200649.5313218,
+    "ast_hash": "88d4bf5ef529caaf5bd626f26986708d",
+    "semantic_hash": "88d4bf5ef529caaf5bd626f26986708d"
+  },
+  "src/footy/predictions/__init__.py": {
+    "mtime": 1783200573.8062267,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/footy/predictions/metrics.py": {
+    "mtime": 1783200798.4492142,
+    "ast_hash": "d9171402c3aaded4fca92efe825544c7",
+    "semantic_hash": "d9171402c3aaded4fca92efe825544c7"
+  },
+  "src/footy/predictions/tracker.py": {
+    "mtime": 1783201192.174286,
+    "ast_hash": "e062df9873e03c0060e180678b69f8e5",
+    "semantic_hash": "e062df9873e03c0060e180678b69f8e5"
+  },
+  "src/footy/predictions/validator.py": {
+    "mtime": 1783200822.728362,
+    "ast_hash": "1d581ec5c556189498ad57582e27eed3",
+    "semantic_hash": "1d581ec5c556189498ad57582e27eed3"
+  },
+  "tests/__init__.py": {
+    "mtime": 1783200573.8063562,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "tests/test_backtest.py": {
+    "mtime": 1783201095.39405,
+    "ast_hash": "f446d97731be4dc5bd56c022aa4ade59",
+    "semantic_hash": "f446d97731be4dc5bd56c022aa4ade59"
+  },
+  "tests/test_features.py": {
+    "mtime": 1783201197.2733164,
+    "ast_hash": "8f48048dab5bb8c9afc75f0a5f18f31e",
+    "semantic_hash": "8f48048dab5bb8c9afc75f0a5f18f31e"
+  },
+  "tests/test_metrics.py": {
+    "mtime": 1783201065.2108686,
+    "ast_hash": "9d9d5718a877557e382e500d11405852",
+    "semantic_hash": "9d9d5718a877557e382e500d11405852"
+  },
+  "tests/test_staking.py": {
+    "mtime": 1783201087.1088414,
+    "ast_hash": "17af132f2209341f409d861eb55e6ce6",
+    "semantic_hash": "17af132f2209341f409d861eb55e6ce6"
+  },
+  "tests/test_validator.py": {
+    "mtime": 1783201057.4982667,
+    "ast_hash": "356175e45c7601e959e4846d216777db",
+    "semantic_hash": "356175e45c7601e959e4846d216777db"
+  },
+  "tests/test_value.py": {
+    "mtime": 1783201202.0231562,
+    "ast_hash": "cd5c437e662a6c1e9e94c85aaf7c7a5a",
+    "semantic_hash": "cd5c437e662a6c1e9e94c85aaf7c7a5a"
+  }
+}
