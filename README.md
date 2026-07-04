@@ -47,7 +47,13 @@ real schedule.
 `.github/workflows/docker-publish.yml` on every push to `main`) instead of
 building from source — the deploy target has no copy of this repo.
 `docker compose -f docker-compose.prod.yml run --rm app python
-scripts/<name>.py` on the server, same as local usage.
+scripts/<name>.py` on the server, same as local usage. Requires a real `.env`
+next to the compose file for `${VAR}` substitution.
+
+Deployed via the Hostinger MCP server (`VPS_createNewProjectV1`) — that
+deploy path does **not** honor `env_file:`, only an inline `environment:`
+block in the compose YAML actually sent, so secrets must be passed as literal
+values in that call rather than relying on a separate `.env` on the VPS.
 
 ## Providers
 
