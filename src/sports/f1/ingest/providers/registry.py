@@ -5,10 +5,12 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from sports.f1.ingest.providers.base import F1Provider, ProviderError
+from sports.f1.ingest.providers.jolpica import JolpicaProvider
 from sports.f1.ingest.providers.openf1 import OpenF1Provider
 
 _BUILDERS: dict[str, Callable[[], F1Provider]] = {
     "openf1": OpenF1Provider,
+    "jolpica": JolpicaProvider,
 }
 
 
