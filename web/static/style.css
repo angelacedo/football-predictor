@@ -91,6 +91,9 @@ select { padding: 0.35rem 0.5rem; font-size: 0.9rem; background: var(--surface);
 .ranking .delta.up { color: var(--good); }
 .ranking .delta.down { color: var(--bad); }
 
+.wc-tag { font-weight: 600; color: var(--accent); white-space: nowrap; }
+.wc-note { display: block; font-size: 0.7rem; color: var(--bad); cursor: help; }
+
 footer { margin-top: 3rem; font-size: 0.8rem; color: var(--muted); }
 
 @media (max-width: 640px) {

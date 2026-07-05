@@ -97,7 +97,9 @@ class Settings(BaseSettings):
     # it automatically. A league in `leagues` with no entry here is a
     # per-league config error, not a reason to block every other league's
     # sync (see scheduler.py's football_sync_predict job).
-    league_ids: Annotated[dict[str, int], NoDecode] = Field(default={"La Liga": 140})
+    league_ids: Annotated[dict[str, int], NoDecode] = Field(
+        default={"La Liga": 140, "World Cup": 1}
+    )
 
     @field_validator("leagues", "active_algorithms", mode="before")
     @classmethod

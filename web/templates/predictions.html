@@ -25,7 +25,12 @@
                     else ("AWAY" if r.prob_away_win >= r.prob_draw else "DRAW") %}
       <tr>
         <td data-label="Kickoff">{{ r.kickoff }}</td>
-        <td data-label="League">{{ r.league }}</td>
+        <td data-label="League">
+          {% if r.league == "World Cup" %}
+          <span class="wc-tag">🏆 World Cup 2026</span>
+          <span class="wc-note" title="Club-trained model applied to a national-team knockout: neutral venue, out-of-distribution, in-tournament form only. Treat as experimental.">form-based · unvalidated</span>
+          {% else %}{{ r.league }}{% endif %}
+        </td>
         <td data-label="Match">
           <div class="team">{{ b.badge(r.home_team) }}{{ r.home_team }}</div>
           <div class="team">{{ b.badge(r.away_team) }}{{ r.away_team }}</div>

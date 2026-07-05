@@ -73,6 +73,21 @@ def football_sync_predict() -> None:
             record("football_sync", "ERROR", f"{league}: {exc}")
             log.exception("Football sync failed for '%s'", league)
 
+    # World Cup 2026: kept OUT of settings.leagues on purpose (that list drives
+    # train_all, which must not train a WC-specific model on ~4 games). We only
+    # want its fixtures ingested so the club-trained model can predict them
+    # (isolated block - a WC failure must never break club sync or predict).
+    # WC season = calendar year in API-Football numbering, not the Aug-cutover
+    # club season. Predictions are out-of-distribution - see predictions.html.
+    wc_id = settings.league_ids.get("World Cup")
+    if wc_id is not None:
+        try:
+            n = sync_league(wc_id, datetime.now(UTC).year)
+            record("world_cup_sync", "SUCCESS", f"{n} fixture(s)")
+        except Exception as exc:
+            record("world_cup_sync", "ERROR", str(exc))
+            log.exception("World Cup sync failed")
+
     try:
         predict_upcoming.main()
         record("football_predict", "SUCCESS")

@@ -96,6 +96,41 @@ def test_football_sync_predict_missing_league_id_logs_error_and_continues(
     config.get_settings.cache_clear()
 
 
+def test_football_sync_predict_syncs_world_cup_isolated_from_club_leagues(
+    sched_db: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """World Cup (league id 1) must be synced by its own guarded block - kept out
+    of LEAGUES (so train_all never touches it) but still ingested for prediction.
+    A WC sync failure must not stop club sync or predict."""
+    from datetime import UTC, datetime
+
+    from footy.db import session_scope
+
+    monkeypatch.setenv("LEAGUES", "La Liga")
+    monkeypatch.setenv("LEAGUE_IDS", "La Liga:140,World Cup:1")
+    import footy.config as config
+    config.get_settings.cache_clear()
+
+    synced = []
+    monkeypatch.setattr(
+        run_scheduler, "sync_league", lambda lid, season: synced.append((lid, season)) or 3
+    )
+    predicted = []
+    monkeypatch.setattr(run_scheduler.predict_upcoming, "main", lambda: predicted.append(True))
+
+    run_scheduler.football_sync_predict()
+
+    # WC synced for the calendar year, not the Aug-cutover club season.
+    assert (1, datetime.now(UTC).year) in synced
+    with session_scope() as session:
+        wc = session.query(JobRun).filter(JobRun.job_name == "world_cup_sync").all()
+    assert [r.status for r in wc] == ["SUCCESS"]
+    # Prediction still ran (WC block sits before predict, can't skip it).
+    assert predicted == [True]
+
+    config.get_settings.cache_clear()
+
+
 def test_is_lockout_matches_exact_message() -> None:
     assert run_scheduler._is_lockout(_lockout_error())
 
