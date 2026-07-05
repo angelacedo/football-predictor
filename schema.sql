@@ -82,3 +82,52 @@ CREATE TABLE IF NOT EXISTS bets (
     settled_at     TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_bets_status ON bets (status);
+
+-- F1 module (src/sports/f1/) - own DeclarativeBase (F1Base), fully additive,
+-- shares this same Postgres instance/DB but never joins the football tables
+-- above. f1_-prefixed to avoid future name collisions with other sports.
+CREATE TABLE IF NOT EXISTS f1_sessions (
+    id                  SERIAL PRIMARY KEY,
+    external_session_id INTEGER UNIQUE NOT NULL,
+    season              INTEGER     NOT NULL,
+    round               INTEGER     NOT NULL,
+    circuit             VARCHAR(80) NOT NULL,
+    session_type        VARCHAR(12) NOT NULL,  -- RACE | QUALIFYING | SPRINT
+    start_time          TIMESTAMP   NOT NULL,
+    status              VARCHAR(10) NOT NULL DEFAULT 'SCHEDULED'  -- SCHEDULED | FINISHED
+);
+CREATE INDEX IF NOT EXISTS idx_f1_sessions_status ON f1_sessions (status);
+
+CREATE TABLE IF NOT EXISTS f1_entries (
+    id              SERIAL PRIMARY KEY,
+    session_id      INTEGER NOT NULL REFERENCES f1_sessions (id),
+    driver_number   INTEGER     NOT NULL,
+    driver_name     VARCHAR(80) NOT NULL,
+    team            VARCHAR(80) NOT NULL,
+    grid_position   INTEGER,      -- NULL: not reliably available via OpenF1, see adapter docstring
+    finish_position INTEGER,
+    status          VARCHAR(10) NOT NULL DEFAULT 'FINISHED',  -- FINISHED|DNF|DNS|DSQ
+    points          DECIMAL(5, 2),
+
+    UNIQUE (session_id, driver_number)
+);
+
+CREATE TABLE IF NOT EXISTS f1_predictions (
+    id                 SERIAL PRIMARY KEY,
+    session_id         INTEGER NOT NULL REFERENCES f1_sessions (id),
+    driver_number      INTEGER     NOT NULL,
+    model_name         VARCHAR(50) NOT NULL,
+    prediction_date    TIMESTAMP   NOT NULL DEFAULT now(),
+    predicted_position DECIMAL(6, 3) NOT NULL,
+
+    -- Filled post-session by a future validator (mirrors predictions.validator's
+    -- shape, but a ranking has no brier_score/log_loss - those need a one-hot
+    -- HOME/DRAW/AWAY-style target, meaningless here).
+    actual_position    INTEGER,
+    mae_position       DECIMAL(6, 3),
+    validated_at       TIMESTAMP,
+
+    UNIQUE (session_id, driver_number, model_name)
+);
+CREATE INDEX IF NOT EXISTS idx_f1_predictions_unvalidated
+    ON f1_predictions (validated_at) WHERE validated_at IS NULL;
