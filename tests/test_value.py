@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 
 from footy.betting.value import edge, find_value_bet, implied_probs
-from footy.ml.predict import MatchProbs
+from footy.domain import MatchProbs
 
 
 def test_edge_sign() -> None:

@@ -15,15 +15,23 @@ from footy.ml.train import train_model
 log = logging.getLogger("footy.ml.train_parallel")
 
 
-def _train_one(league: str, algorithm: str, df: pd.DataFrame) -> tuple[str, str]:
-    """Run in a worker process — receives an already-filtered DataFrame, no DB access here
-    (a SQLAlchemy engine/session isn't safe to carry across a process boundary)."""
+def _train_one(league: str, algorithm: str, df: pd.DataFrame, model_dir: str) -> tuple[str, str]:
+    """Run in a worker process — receives an already-filtered DataFrame and the
+    model_dir to use, no DB access and no get_settings() call of its own here
+    (a SQLAlchemy engine/session isn't safe to carry across a process boundary,
+    and the parent already resolved model_dir once for every worker to share).
+
+    Note: train_model() -> save_model() still reads get_settings().model_dir
+    internally when model_dir isn't passed to it directly - train_model()'s
+    API is out of scope to change here, so this only removes the *redundant*
+    get_settings() calls _train_one() used to make for its own pointer lookup.
+    """
     key = f"{algorithm}_{league.replace(' ', '_')}"
     log.info("worker start: %s", key)
     try:
         train_model(df, algorithm, key)
-        pointer = Path(get_settings().model_dir) / f"{key}_latest"
-        result = str(Path(get_settings().model_dir) / pointer.read_text(encoding="utf-8").strip())
+        pointer = Path(model_dir) / f"{key}_latest"
+        result = str(Path(model_dir) / pointer.read_text(encoding="utf-8").strip())
     except Exception as exc:
         result = f"ERROR: {exc}"
     log.info("worker end: %s -> %s", key, result)
@@ -36,21 +44,21 @@ def train_all_parallel(
     """Train every (league, algorithm) pair, one worker process per pair.
 
     Matches are fetched per league here, in the parent process; workers only
-    ever see the resulting DataFrame.
+    ever see the resulting DataFrame and a pre-resolved model_dir.
 
     Returns:
         Mapping of ``"{algorithm}_{league}"`` to its artifact path, or an
         ``"ERROR: ..."`` string if that combination failed.
     """
     league_frames = {league: matches_dataframe(league=league) for league in leagues}
+    model_dir = get_settings().model_dir
 
     results: dict[str, str] = {}
     with ProcessPoolExecutor(max_workers=workers) as executor:
         futures = {
-            executor.submit(_train_one, league, algorithm, league_frames[league]): (
-                league,
-                algorithm,
-            )
+            executor.submit(
+                _train_one, league, algorithm, league_frames[league], model_dir
+            ): (league, algorithm)
             for league in leagues
             for algorithm in algorithms
         }

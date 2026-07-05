@@ -25,7 +25,7 @@ from collections.abc import Sequence
 
 import pandas as pd
 
-from footy.domain import RESULT_CLASSES, result_from_goals  # noqa: F401 - re-exported for compat
+from footy.domain import result_from_goals
 
 WINDOW = 5  # ponytail: rolling window; the one knob to tune if features underperform.
 

@@ -16,8 +16,7 @@ from footy.betting.backtest import SettledBet, backtest
 from footy.betting.value import find_value_bet
 from footy.config import get_settings
 from footy.db import session_scope
-from footy.ml.features import RESULT_CLASSES
-from footy.ml.predict import MatchProbs
+from footy.domain import RESULT_CLASSES, MatchProbs
 from footy.orm import Match, Odds, Prediction
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")

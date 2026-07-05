@@ -5,7 +5,7 @@ odds imply: ``edge = model_prob * decimal_odds - 1``. We select the single outco
 with the largest edge, if it clears the threshold.
 
 Example:
-    >>> from footy.ml.predict import MatchProbs
+    >>> from footy.domain import MatchProbs
     >>> bet = find_value_bet(MatchProbs(0.6, 0.25, 0.15), (2.0, 3.5, 5.0), threshold=0.05)
     >>> bet.selection, round(bet.edge, 2)
     ('HOME', 0.2)

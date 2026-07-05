@@ -15,7 +15,7 @@ from typing import Any
 
 import pandas as pd
 
-from footy.domain import RESULT_CLASSES, MatchProbs  # noqa: F401 - re-exported for compat
+from footy.domain import RESULT_CLASSES, MatchProbs
 from footy.ml.features import FEATURE_COLUMNS, compute_feature_frame
 from footy.ml.registry import load_latest
 
