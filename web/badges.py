@@ -40,8 +40,7 @@ def readable_text_color(bg_hex: str) -> str:
     """'#000000' or '#ffffff', whichever contrasts better against bg_hex.
 
     YIQ brightness heuristic (not full WCAG contrast math) - good enough for
-    a dashboard badge, simple to reason about. Handles arbitrary real hex
-    values (F1's OpenF1 team_colour) as well as our own hash-derived ones,
+    a dashboard badge, simple to reason about. Handles arbitrary hex values
     across the whole lightness range - this is what guarantees a light bg
     always gets black text and a dark bg always gets white text, rather than
     relying on luck from a fixed lightness choice.

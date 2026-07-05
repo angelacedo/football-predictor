@@ -81,16 +81,6 @@ select { padding: 0.35rem 0.5rem; font-size: 0.9rem; background: var(--surface);
 
 .metric-cell { border-radius: 4px; padding: 0.2rem 0.4rem; text-align: center; }
 
-.ranking { list-style: none; padding: 0; margin: 0.75rem 0; }
-.ranking li { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0;
-              border-bottom: 1px solid var(--border); }
-.ranking .pos { width: 1.6rem; text-align: center; font-weight: 700; color: var(--muted); }
-.ranking .driver { flex: 1; }
-.ranking .driver .team-name { color: var(--muted); font-size: 0.8rem; display: block; }
-.ranking .delta { font-size: 0.8rem; color: var(--muted); }
-.ranking .delta.up { color: var(--good); }
-.ranking .delta.down { color: var(--bad); }
-
 .wc-tag { font-weight: 600; color: var(--accent); white-space: nowrap; }
 .wc-note { display: block; font-size: 0.7rem; color: var(--bad); cursor: help; }
 

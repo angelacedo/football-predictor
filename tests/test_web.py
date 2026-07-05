@@ -34,10 +34,8 @@ def client(tmp_path, monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient]:
     from footy.db import get_engine, session_scope
     from footy.orm import Base, Match, Prediction
     from joblog import JobLogBase, record
-    from sports.f1.orm import F1Base, F1Entry, F1Prediction, F1Session
 
     Base.metadata.create_all(get_engine())
-    F1Base.metadata.create_all(get_engine())
     JobLogBase.metadata.create_all(get_engine())
 
     with session_scope() as session:
@@ -63,22 +61,7 @@ def client(tmp_path, monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient]:
             log_loss=Decimal("0.36"), validated_at=datetime.now(),
         ))
 
-        f1_session = F1Session(
-            external_session_id=9141, season=2023, round=1216, circuit="Spa-Francorchamps",
-            session_type="RACE", start_time=datetime(2023, 7, 30, 13, 0), status="SCHEDULED",
-        )
-        session.add(f1_session)
-        session.flush()
-        session.add(F1Entry(
-            session_id=f1_session.id, driver_number=1, driver_name="Max Verstappen",
-            team="Red Bull Racing", team_colour="3671C6",
-        ))
-        session.add(F1Prediction(
-            session_id=f1_session.id, driver_number=1, model_name="baseline",
-            predicted_position=Decimal("1.200"),
-        ))
-
-    record("f1_tick", "SKIPPED", "no entries synced yet for session 99")
+    record("football_validate", "SKIPPED", "no finished matches pending validation")
     record("football_sync", "SUCCESS", "La Liga: seasons 2025,2026")
 
     import app as web_app
@@ -127,48 +110,6 @@ def test_status_shows_last_run_per_job(client: TestClient) -> None:
     resp = client.get("/status")
     assert resp.status_code == 200
     data = resp.json()
-    assert data["f1_tick"]["status"] == "SKIPPED"
-    assert "no entries synced yet" in data["f1_tick"]["detail"]
+    assert data["football_validate"]["status"] == "SKIPPED"
+    assert "no finished matches" in data["football_validate"]["detail"]
     assert data["football_sync"]["status"] == "SUCCESS"
-
-
-def test_f1_sessions_lists_synced_session(client: TestClient) -> None:
-    resp = client.get("/f1/sessions")
-    assert resp.status_code == 200
-    assert "Spa-Francorchamps" in resp.text
-
-
-def test_f1_predictions_shows_driver_and_team_colour_badge(client: TestClient) -> None:
-    resp = client.get("/f1/predictions")
-    assert resp.status_code == 200
-    assert "Max Verstappen" in resp.text
-    assert "Red Bull Racing" in resp.text
-    assert "#3671c6" in resp.text.lower()  # team_colour used as badge background
-
-
-def test_f1_predictions_no_sessions_shows_empty_state(
-    tmp_path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    monkeypatch.setenv("DATABASE_URL", f"sqlite:///{tmp_path}/empty_f1.db")
-    import footy.config as config
-    import footy.db as db
-
-    config.get_settings.cache_clear()
-    db.get_engine.cache_clear()
-    db._session_factory.cache_clear()
-
-    from footy.orm import Base
-    from sports.f1.orm import F1Base
-
-    Base.metadata.create_all(db.get_engine())
-    F1Base.metadata.create_all(db.get_engine())
-
-    import app as web_app
-
-    resp = TestClient(web_app.app).get("/f1/predictions")
-    assert resp.status_code == 200
-    assert "No F1 sessions synced yet" in resp.text
-
-    config.get_settings.cache_clear()
-    db.get_engine.cache_clear()
-    db._session_factory.cache_clear()

@@ -5,11 +5,9 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from sports.contract import SportModule
-from sports.f1.adapter import F1Module
 from sports.football.adapter import FootballModule
 
 _SPORTS: dict[str, Callable[[], SportModule]] = {
-    "f1": F1Module,
     "football": FootballModule,
 }
 

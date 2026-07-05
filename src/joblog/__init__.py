@@ -1,8 +1,8 @@
 """Scheduler run observability - own DeclarativeBase, sport-agnostic.
 
-Not under footy/ or sports/f1/: job_runs tracks the scheduler itself (both
-sports, plus the scheduler process's own lifecycle), not one sport's data.
-Shares the same Postgres instance via footy.db, same pattern F1 already uses.
+Not under footy/ or sports/: job_runs tracks the scheduler itself (every
+sport's jobs, plus the scheduler process's own lifecycle), not one sport's
+data. Shares the same Postgres instance via footy.db.
 """
 
 from __future__ import annotations

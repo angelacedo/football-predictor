@@ -59,28 +59,20 @@ so trained artifacts survive container rebuilds.
 
 `scripts/run_scheduler.py` is the **one** long-running exception to "scripts
 are one-shot CLI jobs" — a 4th compose service (`scheduler`, same image as
-`app`) that runs sync/train/predict/validate for both sports in-process, on a
-schedule, forever. No `docker compose run` invocations needed once it's
-deployed — see `docker-compose.prod.yml`'s `scheduler` service.
+`app`) that runs sync/train/predict/validate in-process, on a schedule,
+forever. No `docker compose run` invocations needed once it's deployed — see
+`docker-compose.prod.yml`'s `scheduler` service.
 
-| Job | Football | F1 |
-|---|---|---|
-| Sync | daily 04:00 UTC (current + next season, per league) | adaptive, see below |
-| Predict | daily 04:00 UTC (same job, after sync) | adaptive, see below |
-| Train | weekly, Mon 05:00 UTC | weekly, Mon 05:00 UTC (same job as football, per-sport call) |
-| Validate | daily 06:00 UTC | not built yet |
-| Backtest | weekly, Mon 06:00 UTC, informational | N/A (no betting layer) |
-
-**F1 ramp-up**: `f1_tick` runs every 15 minutes and self-throttles based on
-the nearest `SCHEDULED` session's `start_time` — 24h baseline when nothing's
-imminent, down to 15-minute polling in the hours around a session, so
-Qualifying/Sprint entries (published earlier than Race entries, confirmed
-2026-07-05) get picked up as soon as OpenF1 has them. **Never auto-seeds Race
-entries from Qualifying** — that stays an explicit, per-incident human call.
+| Job | Schedule |
+|---|---|
+| Sync + predict | daily 04:00 UTC (current + next season, per league; World Cup included) |
+| Validate (+ retrain check) | daily 06:00 UTC |
+| Train | weekly, Mon 05:00 UTC |
+| Backtest | weekly, Mon 06:00 UTC, informational |
 
 `/status` on the dashboard shows the last run (`SUCCESS`/`ERROR`/`SKIPPED`)
-of every job — an F1 skip (zero entries yet) is logged as its own `SKIPPED`
-row, not indistinguishable from a silent failure.
+of every job — an expected skip is logged as its own `SKIPPED` row, not
+indistinguishable from a silent failure.
 
 ### Production (VPS)
 

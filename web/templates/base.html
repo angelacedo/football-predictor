@@ -17,17 +17,8 @@
 <body>
   <nav>
     <a href="/"{% if active == "overview" %} class="active"{% endif %}>Overview</a>
-    {% if sport == "f1" %}
-    <a href="/f1/predictions"{% if active == "predictions" %} class="active"{% endif %}>Predictions</a>
-    <a href="/f1/sessions"{% if active == "sessions" %} class="active"{% endif %}>Sessions</a>
-    {% else %}
     <a href="/predictions"{% if active == "predictions" %} class="active"{% endif %}>Predictions</a>
     <a href="/models"{% if active == "models" %} class="active"{% endif %}>Models</a>
-    {% endif %}
-    <div class="sport-switch">
-      <a href="/predictions"{% if sport == "football" %} class="active"{% endif %}>Football</a>
-      <a href="/f1/predictions"{% if sport == "f1" %} class="active"{% endif %}>F1</a>
-    </div>
     <button id="theme-toggle" onclick="
       var cur = document.documentElement.getAttribute('data-theme')
                 || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');

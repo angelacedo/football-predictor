@@ -60,6 +60,10 @@ services:
       MODEL_DIR: ${MODEL_DIR:-models}
       EDGE_THRESHOLD: ${EDGE_THRESHOLD:-0.05}
       KELLY_FRACTION: ${KELLY_FRACTION:-0.25}
+      # LEAGUES must stay in lockstep with LEAGUE_IDS - a league listed here
+      # with no id there logs a daily job_runs ERROR (found in the 2026-07-05
+      # audit: the unset var silently fell back to the 5-league code default).
+      LEAGUES: ${LEAGUES:-La Liga}
       LEAGUE_IDS: ${LEAGUE_IDS:-La Liga:140,World Cup:1}
     volumes:
       - models_data:/app/models

@@ -13,11 +13,4 @@
   {% for l in leagues %}{{ l }}{{ ", " if not loop.last }}{% endfor %}
   {% if not leagues %}no leagues synced yet{% endif %}
 </p>
-
-<h2>F1</h2>
-<div>
-  <span class="stat"><b>{{ n_f1_sessions }}</b><span class="label">sessions</span></span>
-  <span class="stat"><b>{{ n_f1_scheduled }}</b><span class="label">scheduled</span></span>
-  <span class="stat"><b>{{ n_f1_predictions }}</b><span class="label">predictions</span></span>
-</div>
 {% endblock %}

@@ -150,16 +150,3 @@ def football_current_season() -> int:
     """
     now = datetime.now(UTC)
     return now.year if now.month >= 8 else now.year - 1
-
-
-def f1_current_season() -> int:
-    """Current F1 season year - just the calendar year, no crossover.
-
-    Unlike football, an F1 season fits inside one calendar year (first race
-    ~March, last race ~December) - "2026 season" never spans into 2027, so
-    there's no month-based cutover rule needed. In the Jan-Feb off-season,
-    this returns the year whose season hasn't started publishing sessions
-    yet; sync_season() already no-ops cleanly on an empty result, so this
-    doesn't need special-casing.
-    """
-    return datetime.now(UTC).year

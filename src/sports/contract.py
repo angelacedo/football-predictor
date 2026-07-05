@@ -1,9 +1,10 @@
 """Cross-sport contract every sport module satisfies.
 
 Deliberately loose typing at this boundary (``Any`` on predict's return, on
-sync's kwargs) - football's MatchProbs and F1's driver-ranking result are
-genuinely different shapes. Each concrete sport module keeps its own
-mypy-strict internal types; only this cross-sport layer sees ``Any``.
+sync's kwargs) - different sports return genuinely different prediction
+shapes (football's MatchProbs vs. e.g. a future sport's ranking type). Each
+concrete sport module keeps its own mypy-strict internal types; only this
+cross-sport layer sees ``Any``.
 """
 
 from __future__ import annotations
@@ -46,9 +47,9 @@ class SportModule(Protocol):
 class SupportsValueBetting(Protocol):
     """Optional capability - NOT part of SportModule.
 
-    Football implements this (real 1X2 bookmaker odds exist). F1 does not:
-    this repo's odds/bets tables are hardcoded to 3-way 1X2 and no
-    driver-outright/podium odds data source is scoped.
+    Football implements this (real 1X2 bookmaker odds exist). A sport without
+    a 1X2-shaped market does not: this repo's odds/bets tables are hardcoded
+    to 3-way 1X2.
     """
 
     def find_value_bet(self, prediction: Any, market_odds: Any, threshold: float) -> Any | None:
