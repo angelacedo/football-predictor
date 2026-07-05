@@ -40,6 +40,15 @@ class OddsQuery:
     provider. API-Football keys off ``external_fixture_id``; The Odds API has
     its own event ids and must match on team names + kickoff instead.
     Each adapter uses whichever field its API actually supports.
+
+    Coupling note: this is a union of exactly the 2 matching strategies above,
+    not an open-ended key-value shape - every provider's get_odds() depends on
+    this dataclass's field set. Fine at 2 providers, but adding a 3rd/4th odds
+    source with a different identity scheme (e.g. season+round, a hash/slug id)
+    means growing this dataclass and touching every provider that pattern-
+    matches its fields, not just adding an isolated new file. Before that
+    happens, switch to an extensible "whichever key is set" shape instead of
+    bolting on another field.
     """
 
     external_fixture_id: int
