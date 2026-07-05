@@ -9,8 +9,10 @@ from footy.db import session_scope
 from footy.orm import Match, Prediction
 
 MATCH_COLUMNS = (
-    "id", "kickoff", "league", "home_team", "away_team", "home_goals", "away_goals"
+    "id", "kickoff", "league", "home_team", "away_team", "home_goals", "away_goals",
+    "xg_home", "xg_away", "possession_home", "possession_away",
 )
+_STATS_COLUMNS = ("xg_home", "xg_away", "possession_home", "possession_away")
 
 
 def matches_dataframe(league: str | None = None) -> pd.DataFrame:
@@ -22,12 +24,20 @@ def matches_dataframe(league: str | None = None) -> pd.DataFrame:
     query = select(
         Match.id, Match.kickoff, Match.league, Match.home_team,
         Match.away_team, Match.home_goals, Match.away_goals,
+        Match.xg_home, Match.xg_away, Match.possession_home, Match.possession_away,
     )
     if league is not None:
         query = query.where(Match.league == league)
     with session_scope() as session:
         rows = session.execute(query).all()
-    return pd.DataFrame(rows, columns=list(MATCH_COLUMNS))
+    df = pd.DataFrame(rows, columns=list(MATCH_COLUMNS))
+    # to_numeric not astype(float): most matches have NULL stats (no stats
+    # job has run for them yet, or the fetch found nothing) - astype(float)
+    # raises on None, to_numeric coerces it to NaN like every other null
+    # column here.
+    for col in _STATS_COLUMNS:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+    return df
 
 
 def validated_predictions_dataframe() -> pd.DataFrame:

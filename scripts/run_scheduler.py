@@ -12,6 +12,7 @@ import logging
 from datetime import UTC, datetime, timedelta
 
 from apscheduler.schedulers.blocking import BlockingScheduler
+from sqlalchemy import select
 
 import predict_upcoming
 import run_backtest
@@ -19,10 +20,12 @@ import train_all
 from footy.betting.backtest import backtest
 from footy.config import football_current_season, get_settings
 from footy.data import matches_dataframe, validated_predictions_dataframe
-from footy.db import get_engine
+from footy.db import get_engine, session_scope
 from footy.ingest.matches import sync_league
 from footy.ingest.providers.base import to_naive_utc
+from footy.ingest.stats import fetch_stats
 from footy.ml.train import train_model
+from footy.orm import Match
 from footy.predictions.metrics import breakdown_by_league_and_model, pairs_needing_retrain
 from footy.predictions.validator import PredictionValidator
 from joblog import JobLogBase, record
@@ -85,7 +88,39 @@ def football_validate() -> None:
         record("football_validate", "ERROR", str(exc))
         log.exception("football_validate failed")
         return
+    football_fetch_stats()
     football_retrain_check()
+
+
+def football_fetch_stats() -> None:
+    """Backfill xG/possession for FINISHED matches missing them. Stats only
+    exist post-match (confirmed live 2026-07-05 via API-Football's
+    /fixtures/statistics), so this only ever touches FINISHED rows, and only
+    ones still missing xg_home - already-populated matches are never
+    refetched. Runs right after football_validate, same daily cadence."""
+    with session_scope() as session:
+        fixture_ids = session.scalars(
+            select(Match.api_fixture_id).where(
+                Match.status == "FINISHED", Match.xg_home.is_(None)
+            )
+        ).all()
+    if not fixture_ids:
+        record("football_fetch_stats", "SUCCESS", "no matches missing stats")
+        return
+
+    written, failed = 0, 0
+    for fixture_id in fixture_ids:
+        try:
+            if fetch_stats(fixture_id):
+                written += 1
+        except Exception:
+            failed += 1
+            log.exception("Stats fetch failed for fixture %d", fixture_id)
+    status = "SUCCESS" if failed == 0 else "ERROR"
+    record(
+        "football_fetch_stats", status,
+        f"{written} written, {failed} failed, {len(fixture_ids)} candidates",
+    )
 
 
 _RETRAIN_CURRENT_WINDOW = timedelta(days=7)

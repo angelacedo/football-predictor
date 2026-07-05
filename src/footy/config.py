@@ -45,7 +45,11 @@ class Settings(BaseSettings):
         odds_provider_fallback: Provider name tried if the primary fails or
             returns nothing; empty string disables fallback.
         stats_provider: Provider name for advanced stats (xG/possession);
-            empty string disables stats fetching entirely.
+            empty string disables stats fetching entirely. Defaults to
+            api_football (confirmed live 2026-07-05 via /fixtures/statistics -
+            Sportmonks' free tier doesn't cover La Liga and TheStatsAPI's
+            configured key has no active subscription; api_football needs
+            neither, same key already used for fixtures/odds).
         database_url: SQLAlchemy connection URL (psycopg3 driver).
         model_dir: Directory holding joblib model artifacts.
         edge_threshold: Minimum value edge to select a paper bet.
@@ -77,7 +81,7 @@ class Settings(BaseSettings):
     fixtures_provider: str = Field(default="api_football")
     odds_provider_primary: str = Field(default="api_football")
     odds_provider_fallback: str = Field(default="")
-    stats_provider: str = Field(default="")
+    stats_provider: str = Field(default="api_football")
 
     database_url: str = Field(
         default="postgresql+psycopg://footy:footy@localhost:5432/footy"

@@ -185,3 +185,92 @@ def test_football_retrain_check_excludes_world_cup(
     run_scheduler.football_retrain_check()
 
     assert calls == []
+
+
+def test_football_fetch_stats_only_targets_finished_matches_missing_xg(
+    sched_db: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    with session_scope() as session:
+        session.add(Match(
+            api_fixture_id=1, league="La Liga", season=2025, home_team="A", away_team="B",
+            kickoff=datetime.now(UTC), status="FINISHED", home_goals=1, away_goals=0,
+        ))  # missing stats - should be fetched
+        session.add(Match(
+            api_fixture_id=2, league="La Liga", season=2025, home_team="C", away_team="D",
+            kickoff=datetime.now(UTC), status="FINISHED", home_goals=2, away_goals=2,
+            xg_home=1.0, xg_away=1.0, possession_home=50.0, possession_away=50.0,
+        ))  # already has stats - must not be refetched
+        session.add(Match(
+            api_fixture_id=3, league="La Liga", season=2025, home_team="E", away_team="F",
+            kickoff=datetime.now(UTC), status="SCHEDULED",
+        ))  # not finished yet - must not be fetched
+
+    fetched = []
+    monkeypatch.setattr(
+        run_scheduler, "fetch_stats", lambda fid: fetched.append(fid) or True
+    )
+    run_scheduler.football_fetch_stats()
+
+    assert fetched == [1]
+    with session_scope() as session:
+        row = session.scalar(
+            select(JobRun).where(JobRun.job_name == "football_fetch_stats")
+        )
+    assert row is not None
+    assert row.status == "SUCCESS"
+    assert row.detail == "1 written, 0 failed, 1 candidates"
+
+
+def test_football_fetch_stats_no_candidates_is_success(sched_db: None) -> None:
+    run_scheduler.football_fetch_stats()
+    with session_scope() as session:
+        row = session.scalar(
+            select(JobRun).where(JobRun.job_name == "football_fetch_stats")
+        )
+    assert row is not None
+    assert row.status == "SUCCESS"
+    assert row.detail == "no matches missing stats"
+
+
+def test_football_fetch_stats_reports_error_status_on_failures(
+    sched_db: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    with session_scope() as session:
+        session.add(Match(
+            api_fixture_id=1, league="La Liga", season=2025, home_team="A", away_team="B",
+            kickoff=datetime.now(UTC), status="FINISHED", home_goals=1, away_goals=0,
+        ))
+
+    def _raise(fixture_id: int) -> bool:
+        raise RuntimeError("provider exploded")
+
+    monkeypatch.setattr(run_scheduler, "fetch_stats", _raise)
+    run_scheduler.football_fetch_stats()
+
+    with session_scope() as session:
+        row = session.scalar(
+            select(JobRun).where(JobRun.job_name == "football_fetch_stats")
+        )
+    assert row is not None
+    assert row.status == "ERROR"
+
+
+def test_football_validate_runs_fetch_stats_then_retrain_check(
+    sched_db: None, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """football_validate must chain into both new/existing calls in order,
+    but only when validation itself succeeded."""
+    calls = []
+    monkeypatch.setattr(
+        run_scheduler.PredictionValidator, "validate_finished",
+        lambda self: (calls.append("validate") or 0),
+    )
+    monkeypatch.setattr(
+        run_scheduler, "football_fetch_stats", lambda: calls.append("fetch_stats")
+    )
+    monkeypatch.setattr(
+        run_scheduler, "football_retrain_check", lambda: calls.append("retrain_check")
+    )
+    run_scheduler.football_validate()
+
+    assert calls == ["validate", "fetch_stats", "retrain_check"]

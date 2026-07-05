@@ -38,7 +38,18 @@ FEATURE_COLUMNS: tuple[str, ...] = (
     "away_ga",
     "home_rest_days",
     "away_rest_days",
+    "home_xg_form",
+    "away_xg_form",
+    "home_possession_form",
+    "away_possession_form",
 )
+
+
+_XG_DEFAULT = 1.3  # ponytail: rough league-average per-team xG; not fit from
+                     # real data, just a plausible cold-start value - revisit
+                     # if it skews early-season predictions.
+_POSSESSION_DEFAULT = 50.0  # neutral - no basis to assume either side dominates
+                            # the ball with zero history.
 
 
 def _avg(values: Sequence[float], default: float = 0.0) -> float:
@@ -50,8 +61,13 @@ def compute_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
 
     Args:
         df: Matches with columns ``id, kickoff, league, home_team, away_team,
-            home_goals, away_goals``. Rows with null goals (unplayed) get features
-            from prior history and a null ``result``.
+            home_goals, away_goals``, plus optionally ``xg_home, xg_away,
+            possession_home, possession_away`` (from footy.ingest.stats -
+            populated only for finished matches once a separate stats job has
+            run; missing columns or null cells are "no stats yet", not an
+            error - callers that don't supply them still work). Rows with
+            null goals (unplayed) get features from prior history and a null
+            ``result``.
 
     Returns:
         DataFrame indexed by match ``id`` with :data:`FEATURE_COLUMNS` plus a
@@ -65,6 +81,8 @@ def compute_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
     pts: dict[str, deque[float]] = defaultdict(lambda: deque(maxlen=WINDOW))
     gf: dict[str, deque[float]] = defaultdict(lambda: deque(maxlen=WINDOW))
     ga: dict[str, deque[float]] = defaultdict(lambda: deque(maxlen=WINDOW))
+    xg_for: dict[str, deque[float]] = defaultdict(lambda: deque(maxlen=WINDOW))
+    possession: dict[str, deque[float]] = defaultdict(lambda: deque(maxlen=WINDOW))
     last_date: dict[str, pd.Timestamp] = {}
 
     rows: list[dict[str, object]] = []
@@ -86,6 +104,14 @@ def compute_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
                 "away_ga": _avg(list(ga[away])),
                 "home_rest_days": float(h_rest),
                 "away_rest_days": float(a_rest),
+                "home_xg_form": _avg(list(xg_for[home]), default=_XG_DEFAULT),
+                "away_xg_form": _avg(list(xg_for[away]), default=_XG_DEFAULT),
+                "home_possession_form": _avg(
+                    list(possession[home]), default=_POSSESSION_DEFAULT
+                ),
+                "away_possession_form": _avg(
+                    list(possession[away]), default=_POSSESSION_DEFAULT
+                ),
                 "result": None,
             }
         )
@@ -105,5 +131,18 @@ def compute_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
             ga[away].append(hg)
             last_date[home] = kickoff
             last_date[away] = kickoff
+
+        # xG/possession update independently of goals: a separate daily job
+        # fetches stats after validate, so a just-finished match may have
+        # goals but no stats yet - only real values ever get appended, a
+        # lagging fetch just means this match doesn't contribute this round.
+        if pd.notna(rec.get("xg_home")):
+            xg_for[home].append(float(rec["xg_home"]))
+        if pd.notna(rec.get("xg_away")):
+            xg_for[away].append(float(rec["xg_away"]))
+        if pd.notna(rec.get("possession_home")):
+            possession[home].append(float(rec["possession_home"]))
+        if pd.notna(rec.get("possession_away")):
+            possession[away].append(float(rec["possession_away"]))
 
     return pd.DataFrame(rows).set_index("id")

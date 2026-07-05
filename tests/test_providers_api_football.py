@@ -35,14 +35,32 @@ ODDS_JSON = {
 }
 
 
+STATS_JSON = [
+    {"team": {"name": "Arsenal"}, "statistics": [
+        {"type": "Ball Possession", "value": "58%"},
+        {"type": "expected_goals", "value": "1.74"},
+    ]},
+    {"team": {"name": "Chelsea"}, "statistics": [
+        {"type": "Ball Possession", "value": "42%"},
+        {"type": "expected_goals", "value": 0.81},
+    ]},
+]
+
+
 class FakeClient:
     def __init__(self, fixtures: list[dict[str, Any]] | None = None,
-                 odds: list[dict[str, Any]] | None = None) -> None:
+                 odds: list[dict[str, Any]] | None = None,
+                 stats: list[dict[str, Any]] | None = None) -> None:
         self._fixtures = fixtures or []
         self._odds = odds or []
+        self._stats = stats or []
 
     def get(self, path: str, params: dict[str, Any]) -> list[dict[str, Any]]:
-        return self._fixtures if path == "fixtures" else self._odds
+        if path == "fixtures":
+            return self._fixtures
+        if path == "fixtures/statistics":
+            return self._stats
+        return self._odds
 
 
 def test_get_fixtures_maps_to_dto() -> None:
@@ -72,3 +90,33 @@ def test_get_odds_extracts_match_winner_only() -> None:
     assert len(odds) == 1
     assert odds[0].bookmaker == "Bet365"
     assert (odds[0].odds_home, odds[0].odds_draw, odds[0].odds_away) == (2.10, 3.40, 3.60)
+
+
+def test_get_advanced_stats_maps_possession_and_xg() -> None:
+    """response[0]=home/response[1]=away order - verified live 2026-07-05
+    against 5 real finished La Liga fixtures, same convention
+    _fixture_from_json already relies on for this provider."""
+    provider = ApiFootballProvider(client=FakeClient(stats=STATS_JSON))
+    stats = provider.get_advanced_stats(5)
+    assert stats is not None
+    assert stats.possession_home == 58.0
+    assert stats.possession_away == 42.0
+    assert stats.xg_home == 1.74
+    assert stats.xg_away == 0.81
+
+
+def test_get_advanced_stats_returns_none_when_incomplete() -> None:
+    provider = ApiFootballProvider(client=FakeClient(stats=[STATS_JSON[0]]))
+    assert provider.get_advanced_stats(5) is None
+
+
+def test_get_advanced_stats_missing_stat_type_is_none() -> None:
+    stats_json = [
+        {"team": {"name": "Arsenal"}, "statistics": []},
+        {"team": {"name": "Chelsea"}, "statistics": []},
+    ]
+    provider = ApiFootballProvider(client=FakeClient(stats=stats_json))
+    stats = provider.get_advanced_stats(5)
+    assert stats is not None
+    assert stats.xg_home is None
+    assert stats.possession_home is None

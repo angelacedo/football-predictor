@@ -1,8 +1,16 @@
-"""API-Football (v3) provider adapter — fixtures + odds.
+"""API-Football (v3) provider adapter — fixtures + odds + advanced stats.
 
 Wraps the existing :class:`footy.ingest.client.ApiFootball` transport (which
-already retries via ``http_retry``) and maps its raw JSON into DTOs. No
-advanced-stats support — that's Sportmonks/TheStatsAPI's job.
+already retries via ``http_retry``) and maps its raw JSON into DTOs.
+
+get_advanced_stats uses /fixtures/statistics - confirmed live 2026-07-05
+against 5 real finished La Liga fixtures: "Ball Possession" and
+"expected_goals" are real, present stat types (Sportmonks' free tier doesn't
+cover La Liga, and TheStatsAPI's configured key has no active subscription -
+this endpoint needs neither). response[0]=home/response[1]=away order was
+verified against all 5 fixtures' own /fixtures home/away order (5/5 match) -
+same order convention _fixture_from_json below already relies on for this
+same provider, not a new assumption.
 """
 
 from __future__ import annotations
@@ -13,13 +21,15 @@ from typing import Any
 
 from footy.ingest.client import ApiFootball
 from footy.ingest.providers.base import UnsupportedProviderMixin
-from footy.ingest.schemas import FixtureDTO, OddsDTO, OddsQuery
+from footy.ingest.schemas import AdvancedStatsDTO, FixtureDTO, OddsDTO, OddsQuery
 
 log = logging.getLogger("footy.ingest.providers.api_football")
 
 FINISHED_STATUSES = {"FT", "AET", "PEN"}
 MATCH_WINNER = "Match Winner"
 _SIDE = {"Home": 0, "Draw": 1, "Away": 2}
+_POSSESSION_STAT = "Ball Possession"
+_XG_STAT = "expected_goals"
 
 
 def _fixture_from_json(item: dict[str, Any]) -> FixtureDTO:
@@ -55,6 +65,19 @@ def _match_winner_odds(bookmaker: dict[str, Any]) -> tuple[float, float, float] 
     return None
 
 
+def _stat_value(team_stats: dict[str, Any], stat_type: str) -> float | None:
+    for stat in team_stats.get("statistics", []):
+        if stat.get("type") != stat_type:
+            continue
+        value = stat.get("value")
+        if value is None:
+            return None
+        if isinstance(value, str):
+            return float(value.rstrip("%")) if value.endswith("%") else float(value)
+        return float(value)
+    return None
+
+
 class ApiFootballProvider(UnsupportedProviderMixin):
     """Fixtures + odds via API-Football."""
 
@@ -85,6 +108,19 @@ class ApiFootballProvider(UnsupportedProviderMixin):
                     )
                 )
         return out
+
+    def get_advanced_stats(self, external_fixture_id: int) -> AdvancedStatsDTO | None:
+        items = self._client.get("fixtures/statistics", {"fixture": external_fixture_id})
+        if len(items) < 2:
+            return None
+        home, away = items[0], items[1]
+        return AdvancedStatsDTO(
+            external_fixture_id=external_fixture_id,
+            xg_home=_stat_value(home, _XG_STAT),
+            xg_away=_stat_value(away, _XG_STAT),
+            possession_home=_stat_value(home, _POSSESSION_STAT),
+            possession_away=_stat_value(away, _POSSESSION_STAT),
+        )
 
     def __repr__(self) -> str:
         return "<ApiFootballProvider>"
