@@ -10,7 +10,9 @@ from __future__ import annotations
 
 import logging
 from datetime import UTC, datetime, timedelta
+from typing import TypeGuard
 
+import httpx
 from apscheduler.schedulers.blocking import BlockingScheduler
 from sqlalchemy import select
 
@@ -31,8 +33,21 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name
 log = logging.getLogger("run_scheduler")
 
 _F1_BASELINE = timedelta(hours=24)
+_LOCKOUT_MESSAGE = "Live F1 session in progress"
+
+# Rough per-type duration for the "has this lockout gone on suspiciously
+# long" check - OpenF1 documents live-window = 30min before start to 30min
+# after end (github.com/br-g/openf1#280 shows it can drift past that once in
+# a while, hence "unusually long" is a heads-up, not a hard alarm).
+_ASSUMED_SESSION_DURATION = {
+    "RACE": timedelta(hours=2),
+    "QUALIFYING": timedelta(hours=1),
+    "SPRINT": timedelta(hours=1),
+}
+_POST_SESSION_BUFFER = timedelta(minutes=30)
 
 _last_f1_run: datetime | None = None
+_lockout_streak: dict[int, int] = {}
 
 
 def football_sync_predict() -> None:
@@ -114,11 +129,37 @@ def _f1_interval(next_start: datetime | None, now: datetime) -> timedelta:
     return _F1_BASELINE
 
 
+def _expected_session_end(session: F1Session) -> datetime:
+    duration = _ASSUMED_SESSION_DURATION.get(session.session_type, timedelta(hours=2))
+    start = session.start_time.replace(tzinfo=UTC)
+    return start + duration + _POST_SESSION_BUFFER
+
+
+def _is_lockout(exc: Exception) -> TypeGuard[httpx.HTTPStatusError]:
+    """True only for OpenF1's documented live-session lockout message - not
+    a blanket "any 401 is fine". A different 401 (e.g. a bad/rotated key, if
+    one is ever added) must still surface as a real ERROR, not get silently
+    swallowed by this."""
+    return (
+        isinstance(exc, httpx.HTTPStatusError)
+        and exc.response.status_code == 401
+        and _LOCKOUT_MESSAGE in exc.response.text
+    )
+
+
 def f1_tick() -> None:
     """Runs every 15 min; self-throttles to the ramp-up interval computed
     from the nearest SCHEDULED session, rather than reprogramming APScheduler
     jobs dynamically. Never auto-seeds entries from Qualifying - that stays a
-    manual, explicit, per-incident judgment call (see 2026-07-05 incident)."""
+    manual, explicit, per-incident judgment call (see 2026-07-05 incident).
+
+    OpenF1 blocks its ENTIRE API (confirmed live 2026-07-05: even historical
+    queries, even unrelated session types) for 30min before + 30min after any
+    live session, any type - not just Race. That's SKIPPED, not ERROR: it's
+    expected, not a failure. 3+ consecutive lockouts for the same session
+    past its expected end escalate the detail text (not the status - still
+    SKIPPED) so it's visible on /status without doing the arithmetic by hand.
+    """
     global _last_f1_run
     now = datetime.now(UTC)
     with session_scope() as session:
@@ -138,9 +179,22 @@ def f1_tick() -> None:
             f1_sync_season(f1_current_season(), session_type=session_type)
         predict_f1.main()
         record("f1_tick", "SUCCESS", f"interval={interval}")
+        if next_session is not None:
+            _lockout_streak.pop(next_session.id, None)
     except Exception as exc:
-        record("f1_tick", "ERROR", str(exc))
-        log.exception("f1_tick failed")
+        if _is_lockout(exc):
+            detail = f"LOCKOUT: {exc.response.text.strip()}"
+            if next_session is not None:
+                streak = _lockout_streak.get(next_session.id, 0) + 1
+                _lockout_streak[next_session.id] = streak
+                expected_end = _expected_session_end(next_session)
+                if streak >= 3 and now > expected_end:
+                    minutes_over = int((now - expected_end).total_seconds() / 60)
+                    detail = f"{detail} (unusually long - session ended ~{minutes_over}min ago)"
+            record("f1_tick", "SKIPPED", detail)
+        else:
+            record("f1_tick", "ERROR", str(exc))
+            log.exception("f1_tick failed")
     finally:
         _last_f1_run = now
 
