@@ -25,6 +25,19 @@ services:
         condition: service_healthy
     command: ["python", "scripts/predict_upcoming.py"]
 
+  scheduler:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://footy:footy@db:5432/footy
+    volumes:
+      - ./models:/app/models
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    command: ["python", "scripts/run_scheduler.py"]
+
   web:
     build:
       context: .

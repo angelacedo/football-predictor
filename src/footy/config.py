@@ -9,6 +9,7 @@ Example:
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
 from functools import lru_cache
 from typing import Annotated
 
@@ -52,6 +53,8 @@ class Settings(BaseSettings):
         leagues: Leagues trained/predicted by default (scripts/train_all.py).
         active_algorithms: Algorithms trained by default.
         train_workers: Parallel worker processes for scripts/train_all.py.
+        league_ids: Provider-specific numeric league id per league name, for
+            the scheduler's automated sync (no CLI args to pass it there).
     """
 
     model_config = SettingsConfigDict(
@@ -89,12 +92,28 @@ class Settings(BaseSettings):
     active_algorithms: Annotated[list[str], NoDecode] = Field(default=["baseline", "xgboost"])
     train_workers: int = Field(default=4)
 
+    # Provider-specific numeric league id (API-Football numbering) per league
+    # name in `leagues` - sync_league() needs this and has no other way to get
+    # it automatically. A league in `leagues` with no entry here is a
+    # per-league config error, not a reason to block every other league's
+    # sync (see scheduler.py's football_sync_predict job).
+    league_ids: Annotated[dict[str, int], NoDecode] = Field(default={"La Liga": 140})
+
     @field_validator("leagues", "active_algorithms", mode="before")
     @classmethod
     def _split_csv(cls, value: object) -> object:
         """Allow comma-separated env values, e.g. ``LEAGUES=La Liga,Serie A``."""
         if isinstance(value, str):
             return [item.strip() for item in value.split(",") if item.strip()]
+        return value
+
+    @field_validator("league_ids", mode="before")
+    @classmethod
+    def _split_league_ids(cls, value: object) -> object:
+        """Allow ``LEAGUE_IDS=La Liga:140,Premier League:39``."""
+        if isinstance(value, str):
+            pairs = [p.strip() for p in value.split(",") if p.strip()]
+            return {name.strip(): int(lid.strip()) for name, lid in (p.split(":") for p in pairs)}
         return value
 
     def require_odds_provider(self) -> None:
@@ -120,3 +139,25 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     """Return the process-wide cached settings instance."""
     return Settings()
+
+
+def football_current_season() -> int:
+    """Current football season year (API-Football numbering: a season is
+    named after the year it *starts* in, e.g. "2025" = Aug 2025-May 2026,
+    since a league season spans two calendar years around an August kickoff).
+    """
+    now = datetime.now(UTC)
+    return now.year if now.month >= 8 else now.year - 1
+
+
+def f1_current_season() -> int:
+    """Current F1 season year - just the calendar year, no crossover.
+
+    Unlike football, an F1 season fits inside one calendar year (first race
+    ~March, last race ~December) - "2026 season" never spans into 2027, so
+    there's no month-based cutover rule needed. In the Jan-Feb off-season,
+    this returns the year whose season hasn't started publishing sessions
+    yet; sync_season() already no-ops cleanly on an empty result, so this
+    doesn't need special-casing.
+    """
+    return datetime.now(UTC).year

@@ -40,6 +40,35 @@ services:
         condition: service_healthy
     command: ["python", "scripts/predict_upcoming.py"]
 
+  scheduler:
+    image: ghcr.io/angelacedo/football-predictor:latest
+    environment:
+      DATABASE_URL: postgresql+psycopg://footy:footy@db:5432/footy
+      FOOTBALL_API_KEY: ${FOOTBALL_API_KEY}
+      FOOTBALL_API_BASE: ${FOOTBALL_API_BASE}
+      SPORTMONKS_API_KEY: ${SPORTMONKS_API_KEY}
+      SPORTMONKS_API_BASE: ${SPORTMONKS_API_BASE}
+      THESTATSAPI_KEY: ${THESTATSAPI_KEY}
+      THESTATSAPI_BASE: ${THESTATSAPI_BASE}
+      THE_ODDS_API_KEY: ${THE_ODDS_API_KEY}
+      THE_ODDS_API_BASE: ${THE_ODDS_API_BASE}
+      THE_ODDS_API_SPORT_KEY: ${THE_ODDS_API_SPORT_KEY}
+      FIXTURES_PROVIDER: ${FIXTURES_PROVIDER}
+      ODDS_PROVIDER_PRIMARY: ${ODDS_PROVIDER_PRIMARY}
+      ODDS_PROVIDER_FALLBACK: ${ODDS_PROVIDER_FALLBACK:-}
+      STATS_PROVIDER: ${STATS_PROVIDER:-}
+      MODEL_DIR: ${MODEL_DIR:-models}
+      EDGE_THRESHOLD: ${EDGE_THRESHOLD:-0.05}
+      KELLY_FRACTION: ${KELLY_FRACTION:-0.25}
+      LEAGUE_IDS: ${LEAGUE_IDS:-La Liga:140}
+    volumes:
+      - models_data:/app/models
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    command: ["python", "scripts/run_scheduler.py"]
+
   web:
     image: ghcr.io/angelacedo/football-predictor-web:latest
     environment:

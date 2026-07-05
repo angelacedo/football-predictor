@@ -21,6 +21,7 @@ from footy.data import validated_predictions_dataframe
 from footy.db import session_scope
 from footy.orm import Match, Prediction
 from footy.predictions.metrics import breakdown_by_league_and_model
+from joblog import JobRun
 from sports.f1.orm import F1Entry, F1Prediction, F1Session
 
 app = FastAPI(title="football-predictor dashboard")
@@ -47,6 +48,27 @@ def _f1_sessions() -> list[F1Session]:
 @app.get("/health", include_in_schema=False)
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/status")
+def status() -> dict[str, dict[str, str | None]]:
+    """Last run of every distinct job_name - so scheduler health is checkable
+    without SSH or guessing. An F1 skip (zero entries yet) shows as its own
+    SKIPPED status here, not indistinguishable from a silent failure."""
+    with session_scope() as session:
+        job_names = session.scalars(select(JobRun.job_name).distinct()).all()
+        result: dict[str, dict[str, str | None]] = {}
+        for name in job_names:
+            latest = session.scalar(
+                select(JobRun).where(JobRun.job_name == name).order_by(JobRun.id.desc())
+            )
+            if latest is not None:
+                result[name] = {
+                    "status": latest.status,
+                    "finished_at": latest.finished_at.isoformat() if latest.finished_at else None,
+                    "detail": latest.detail,
+                }
+    return result
 
 
 @app.get("/", response_class=HTMLResponse)

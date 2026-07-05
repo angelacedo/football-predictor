@@ -53,19 +53,49 @@ docker compose run --rm app python scripts/run_backtest.py
 Scripts are one-shot CLI jobs, not a server — `app`'s default command
 (`predict_upcoming.py`) is just a placeholder; run any script via
 `docker compose run --rm app python scripts/<name>.py`. `models/` is bind-mounted
-so trained artifacts survive container rebuilds. `ponytail:` no cron/scheduler
-in the image — wire one (host cron, k8s CronJob) only once this runs on a
-real schedule.
+so trained artifacts survive container rebuilds.
+
+## Scheduler
+
+`scripts/run_scheduler.py` is the **one** long-running exception to "scripts
+are one-shot CLI jobs" — a 4th compose service (`scheduler`, same image as
+`app`) that runs sync/train/predict/validate for both sports in-process, on a
+schedule, forever. No `docker compose run` invocations needed once it's
+deployed — see `docker-compose.prod.yml`'s `scheduler` service.
+
+| Job | Football | F1 |
+|---|---|---|
+| Sync | daily 04:00 UTC (current + next season, per league) | adaptive, see below |
+| Predict | daily 04:00 UTC (same job, after sync) | adaptive, see below |
+| Train | weekly, Mon 05:00 UTC | weekly, Mon 05:00 UTC (same job as football, per-sport call) |
+| Validate | daily 06:00 UTC | not built yet |
+| Backtest | weekly, Mon 06:00 UTC, informational | N/A (no betting layer) |
+
+**F1 ramp-up**: `f1_tick` runs every 15 minutes and self-throttles based on
+the nearest `SCHEDULED` session's `start_time` — 24h baseline when nothing's
+imminent, down to 15-minute polling in the hours around a session, so
+Qualifying/Sprint entries (published earlier than Race entries, confirmed
+2026-07-05) get picked up as soon as OpenF1 has them. **Never auto-seeds Race
+entries from Qualifying** — that stays an explicit, per-incident human call.
+
+`/status` on the dashboard shows the last run (`SUCCESS`/`ERROR`/`SKIPPED`)
+of every job — an F1 skip (zero entries yet) is logged as its own `SKIPPED`
+row, not indistinguishable from a silent failure.
 
 ### Production (VPS)
 
-`docker-compose.prod.yml` pulls a pre-built image
-(`ghcr.io/angelacedo/football-predictor:latest`, published by
+`docker-compose.prod.yml` pulls pre-built images
+(`ghcr.io/angelacedo/football-predictor:latest` / `-web:latest`, published by
 `.github/workflows/docker-publish.yml` on every push to `main`) instead of
 building from source — the deploy target has no copy of this repo.
 `docker compose -f docker-compose.prod.yml run --rm app python
-scripts/<name>.py` on the server, same as local usage. Requires a real `.env`
-next to the compose file for `${VAR}` substitution.
+scripts/<name>.py` for one-off manual runs, same as local usage. Requires a
+real `.env` next to the compose file for `${VAR}` substitution.
+
+**Deploy safety**: any redeploy must include `db`+`app`+`scheduler`+`web`
+together — a partial redeploy (e.g. `db`+`app` only, to run a one-off script)
+silently tears down `web` and `scheduler`, causing real dashboard downtime
+(happened once, 2026-07-05).
 
 Deployed via the Hostinger MCP server (`VPS_createNewProjectV1`) — that
 deploy path does **not** honor `env_file:`, only an inline `environment:`

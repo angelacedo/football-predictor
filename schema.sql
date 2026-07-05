@@ -135,3 +135,18 @@ CREATE TABLE IF NOT EXISTS f1_predictions (
 );
 CREATE INDEX IF NOT EXISTS idx_f1_predictions_unvalidated
     ON f1_predictions (validated_at) WHERE validated_at IS NULL;
+
+-- Scheduler observability (src/joblog.py). Sport-agnostic - tracks both
+-- football and F1 jobs, plus the scheduler process's own start/restart
+-- (so an in-memory state reset, e.g. F1 ramp-up's last_f1_run, is traceable
+-- via /status instead of looking like an unexplained extra run).
+CREATE TABLE IF NOT EXISTS job_runs (
+    id          SERIAL PRIMARY KEY,
+    job_name    VARCHAR(60) NOT NULL,
+    started_at  TIMESTAMP NOT NULL DEFAULT now(),
+    finished_at TIMESTAMP,
+    status      VARCHAR(10) NOT NULL,  -- SUCCESS | ERROR | SKIPPED
+    detail      TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_job_runs_job_name_started
+    ON job_runs (job_name, started_at DESC);

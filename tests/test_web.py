@@ -33,10 +33,12 @@ def client(tmp_path, monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient]:
 
     from footy.db import get_engine, session_scope
     from footy.orm import Base, Match, Prediction
+    from joblog import JobLogBase, record
     from sports.f1.orm import F1Base, F1Entry, F1Prediction, F1Session
 
     Base.metadata.create_all(get_engine())
     F1Base.metadata.create_all(get_engine())
+    JobLogBase.metadata.create_all(get_engine())
 
     with session_scope() as session:
         scheduled = Match(
@@ -75,6 +77,9 @@ def client(tmp_path, monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient]:
             session_id=f1_session.id, driver_number=1, model_name="baseline",
             predicted_position=Decimal("1.200"),
         ))
+
+    record("f1_tick", "SKIPPED", "no entries synced yet for session 99")
+    record("football_sync", "SUCCESS", "La Liga: seasons 2025,2026")
 
     import app as web_app
 
@@ -116,6 +121,15 @@ def test_models_shows_brier_comparison(client: TestClient) -> None:
     assert resp.status_code == 200
     assert "baseline_La_Liga" in resp.text
     assert "0.1400" in resp.text
+
+
+def test_status_shows_last_run_per_job(client: TestClient) -> None:
+    resp = client.get("/status")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["f1_tick"]["status"] == "SKIPPED"
+    assert "no entries synced yet" in data["f1_tick"]["detail"]
+    assert data["football_sync"]["status"] == "SUCCESS"
 
 
 def test_f1_sessions_lists_synced_session(client: TestClient) -> None:

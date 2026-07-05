@@ -11,6 +11,7 @@ from __future__ import annotations
 import logging
 
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from footy.betting.backtest import SettledBet, backtest
 from footy.betting.value import find_value_bet
@@ -23,7 +24,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name
 log = logging.getLogger("footy.backtest")
 
 
-def _odds_for(session, match_id: int) -> tuple[Odds | None, Odds | None]:
+def _odds_for(session: Session, match_id: int) -> tuple[Odds | None, Odds | None]:
     """Return (any pre-match odds, closing odds) rows for a match."""
     rows = session.scalars(
         select(Odds).where(Odds.match_id == match_id).order_by(Odds.captured_at)
