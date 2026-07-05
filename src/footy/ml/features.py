@@ -25,7 +25,8 @@ from collections.abc import Sequence
 
 import pandas as pd
 
-RESULT_CLASSES: tuple[str, str, str] = ("HOME", "DRAW", "AWAY")
+from footy.domain import RESULT_CLASSES, result_from_goals  # noqa: F401 - re-exported for compat
+
 WINDOW = 5  # ponytail: rolling window; the one knob to tune if features underperform.
 
 FEATURE_COLUMNS: tuple[str, ...] = (
@@ -38,15 +39,6 @@ FEATURE_COLUMNS: tuple[str, ...] = (
     "home_rest_days",
     "away_rest_days",
 )
-
-
-def result_from_goals(home_goals: int, away_goals: int) -> str:
-    """Map a final score to a 1X2 label."""
-    if home_goals > away_goals:
-        return "HOME"
-    if home_goals < away_goals:
-        return "AWAY"
-    return "DRAW"
 
 
 def _avg(values: Sequence[float], default: float = 0.0) -> float:

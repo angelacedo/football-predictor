@@ -13,7 +13,7 @@ from decimal import Decimal
 from sqlalchemy.exc import IntegrityError
 
 from footy.db import session_scope
-from footy.ml.predict import MatchProbs
+from footy.domain import MatchProbs
 from footy.orm import Prediction
 
 log = logging.getLogger("footy.predictions.tracker")

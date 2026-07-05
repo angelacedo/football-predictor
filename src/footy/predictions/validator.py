@@ -14,7 +14,7 @@ from decimal import Decimal
 from sqlalchemy import select
 
 from footy.db import session_scope
-from footy.ml.features import result_from_goals
+from footy.domain import result_from_goals
 from footy.orm import Match, Prediction
 from footy.predictions.metrics import brier_score, log_loss_single, predicted_result
 

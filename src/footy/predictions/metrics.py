@@ -22,7 +22,7 @@ from collections.abc import Mapping, Sequence
 import pandas as pd
 from sklearn.calibration import calibration_curve
 
-from footy.ml.features import RESULT_CLASSES
+from footy.domain import RESULT_CLASSES
 
 Probs = Sequence[float]
 _EPS = 1e-15

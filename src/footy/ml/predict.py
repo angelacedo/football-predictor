@@ -11,36 +11,15 @@ Example:
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass
 from typing import Any
 
 import pandas as pd
 
-from footy.ml.features import FEATURE_COLUMNS, RESULT_CLASSES, compute_feature_frame
+from footy.domain import RESULT_CLASSES, MatchProbs  # noqa: F401 - re-exported for compat
+from footy.ml.features import FEATURE_COLUMNS, compute_feature_frame
 from footy.ml.registry import load_latest
 
 log = logging.getLogger("footy.ml.predict")
-
-
-@dataclass(frozen=True)
-class MatchProbs:
-    """Calibrated 1X2 probabilities for a single match."""
-
-    home: float
-    draw: float
-    away: float
-
-    def as_tuple(self) -> tuple[float, float, float]:
-        """Return probabilities in (HOME, DRAW, AWAY) order."""
-        return (self.home, self.draw, self.away)
-
-    @property
-    def confidence(self) -> float:
-        """Confidence signal = the largest class probability."""
-        return max(self.as_tuple())
-
-    def __repr__(self) -> str:
-        return f"<MatchProbs H={self.home:.3f} D={self.draw:.3f} A={self.away:.3f}>"
 
 
 def _probs_from_model(model: Any, features: pd.DataFrame) -> MatchProbs:

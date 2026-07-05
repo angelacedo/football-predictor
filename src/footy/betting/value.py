@@ -17,8 +17,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from footy.ml.features import RESULT_CLASSES
-from footy.ml.predict import MatchProbs
+from footy.domain import RESULT_CLASSES, MatchProbs
 
 Odds = tuple[float, float, float]  # (home, draw, away) decimal odds
 
