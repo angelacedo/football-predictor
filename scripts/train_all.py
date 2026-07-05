@@ -16,7 +16,13 @@ from footy.ml.train_parallel import train_all_parallel
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 
 
-def main() -> None:
+def main() -> int:
+    """Run the training sweep and print every result.
+
+    Returns:
+        1 if any result is an ``"ERROR: ..."`` string, else 0 — for CI/cron
+        callers that need to know the sweep actually succeeded, not just ran.
+    """
     settings = get_settings()
     parser = argparse.ArgumentParser()
     parser.add_argument("--leagues", nargs="+", default=settings.leagues)
@@ -30,6 +36,8 @@ def main() -> None:
     for key, result in sorted(results.items()):
         print(f"{key.ljust(width)}  {result}")
 
+    return 1 if any(result.startswith("ERROR:") for result in results.values()) else 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

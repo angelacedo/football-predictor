@@ -126,3 +126,23 @@ def predict_ensemble(
         "AWAY": sum(away_probs) / len(models_used),
         "models_used": models_used,
     }
+
+
+def predict_ensemble_from_history(
+    matches_df: pd.DataFrame, match_id: int, league: str, model_types: list[str]
+) -> dict[str, Any]:
+    """Like :func:`predict_ensemble`, but from raw match history (as :func:`predict_match`
+    takes) instead of an already-computed feature frame.
+
+    Args:
+        matches_df: The target match plus its prior history (finished matches).
+        match_id: ``id`` of the row to predict.
+        league: Passed through to :func:`predict_ensemble`.
+        model_types: Passed through to :func:`predict_ensemble`.
+
+    Returns:
+        Same as :func:`predict_ensemble`.
+    """
+    feats = compute_feature_frame(matches_df)
+    row = feats.loc[[match_id]]
+    return predict_ensemble(row, league, model_types)
