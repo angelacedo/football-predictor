@@ -36,6 +36,15 @@ def main() -> None:
 
     df = entries_dataframe()
     for session_id in scheduled:
+        if not (df["session_id"] == session_id).any():
+            # OpenF1 only has a real driver lineup once a session actually
+            # starts/finishes - sync_season() only fetches entries for
+            # finished sessions by design (see its docstring), so a SCHEDULED
+            # session has zero f1_entries rows until then. Root cause, not a
+            # workaround: skip cleanly instead of feeding predict_session() an
+            # empty frame (crashes deep inside sklearn otherwise).
+            log.warning("No entries synced yet for session %d, skipping", session_id)
+            continue
         ranking = predict_session(df, session_id, model_name=MODEL_NAME)
         with session_scope() as session:
             for driver_number, predicted_position in ranking.predicted_position.items():
