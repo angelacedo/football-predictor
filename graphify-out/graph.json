@@ -4,19 +4,6 @@
   "graph": {
     "hyperedges": [
       {
-        "id": "docker_compose_local_stack",
-        "label": "Local docker-compose stack (db, app, web)",
-        "nodes": [
-          "docker_compose_db",
-          "docker_compose_app",
-          "docker_compose_web"
-        ],
-        "relation": "participate_in",
-        "confidence": "EXTRACTED",
-        "confidence_score": 1.0,
-        "source_file": "docker-compose.yml"
-      },
-      {
         "id": "docker_compose_prod_stack",
         "label": "Production docker-compose stack (db, app, web) behind Traefik",
         "nodes": [
@@ -28,6 +15,19 @@
         "confidence": "EXTRACTED",
         "confidence_score": 1.0,
         "source_file": "docker-compose.prod.yml"
+      },
+      {
+        "id": "docker_compose_local_stack",
+        "label": "Local docker-compose stack (db, app, web)",
+        "nodes": [
+          "docker_compose_db",
+          "docker_compose_app",
+          "docker_compose_web"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "docker-compose.yml"
       },
       {
         "id": "web_dashboard_template_inheritance",
@@ -56,7 +56,7 @@
       "version": "0.1.0",
       "_origin": "ast",
       "id": "pkg_footy",
-      "community": 24,
+      "community": 28,
       "norm_label": "footy"
     },
     {
@@ -66,7 +66,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_fetch_odds",
-      "community": 21,
+      "community": 22,
       "norm_label": "fetch_odds.py"
     },
     {
@@ -76,7 +76,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "scripts_fetch_odds_main",
-      "community": 21,
+      "community": 22,
       "norm_label": "main()"
     },
     {
@@ -86,7 +86,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_fetch_odds_rationale_1",
-      "community": 21,
+      "community": 22,
       "norm_label": "fetch 1x2 odds for scheduled matches using the configured provider chain.  usage"
     },
     {
@@ -96,7 +96,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_init_db",
-      "community": 9,
+      "community": 16,
       "norm_label": "init_db.py"
     },
     {
@@ -106,7 +106,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "scripts_init_db_main",
-      "community": 9,
+      "community": 16,
       "norm_label": "main()"
     },
     {
@@ -116,7 +116,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_init_db_rationale_1",
-      "community": 9,
+      "community": 16,
       "norm_label": "initialize the database by executing schema.sql.  usage:     python scripts/init"
     },
     {
@@ -126,7 +126,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_predict_upcoming",
-      "community": 14,
+      "community": 22,
       "norm_label": "predict_upcoming.py"
     },
     {
@@ -136,7 +136,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "scripts_predict_upcoming_main",
-      "community": 14,
+      "community": 0,
       "norm_label": "main()"
     },
     {
@@ -146,7 +146,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_predict_upcoming_rationale_1",
-      "community": 14,
+      "community": 22,
       "norm_label": "predict all scheduled matches and record the predictions.  idempotent: re-runnin"
     },
     {
@@ -156,37 +156,37 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_run_backtest",
-      "community": 8,
+      "community": 1,
       "norm_label": "run_backtest.py"
     },
     {
       "label": "_odds_for()",
       "file_type": "code",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L27",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "scripts_run_backtest_odds_for",
-      "community": 8,
+      "community": 1,
       "norm_label": "_odds_for()"
     },
     {
       "label": "build_settled_bets()",
       "file_type": "code",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L38",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "scripts_run_backtest_build_settled_bets",
-      "community": 8,
+      "community": 1,
       "norm_label": "build_settled_bets()"
     },
     {
       "label": "main()",
       "file_type": "code",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L76",
+      "source_location": "L75",
       "_origin": "ast",
       "id": "scripts_run_backtest_main",
-      "community": 8,
+      "community": 1,
       "norm_label": "main()"
     },
     {
@@ -196,17 +196,17 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_run_backtest_rationale_1",
-      "community": 8,
+      "community": 1,
       "norm_label": "paper backtest: turn validated predictions + odds into value bets and score them"
     },
     {
       "label": "Return (any pre-match odds, closing odds) rows for a match.",
       "file_type": "rationale",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L28",
+      "source_location": "L27",
       "_origin": "ast",
-      "id": "scripts_run_backtest_rationale_28",
-      "community": 8,
+      "id": "scripts_run_backtest_rationale_27",
+      "community": 1,
       "norm_label": "return (any pre-match odds, closing odds) rows for a match."
     },
     {
@@ -216,7 +216,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_sync_matches",
-      "community": 0,
+      "community": 12,
       "norm_label": "sync_matches.py"
     },
     {
@@ -226,7 +226,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "scripts_sync_matches_main",
-      "community": 0,
+      "community": 12,
       "norm_label": "main()"
     },
     {
@@ -236,7 +236,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_sync_matches_rationale_1",
-      "community": 0,
+      "community": 12,
       "norm_label": "sync fixtures/results for a league/season into ``matches``.  usage:     python s"
     },
     {
@@ -246,7 +246,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_train_all",
-      "community": 5,
+      "community": 1,
       "norm_label": "train_all.py"
     },
     {
@@ -256,7 +256,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "scripts_train_all_main",
-      "community": 5,
+      "community": 1,
       "norm_label": "main()"
     },
     {
@@ -266,7 +266,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_train_all_rationale_1",
-      "community": 5,
+      "community": 1,
       "norm_label": "train models for multiple leagues/algorithms in parallel.  usage:     python scr"
     },
     {
@@ -276,7 +276,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "scripts_train_all_rationale_20",
-      "community": 5,
+      "community": 1,
       "norm_label": "run the training sweep and print every result.      returns:         1 if any re"
     },
     {
@@ -286,7 +286,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_train_model",
-      "community": 14,
+      "community": 19,
       "norm_label": "train_model.py"
     },
     {
@@ -296,7 +296,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "scripts_train_model_main",
-      "community": 14,
+      "community": 19,
       "norm_label": "main()"
     },
     {
@@ -306,7 +306,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_train_model_rationale_1",
-      "community": 14,
+      "community": 19,
       "norm_label": "train the baseline model from matches in the db.  usage:     python scripts/trai"
     },
     {
@@ -316,7 +316,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_validate_predictions",
-      "community": 19,
+      "community": 23,
       "norm_label": "validate_predictions.py"
     },
     {
@@ -326,7 +326,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "scripts_validate_predictions_main",
-      "community": 19,
+      "community": 23,
       "norm_label": "main()"
     },
     {
@@ -336,7 +336,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scripts_validate_predictions_rationale_1",
-      "community": 19,
+      "community": 23,
       "norm_label": "validate predictions for finished matches. run ~2h after kickoff via cron.  usag"
     },
     {
@@ -346,7 +346,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_init",
-      "community": 28,
+      "community": 32,
       "norm_label": "__init__.py"
     },
     {
@@ -356,7 +356,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_betting_init",
-      "community": 25,
+      "community": 29,
       "norm_label": "__init__.py"
     },
     {
@@ -366,7 +366,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_betting_backtest",
-      "community": 10,
+      "community": 7,
       "norm_label": "backtest.py"
     },
     {
@@ -376,7 +376,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_footy_betting_backtest_settledbet",
-      "community": 10,
+      "community": 7,
       "norm_label": "settledbet"
     },
     {
@@ -386,7 +386,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_footy_betting_backtest_settledbet_pnl",
-      "community": 10,
+      "community": 7,
       "norm_label": ".pnl()"
     },
     {
@@ -396,7 +396,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_footy_betting_backtest_backtestreport",
-      "community": 10,
+      "community": 7,
       "norm_label": "backtestreport"
     },
     {
@@ -406,7 +406,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_footy_betting_backtest_backtestreport_repr",
-      "community": 10,
+      "community": 7,
       "norm_label": ".__repr__()"
     },
     {
@@ -416,7 +416,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_footy_betting_backtest_backtest",
-      "community": 10,
+      "community": 7,
       "norm_label": "backtest()"
     },
     {
@@ -426,7 +426,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_betting_backtest_rationale_1",
-      "community": 10,
+      "community": 7,
       "norm_label": "replay settled paper bets into performance stats.  answers \"do i actually have a"
     },
     {
@@ -436,7 +436,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_footy_betting_backtest_rationale_25",
-      "community": 10,
+      "community": 7,
       "norm_label": "a resolved paper bet. ``closing_odds`` optional, enables clv."
     },
     {
@@ -446,7 +446,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_footy_betting_backtest_rationale_35",
-      "community": 10,
+      "community": 7,
       "norm_label": "profit/loss: ``stake*(odds-1)`` on a win, ``-stake`` on a loss."
     },
     {
@@ -456,7 +456,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_footy_betting_backtest_rationale_41",
-      "community": 10,
+      "community": 7,
       "norm_label": "aggregate paper-betting performance."
     },
     {
@@ -466,7 +466,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_footy_betting_backtest_rationale_60",
-      "community": 10,
+      "community": 7,
       "norm_label": "compute roi, hit-rate, max drawdown and clv over ``bets``."
     },
     {
@@ -476,7 +476,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll",
-      "community": 15,
+      "community": 13,
       "norm_label": "bankroll.py"
     },
     {
@@ -486,7 +486,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll_bankroll",
-      "community": 15,
+      "community": 13,
       "norm_label": "bankroll"
     },
     {
@@ -496,7 +496,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll_bankroll_init",
-      "community": 15,
+      "community": 13,
       "norm_label": ".__init__()"
     },
     {
@@ -506,7 +506,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll_bankroll_allowed_stake",
-      "community": 15,
+      "community": 13,
       "norm_label": ".allowed_stake()"
     },
     {
@@ -516,7 +516,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll_bankroll_place",
-      "community": 15,
+      "community": 13,
       "norm_label": ".place()"
     },
     {
@@ -526,7 +526,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll_bankroll_settle",
-      "community": 15,
+      "community": 13,
       "norm_label": ".settle()"
     },
     {
@@ -536,7 +536,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll_bankroll_repr",
-      "community": 15,
+      "community": 13,
       "norm_label": ".__repr__()"
     },
     {
@@ -546,7 +546,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll_rationale_1",
-      "community": 15,
+      "community": 13,
       "norm_label": "bankroll and risk limits for paper betting.  caps a desired stake by (a) a per-b"
     },
     {
@@ -556,7 +556,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll_rationale_25",
-      "community": 15,
+      "community": 13,
       "norm_label": "stateful paper bankroll with per-bet and per-group exposure caps."
     },
     {
@@ -566,7 +566,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll_rationale_39",
-      "community": 15,
+      "community": 13,
       "norm_label": "return ``desired`` clamped by per-bet and remaining group-exposure caps."
     },
     {
@@ -576,7 +576,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll_rationale_45",
-      "community": 15,
+      "community": 13,
       "norm_label": "reserve ``stake`` of open exposure for ``group``; returns the stake."
     },
     {
@@ -586,7 +586,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_footy_betting_bankroll_rationale_50",
-      "community": 15,
+      "community": 13,
       "norm_label": "apply a settled bet: credit pnl and release the reserved exposure."
     },
     {
@@ -596,7 +596,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_betting_staking",
-      "community": 13,
+      "community": 11,
       "norm_label": "staking.py"
     },
     {
@@ -606,7 +606,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_footy_betting_staking_flat_stake",
-      "community": 13,
+      "community": 11,
       "norm_label": "flat_stake()"
     },
     {
@@ -616,7 +616,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_footy_betting_staking_kelly_fraction",
-      "community": 13,
+      "community": 11,
       "norm_label": "kelly_fraction()"
     },
     {
@@ -626,7 +626,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_footy_betting_staking_kelly_stake",
-      "community": 13,
+      "community": 11,
       "norm_label": "kelly_stake()"
     },
     {
@@ -636,7 +636,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_betting_staking_rationale_1",
-      "community": 13,
+      "community": 11,
       "norm_label": "stake sizing. paper only \u2014 computes amounts, never moves money.  two methods:  *"
     },
     {
@@ -646,7 +646,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_footy_betting_staking_rationale_23",
-      "community": 13,
+      "community": 11,
       "norm_label": "fixed fraction of bankroll (default 1%)."
     },
     {
@@ -656,7 +656,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_footy_betting_staking_rationale_28",
-      "community": 13,
+      "community": 11,
       "norm_label": "fractional-kelly bankroll fraction for a bet.      ``f* = (b*p - q) / b`` with `"
     },
     {
@@ -666,7 +666,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_footy_betting_staking_rationale_42",
-      "community": 13,
+      "community": 11,
       "norm_label": "stake amount from fractional kelly on ``bankroll``."
     },
     {
@@ -676,57 +676,57 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_betting_value",
-      "community": 7,
+      "community": 5,
       "norm_label": "value.py"
     },
     {
       "label": "ValueBet",
       "file_type": "code",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L27",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "src_footy_betting_value_valuebet",
-      "community": 7,
+      "community": 5,
       "norm_label": "valuebet"
     },
     {
       "label": ".__repr__()",
       "file_type": "code",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L35",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "src_footy_betting_value_valuebet_repr",
-      "community": 7,
+      "community": 5,
       "norm_label": ".__repr__()"
     },
     {
       "label": "edge()",
       "file_type": "code",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L39",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "src_footy_betting_value_edge",
-      "community": 7,
+      "community": 5,
       "norm_label": "edge()"
     },
     {
       "label": "implied_probs()",
       "file_type": "code",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L44",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "src_footy_betting_value_implied_probs",
-      "community": 7,
+      "community": 5,
       "norm_label": "implied_probs()"
     },
     {
       "label": "find_value_bet()",
       "file_type": "code",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L51",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "src_footy_betting_value_find_value_bet",
-      "community": 7,
+      "community": 5,
       "norm_label": "find_value_bet()"
     },
     {
@@ -736,47 +736,47 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_betting_value_rationale_1",
-      "community": 7,
+      "community": 5,
       "norm_label": "value detection: compare model probabilities to bookmaker odds.  a bet has posit"
     },
     {
       "label": "A selected value bet (paper only \u2014 never placed).",
       "file_type": "rationale",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L28",
+      "source_location": "L27",
       "_origin": "ast",
-      "id": "src_footy_betting_value_rationale_28",
-      "community": 7,
+      "id": "src_footy_betting_value_rationale_27",
+      "community": 5,
       "norm_label": "a selected value bet (paper only \u2014 never placed)."
     },
     {
       "label": "Expected value per unit staked minus 1: ``model_prob * odds - 1``.",
       "file_type": "rationale",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L40",
+      "source_location": "L39",
       "_origin": "ast",
-      "id": "src_footy_betting_value_rationale_40",
-      "community": 7,
+      "id": "src_footy_betting_value_rationale_39",
+      "community": 5,
       "norm_label": "expected value per unit staked minus 1: ``model_prob * odds - 1``."
     },
     {
       "label": "Overround-normalized market probabilities from 1X2 decimal odds.",
       "file_type": "rationale",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L45",
+      "source_location": "L44",
       "_origin": "ast",
-      "id": "src_footy_betting_value_rationale_45",
-      "community": 7,
+      "id": "src_footy_betting_value_rationale_44",
+      "community": 5,
       "norm_label": "overround-normalized market probabilities from 1x2 decimal odds."
     },
     {
       "label": "Return the highest-edge selection clearing ``threshold``, or None.      Args:",
       "file_type": "rationale",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L52",
+      "source_location": "L51",
       "_origin": "ast",
-      "id": "src_footy_betting_value_rationale_52",
-      "community": 7,
+      "id": "src_footy_betting_value_rationale_51",
+      "community": 5,
       "norm_label": "return the highest-edge selection clearing ``threshold``, or none.      args:"
     },
     {
@@ -786,7 +786,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_config",
-      "community": 9,
+      "community": 1,
       "norm_label": "config.py"
     },
     {
@@ -796,7 +796,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_footy_config_settings",
-      "community": 5,
+      "community": 1,
       "norm_label": "settings"
     },
     {
@@ -806,7 +806,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "basesettings",
-      "community": 5,
+      "community": 1,
       "norm_label": "basesettings"
     },
     {
@@ -816,7 +816,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "src_footy_config_settings_split_csv",
-      "community": 5,
+      "community": 1,
       "norm_label": "._split_csv()"
     },
     {
@@ -826,7 +826,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "src_footy_config_settings_require_odds_provider",
-      "community": 5,
+      "community": 1,
       "norm_label": ".require_odds_provider()"
     },
     {
@@ -836,7 +836,7 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "src_footy_config_get_settings",
-      "community": 5,
+      "community": 1,
       "norm_label": "get_settings()"
     },
     {
@@ -846,7 +846,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_config_rationale_1",
-      "community": 9,
+      "community": 1,
       "norm_label": "application settings loaded from environment / .env.  example:     >>> from foot"
     },
     {
@@ -856,7 +856,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_footy_config_rationale_30",
-      "community": 5,
+      "community": 1,
       "norm_label": "typed application configuration.      attributes:         football_api_key: api-"
     },
     {
@@ -866,7 +866,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "src_footy_config_rationale_95",
-      "community": 5,
+      "community": 1,
       "norm_label": "allow comma-separated env values, e.g. ``leagues=la liga,serie a``."
     },
     {
@@ -876,7 +876,7 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "src_footy_config_rationale_101",
-      "community": 5,
+      "community": 1,
       "norm_label": "raise if neither the primary nor the fallback odds provider has a key set."
     },
     {
@@ -886,7 +886,7 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_footy_config_rationale_121",
-      "community": 5,
+      "community": 1,
       "norm_label": "return the process-wide cached settings instance."
     },
     {
@@ -896,7 +896,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_data",
-      "community": 14,
+      "community": 19,
       "norm_label": "data.py"
     },
     {
@@ -906,7 +906,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_footy_data_matches_dataframe",
-      "community": 14,
+      "community": 19,
       "norm_label": "matches_dataframe()"
     },
     {
@@ -916,7 +916,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_data_py_dataframe",
-      "community": 14,
+      "community": 19,
       "norm_label": "dataframe"
     },
     {
@@ -926,7 +926,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_footy_data_validated_predictions_dataframe",
-      "community": 14,
+      "community": 19,
       "norm_label": "validated_predictions_dataframe()"
     },
     {
@@ -936,7 +936,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_data_rationale_1",
-      "community": 14,
+      "community": 19,
       "norm_label": "load db rows into pandas frames for the ml layer."
     },
     {
@@ -946,7 +946,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_footy_data_rationale_17",
-      "community": 14,
+      "community": 19,
       "norm_label": "return matches as a dataframe with the columns the feature builder needs.      a"
     },
     {
@@ -956,7 +956,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_footy_data_rationale_34",
-      "community": 14,
+      "community": 19,
       "norm_label": "return validated predictions joined to their match league/model, for metrics."
     },
     {
@@ -966,7 +966,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_db",
-      "community": 9,
+      "community": 16,
       "norm_label": "db.py"
     },
     {
@@ -976,7 +976,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_footy_db_get_engine",
-      "community": 9,
+      "community": 16,
       "norm_label": "get_engine()"
     },
     {
@@ -986,7 +986,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "engine",
-      "community": 9,
+      "community": 16,
       "norm_label": "engine"
     },
     {
@@ -996,7 +996,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_footy_db_session_factory",
-      "community": 9,
+      "community": 16,
       "norm_label": "_session_factory()"
     },
     {
@@ -1006,7 +1006,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "sessionmaker",
-      "community": 9,
+      "community": 16,
       "norm_label": "sessionmaker"
     },
     {
@@ -1016,7 +1016,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "session",
-      "community": 9,
+      "community": 16,
       "norm_label": "session"
     },
     {
@@ -1026,7 +1026,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_footy_db_session_scope",
-      "community": 9,
+      "community": 17,
       "norm_label": "session_scope()"
     },
     {
@@ -1036,7 +1036,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_db_rationale_1",
-      "community": 9,
+      "community": 16,
       "norm_label": "database engine and session factory.  example:     >>> from footy.db import sess"
     },
     {
@@ -1046,7 +1046,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_footy_db_rationale_23",
-      "community": 9,
+      "community": 16,
       "norm_label": "return the process-wide sqlalchemy engine."
     },
     {
@@ -1056,8 +1056,118 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_footy_db_rationale_34",
-      "community": 9,
+      "community": 17,
       "norm_label": "provide a transactional session scope; commits on success, rolls back on error."
+    },
+    {
+      "label": "domain.py",
+      "file_type": "code",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_footy_domain",
+      "community": 0,
+      "norm_label": "domain.py"
+    },
+    {
+      "label": "result_from_goals()",
+      "file_type": "code",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "src_footy_domain_result_from_goals",
+      "community": 8,
+      "norm_label": "result_from_goals()"
+    },
+    {
+      "label": "MatchProbs",
+      "file_type": "code",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "src_footy_domain_matchprobs",
+      "community": 0,
+      "norm_label": "matchprobs"
+    },
+    {
+      "label": ".as_tuple()",
+      "file_type": "code",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "src_footy_domain_matchprobs_as_tuple",
+      "community": 0,
+      "norm_label": ".as_tuple()"
+    },
+    {
+      "label": ".confidence()",
+      "file_type": "code",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "src_footy_domain_matchprobs_confidence",
+      "community": 0,
+      "norm_label": ".confidence()"
+    },
+    {
+      "label": ".__repr__()",
+      "file_type": "code",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "src_footy_domain_matchprobs_repr",
+      "community": 0,
+      "norm_label": ".__repr__()"
+    },
+    {
+      "label": "Shared 1X2 domain vocabulary - no ML/DB/ingest dependencies.  Moved out of ml/ s",
+      "file_type": "rationale",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_footy_domain_rationale_1",
+      "community": 0,
+      "norm_label": "shared 1x2 domain vocabulary - no ml/db/ingest dependencies.  moved out of ml/ s"
+    },
+    {
+      "label": "Map a final score to a 1X2 label.",
+      "file_type": "rationale",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "src_footy_domain_rationale_16",
+      "community": 8,
+      "norm_label": "map a final score to a 1x2 label."
+    },
+    {
+      "label": "Calibrated 1X2 probabilities for a single match.",
+      "file_type": "rationale",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "src_footy_domain_rationale_26",
+      "community": 0,
+      "norm_label": "calibrated 1x2 probabilities for a single match."
+    },
+    {
+      "label": "Return probabilities in (HOME, DRAW, AWAY) order.",
+      "file_type": "rationale",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "src_footy_domain_rationale_33",
+      "community": 0,
+      "norm_label": "return probabilities in (home, draw, away) order."
+    },
+    {
+      "label": "Confidence signal = the largest class probability.",
+      "file_type": "rationale",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L38",
+      "_origin": "ast",
+      "id": "src_footy_domain_rationale_38",
+      "community": 0,
+      "norm_label": "confidence signal = the largest class probability."
     },
     {
       "label": "__init__.py",
@@ -1066,7 +1176,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_init",
-      "community": 26,
+      "community": 30,
       "norm_label": "__init__.py"
     },
     {
@@ -1076,7 +1186,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_client",
-      "community": 6,
+      "community": 1,
       "norm_label": "client.py"
     },
     {
@@ -1086,7 +1196,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_footy_ingest_client_apifootball",
-      "community": 6,
+      "community": 1,
       "norm_label": "apifootball"
     },
     {
@@ -1096,7 +1206,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_footy_ingest_client_apifootball_init",
-      "community": 6,
+      "community": 1,
       "norm_label": ".__init__()"
     },
     {
@@ -1106,7 +1216,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_footy_ingest_client_apifootball_get",
-      "community": 6,
+      "community": 1,
       "norm_label": ".get()"
     },
     {
@@ -1116,7 +1226,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ingest_client_py_any",
-      "community": 6,
+      "community": 1,
       "norm_label": "any"
     },
     {
@@ -1126,7 +1236,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_footy_ingest_client_apifootball_repr",
-      "community": 6,
+      "community": 1,
       "norm_label": ".__repr__()"
     },
     {
@@ -1136,7 +1246,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_client_rationale_1",
-      "community": 6,
+      "community": 1,
       "norm_label": "thin api-football (v3) http client.  docs: https://www.api-football.com/document"
     },
     {
@@ -1146,7 +1256,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_footy_ingest_client_rationale_24",
-      "community": 6,
+      "community": 1,
       "norm_label": "minimal wrapper returning the ``response`` array of an api-football call."
     },
     {
@@ -1156,7 +1266,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_footy_ingest_client_rationale_35",
-      "community": 6,
+      "community": 1,
       "norm_label": "get ``/{path}`` and return the ``response`` list.          retries transport err"
     },
     {
@@ -1166,7 +1276,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_matches",
-      "community": 9,
+      "community": 12,
       "norm_label": "matches.py"
     },
     {
@@ -1176,7 +1286,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_footy_ingest_matches_upsert_matches",
-      "community": 9,
+      "community": 12,
       "norm_label": "upsert_matches()"
     },
     {
@@ -1186,7 +1296,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_footy_ingest_matches_sync_league",
-      "community": 0,
+      "community": 12,
       "norm_label": "sync_league()"
     },
     {
@@ -1196,7 +1306,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_matches_rationale_1",
-      "community": 9,
+      "community": 12,
       "norm_label": "upsert fixtures/results into ``matches``, provider-agnostic.  this module never"
     },
     {
@@ -1206,7 +1316,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_footy_ingest_matches_rationale_25",
-      "community": 9,
+      "community": 12,
       "norm_label": "insert new matches or update existing ones (keyed by ``api_fixture_id``).      r"
     },
     {
@@ -1216,7 +1326,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_footy_ingest_matches_rationale_58",
-      "community": 0,
+      "community": 12,
       "norm_label": "fetch all fixtures for a league/season and upsert them.      args:         leagu"
     },
     {
@@ -1226,7 +1336,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_odds",
-      "community": 20,
+      "community": 24,
       "norm_label": "odds.py"
     },
     {
@@ -1236,7 +1346,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_footy_ingest_odds_dec3",
-      "community": 20,
+      "community": 24,
       "norm_label": "_dec3()"
     },
     {
@@ -1246,7 +1356,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ingest_odds_py_decimal",
-      "community": 20,
+      "community": 24,
       "norm_label": "decimal"
     },
     {
@@ -1256,7 +1366,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_footy_ingest_odds_fetch_with_fallback",
-      "community": 20,
+      "community": 24,
       "norm_label": "_fetch_with_fallback()"
     },
     {
@@ -1266,7 +1376,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_footy_ingest_odds_fetch_odds",
-      "community": 20,
+      "community": 24,
       "norm_label": "fetch_odds()"
     },
     {
@@ -1276,7 +1386,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_odds_rationale_1",
-      "community": 20,
+      "community": 24,
       "norm_label": "fetch 1x2 odds and store them, provider-agnostic with primary/fallback.  consume"
     },
     {
@@ -1286,7 +1396,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_footy_ingest_odds_rationale_31",
-      "community": 20,
+      "community": 24,
       "norm_label": "try the configured primary odds provider, then the fallback, if any."
     },
     {
@@ -1296,7 +1406,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_footy_ingest_odds_rationale_57",
-      "community": 20,
+      "community": 24,
       "norm_label": "fetch and store all 1x2 odds for a fixture.      args:         api_fixture_id: t"
     },
     {
@@ -1306,7 +1416,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_init",
-      "community": 27,
+      "community": 31,
       "norm_label": "__init__.py"
     },
     {
@@ -1316,7 +1426,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_api_football",
-      "community": 6,
+      "community": 21,
       "norm_label": "api_football.py"
     },
     {
@@ -1326,7 +1436,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_api_football_fixture_from_json",
-      "community": 6,
+      "community": 21,
       "norm_label": "_fixture_from_json()"
     },
     {
@@ -1336,7 +1446,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_api_football_py_any",
-      "community": 6,
+      "community": 21,
       "norm_label": "any"
     },
     {
@@ -1346,7 +1456,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_api_football_match_winner_odds",
-      "community": 6,
+      "community": 21,
       "norm_label": "_match_winner_odds()"
     },
     {
@@ -1356,7 +1466,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_api_football_apifootballprovider",
-      "community": 6,
+      "community": 14,
       "norm_label": "apifootballprovider"
     },
     {
@@ -1366,7 +1476,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_api_football_apifootballprovider_init",
-      "community": 6,
+      "community": 1,
       "norm_label": ".__init__()"
     },
     {
@@ -1376,7 +1486,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_api_football_apifootballprovider_get_fixtures",
-      "community": 6,
+      "community": 21,
       "norm_label": ".get_fixtures()"
     },
     {
@@ -1386,7 +1496,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_api_football_apifootballprovider_get_odds",
-      "community": 6,
+      "community": 21,
       "norm_label": ".get_odds()"
     },
     {
@@ -1396,7 +1506,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_api_football_apifootballprovider_repr",
-      "community": 6,
+      "community": 14,
       "norm_label": ".__repr__()"
     },
     {
@@ -1406,7 +1516,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_api_football_rationale_1",
-      "community": 6,
+      "community": 21,
       "norm_label": "api-football (v3) provider adapter \u2014 fixtures + odds.  wraps the existing :class"
     },
     {
@@ -1416,7 +1526,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_api_football_rationale_59",
-      "community": 6,
+      "community": 14,
       "norm_label": "fixtures + odds via api-football."
     },
     {
@@ -1426,7 +1536,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base",
-      "community": 1,
+      "community": 25,
       "norm_label": "base.py"
     },
     {
@@ -1436,7 +1546,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_to_naive_utc",
-      "community": 1,
+      "community": 25,
       "norm_label": "to_naive_utc()"
     },
     {
@@ -1446,7 +1556,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "datetime",
-      "community": 1,
+      "community": 25,
       "norm_label": "datetime"
     },
     {
@@ -1456,7 +1566,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_providererror",
-      "community": 0,
+      "community": 10,
       "norm_label": "providererror"
     },
     {
@@ -1466,7 +1576,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "exception",
-      "community": 0,
+      "community": 10,
       "norm_label": "exception"
     },
     {
@@ -1476,7 +1586,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_provider",
-      "community": 0,
+      "community": 20,
       "norm_label": "provider"
     },
     {
@@ -1486,7 +1596,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "protocol",
-      "community": 0,
+      "community": 20,
       "norm_label": "protocol"
     },
     {
@@ -1496,7 +1606,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_provider_get_fixtures",
-      "community": 0,
+      "community": 20,
       "norm_label": ".get_fixtures()"
     },
     {
@@ -1506,7 +1616,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_provider_get_odds",
-      "community": 0,
+      "community": 20,
       "norm_label": ".get_odds()"
     },
     {
@@ -1516,7 +1626,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_provider_get_advanced_stats",
-      "community": 0,
+      "community": 20,
       "norm_label": ".get_advanced_stats()"
     },
     {
@@ -1526,7 +1636,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_unsupportedprovidermixin",
-      "community": 0,
+      "community": 10,
       "norm_label": "unsupportedprovidermixin"
     },
     {
@@ -1536,7 +1646,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_unsupportedprovidermixin_get_fixtures",
-      "community": 0,
+      "community": 10,
       "norm_label": ".get_fixtures()"
     },
     {
@@ -1546,7 +1656,7 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_unsupportedprovidermixin_get_odds",
-      "community": 0,
+      "community": 10,
       "norm_label": ".get_odds()"
     },
     {
@@ -1556,7 +1666,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_unsupportedprovidermixin_get_advanced_stats",
-      "community": 0,
+      "community": 10,
       "norm_label": ".get_advanced_stats()"
     },
     {
@@ -1566,7 +1676,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_rationale_1",
-      "community": 1,
+      "community": 25,
       "norm_label": "common contract every data provider adapter satisfies.  a provider does not have"
     },
     {
@@ -1576,7 +1686,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_rationale_22",
-      "community": 1,
+      "community": 25,
       "norm_label": "normalize a datetime to naive utc for cross-provider comparison.      ``matches."
     },
     {
@@ -1586,7 +1696,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_rationale_44",
-      "community": 0,
+      "community": 10,
       "norm_label": "a provider call failed, or the provider doesn't support the capability."
     },
     {
@@ -1596,7 +1706,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_rationale_48",
-      "community": 0,
+      "community": 20,
       "norm_label": "structural contract for a data-provider adapter."
     },
     {
@@ -1606,7 +1716,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_rationale_53",
-      "community": 0,
+      "community": 20,
       "norm_label": "return fixtures for a league/season."
     },
     {
@@ -1616,7 +1726,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_rationale_57",
-      "community": 0,
+      "community": 20,
       "norm_label": "return 1x2 odds (all bookmakers) for a fixture."
     },
     {
@@ -1626,7 +1736,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_rationale_61",
-      "community": 0,
+      "community": 20,
       "norm_label": "return xg/possession for a fixture, or none if unavailable."
     },
     {
@@ -1636,7 +1746,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_base_rationale_66",
-      "community": 0,
+      "community": 10,
       "norm_label": "default 'not supported by this provider' implementations.      concrete adapters"
     },
     {
@@ -1646,7 +1756,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_registry",
-      "community": 0,
+      "community": 12,
       "norm_label": "registry.py"
     },
     {
@@ -1656,7 +1766,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_registry_build_provider",
-      "community": 0,
+      "community": 12,
       "norm_label": "build_provider()"
     },
     {
@@ -1666,7 +1776,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_registry_rationale_1",
-      "community": 0,
+      "community": 12,
       "norm_label": "build a provider instance by name.  one place mapping the config strings (``fixt"
     },
     {
@@ -1676,7 +1786,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_registry_rationale_28",
-      "community": 0,
+      "community": 12,
       "norm_label": "construct the provider adapter registered under ``name``.      raises:         p"
     },
     {
@@ -1686,7 +1796,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks",
-      "community": 0,
+      "community": 3,
       "norm_label": "sportmonks.py"
     },
     {
@@ -1696,7 +1806,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_team_name",
-      "community": 0,
+      "community": 3,
       "norm_label": "_team_name()"
     },
     {
@@ -1706,7 +1816,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_py_any",
-      "community": 0,
+      "community": 3,
       "norm_label": "any"
     },
     {
@@ -1716,7 +1826,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_fixture_from_json",
-      "community": 0,
+      "community": 3,
       "norm_label": "_fixture_from_json()"
     },
     {
@@ -1726,7 +1836,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_stat_value",
-      "community": 0,
+      "community": 3,
       "norm_label": "_stat_value()"
     },
     {
@@ -1736,7 +1846,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_sportmonksprovider",
-      "community": 0,
+      "community": 3,
       "norm_label": "sportmonksprovider"
     },
     {
@@ -1746,7 +1856,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_sportmonksprovider_init",
-      "community": 5,
+      "community": 1,
       "norm_label": ".__init__()"
     },
     {
@@ -1756,7 +1866,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_sportmonksprovider_get",
-      "community": 0,
+      "community": 3,
       "norm_label": "._get()"
     },
     {
@@ -1766,7 +1876,7 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_sportmonksprovider_get_fixtures",
-      "community": 0,
+      "community": 3,
       "norm_label": ".get_fixtures()"
     },
     {
@@ -1776,7 +1886,7 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_sportmonksprovider_get_advanced_stats",
-      "community": 0,
+      "community": 3,
       "norm_label": ".get_advanced_stats()"
     },
     {
@@ -1786,7 +1896,7 @@
       "source_location": "L104",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_sportmonksprovider_repr",
-      "community": 0,
+      "community": 3,
       "norm_label": ".__repr__()"
     },
     {
@@ -1796,7 +1906,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_rationale_1",
-      "community": 0,
+      "community": 3,
       "norm_label": "sportmonks provider adapter \u2014 fixtures + advanced stats (xg, possession).  field"
     },
     {
@@ -1806,7 +1916,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_sportmonks_rationale_61",
-      "community": 0,
+      "community": 3,
       "norm_label": "fixtures + advanced stats via sportmonks."
     },
     {
@@ -1816,7 +1926,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_the_odds_api",
-      "community": 1,
+      "community": 6,
       "norm_label": "the_odds_api.py"
     },
     {
@@ -1826,7 +1936,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_the_odds_api_matches_event",
-      "community": 1,
+      "community": 6,
       "norm_label": "_matches_event()"
     },
     {
@@ -1836,7 +1946,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_the_odds_api_py_any",
-      "community": 1,
+      "community": 6,
       "norm_label": "any"
     },
     {
@@ -1846,7 +1956,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_the_odds_api_odds_from_event",
-      "community": 1,
+      "community": 6,
       "norm_label": "_odds_from_event()"
     },
     {
@@ -1856,7 +1966,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_the_odds_api_theoddsapiprovider",
-      "community": 1,
+      "community": 6,
       "norm_label": "theoddsapiprovider"
     },
     {
@@ -1876,7 +1986,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_the_odds_api_theoddsapiprovider_get_events",
-      "community": 1,
+      "community": 6,
       "norm_label": "._get_events()"
     },
     {
@@ -1886,7 +1996,7 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_the_odds_api_theoddsapiprovider_get_odds",
-      "community": 1,
+      "community": 6,
       "norm_label": ".get_odds()"
     },
     {
@@ -1896,7 +2006,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_the_odds_api_theoddsapiprovider_repr",
-      "community": 1,
+      "community": 6,
       "norm_label": ".__repr__()"
     },
     {
@@ -1906,7 +2016,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_the_odds_api_rationale_1",
-      "community": 1,
+      "community": 6,
       "norm_label": "the odds api provider adapter \u2014 multi-bookmaker 1x2 odds.  docs: https://the-odd"
     },
     {
@@ -1916,7 +2026,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_the_odds_api_rationale_58",
-      "community": 1,
+      "community": 6,
       "norm_label": "multi-bookmaker 1x2 odds via the odds api."
     },
     {
@@ -1926,7 +2036,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_thestatsapi",
-      "community": 1,
+      "community": 3,
       "norm_label": "thestatsapi.py"
     },
     {
@@ -1936,7 +2046,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_thestatsapi_thestatsapiprovider",
-      "community": 1,
+      "community": 3,
       "norm_label": "thestatsapiprovider"
     },
     {
@@ -1946,7 +2056,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_thestatsapi_thestatsapiprovider_init",
-      "community": 5,
+      "community": 3,
       "norm_label": ".__init__()"
     },
     {
@@ -1956,7 +2066,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_thestatsapi_thestatsapiprovider_get",
-      "community": 1,
+      "community": 3,
       "norm_label": "._get()"
     },
     {
@@ -1966,7 +2076,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_thestatsapi_py_any",
-      "community": 1,
+      "community": 3,
       "norm_label": "any"
     },
     {
@@ -1976,7 +2086,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_thestatsapi_thestatsapiprovider_get_advanced_stats",
-      "community": 1,
+      "community": 3,
       "norm_label": ".get_advanced_stats()"
     },
     {
@@ -1986,7 +2096,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_thestatsapi_thestatsapiprovider_repr",
-      "community": 1,
+      "community": 3,
       "norm_label": ".__repr__()"
     },
     {
@@ -1996,7 +2106,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_thestatsapi_rationale_1",
-      "community": 1,
+      "community": 3,
       "norm_label": "thestatsapi provider adapter \u2014 advanced stats (xg, possession) only.  assumed re"
     },
     {
@@ -2006,7 +2116,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_footy_ingest_providers_thestatsapi_rationale_27",
-      "community": 1,
+      "community": 3,
       "norm_label": "advanced stats (xg, possession) via thestatsapi."
     },
     {
@@ -2016,7 +2126,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_schemas",
-      "community": 0,
+      "community": 10,
       "norm_label": "schemas.py"
     },
     {
@@ -2026,7 +2136,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_footy_ingest_schemas_fixturedto",
-      "community": 0,
+      "community": 21,
       "norm_label": "fixturedto"
     },
     {
@@ -2036,7 +2146,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_footy_ingest_schemas_oddsquery",
-      "community": 1,
+      "community": 6,
       "norm_label": "oddsquery"
     },
     {
@@ -2046,7 +2156,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_footy_ingest_schemas_oddsdto",
-      "community": 0,
+      "community": 10,
       "norm_label": "oddsdto"
     },
     {
@@ -2056,7 +2166,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_footy_ingest_schemas_advancedstatsdto",
-      "community": 0,
+      "community": 10,
       "norm_label": "advancedstatsdto"
     },
     {
@@ -2066,7 +2176,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_schemas_rationale_1",
-      "community": 0,
+      "community": 10,
       "norm_label": "provider-agnostic dtos.  ``matches.py``/``odds.py``/``stats.py`` consume only th"
     },
     {
@@ -2076,7 +2186,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_footy_ingest_schemas_rationale_21",
-      "community": 0,
+      "community": 21,
       "norm_label": "a single fixture, normalized across providers."
     },
     {
@@ -2086,7 +2196,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_footy_ingest_schemas_rationale_36",
-      "community": 1,
+      "community": 6,
       "norm_label": "lookup key for odds.      carries both the fixtures-provider's numeric id *and*"
     },
     {
@@ -2096,7 +2206,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_footy_ingest_schemas_rationale_53",
-      "community": 0,
+      "community": 10,
       "norm_label": "1x2 (match winner) decimal odds from one bookmaker for one fixture."
     },
     {
@@ -2106,7 +2216,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_footy_ingest_schemas_rationale_65",
-      "community": 0,
+      "community": 10,
       "norm_label": "advanced per-match stats (xg, possession). any field may be unavailable."
     },
     {
@@ -2116,7 +2226,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_stats",
-      "community": 22,
+      "community": 26,
       "norm_label": "stats.py"
     },
     {
@@ -2126,7 +2236,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_footy_ingest_stats_dec2",
-      "community": 22,
+      "community": 26,
       "norm_label": "_dec2()"
     },
     {
@@ -2136,7 +2246,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ingest_stats_py_decimal",
-      "community": 22,
+      "community": 26,
       "norm_label": "decimal"
     },
     {
@@ -2146,7 +2256,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_footy_ingest_stats_fetch_stats",
-      "community": 22,
+      "community": 26,
       "norm_label": "fetch_stats()"
     },
     {
@@ -2156,7 +2266,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ingest_stats_rationale_1",
-      "community": 22,
+      "community": 26,
       "norm_label": "fetch and persist advanced stats (xg, possession) onto ``matches``.  separate fr"
     },
     {
@@ -2166,7 +2276,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_footy_ingest_stats_rationale_33",
-      "community": 22,
+      "community": 26,
       "norm_label": "fetch advanced stats for a fixture and write them onto its ``matches`` row."
     },
     {
@@ -2176,7 +2286,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ml_init",
-      "community": 29,
+      "community": 33,
       "norm_label": "__init__.py"
     },
     {
@@ -2186,37 +2296,27 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ml_features",
-      "community": 11,
+      "community": 8,
       "norm_label": "features.py"
-    },
-    {
-      "label": "result_from_goals()",
-      "file_type": "code",
-      "source_file": "src/footy/ml/features.py",
-      "source_location": "L43",
-      "_origin": "ast",
-      "id": "src_footy_ml_features_result_from_goals",
-      "community": 11,
-      "norm_label": "result_from_goals()"
     },
     {
       "label": "_avg()",
       "file_type": "code",
       "source_file": "src/footy/ml/features.py",
-      "source_location": "L52",
+      "source_location": "L44",
       "_origin": "ast",
       "id": "src_footy_ml_features_avg",
-      "community": 11,
+      "community": 8,
       "norm_label": "_avg()"
     },
     {
       "label": "compute_feature_frame()",
       "file_type": "code",
       "source_file": "src/footy/ml/features.py",
-      "source_location": "L56",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "src_footy_ml_features_compute_feature_frame",
-      "community": 11,
+      "community": 8,
       "norm_label": "compute_feature_frame()"
     },
     {
@@ -2226,7 +2326,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ml_features_py_dataframe",
-      "community": 11,
+      "community": 8,
       "norm_label": "dataframe"
     },
     {
@@ -2236,27 +2336,17 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ml_features_rationale_1",
-      "community": 11,
+      "community": 8,
       "norm_label": "feature engineering for 1x2 prediction.  features are **leakage-safe by construc"
-    },
-    {
-      "label": "Map a final score to a 1X2 label.",
-      "file_type": "rationale",
-      "source_file": "src/footy/ml/features.py",
-      "source_location": "L44",
-      "_origin": "ast",
-      "id": "src_footy_ml_features_rationale_44",
-      "community": 11,
-      "norm_label": "map a final score to a 1x2 label."
     },
     {
       "label": "Compute leakage-safe features for every row in ``df``.      Args:         df: Ma",
       "file_type": "rationale",
       "source_file": "src/footy/ml/features.py",
-      "source_location": "L57",
+      "source_location": "L49",
       "_origin": "ast",
-      "id": "src_footy_ml_features_rationale_57",
-      "community": 11,
+      "id": "src_footy_ml_features_rationale_49",
+      "community": 8,
       "norm_label": "compute leakage-safe features for every row in ``df``.      args:         df: ma"
     },
     {
@@ -2266,57 +2356,17 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ml_predict",
-      "community": 4,
+      "community": 0,
       "norm_label": "predict.py"
-    },
-    {
-      "label": "MatchProbs",
-      "file_type": "code",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L26",
-      "_origin": "ast",
-      "id": "src_footy_ml_predict_matchprobs",
-      "community": 7,
-      "norm_label": "matchprobs"
-    },
-    {
-      "label": ".as_tuple()",
-      "file_type": "code",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L33",
-      "_origin": "ast",
-      "id": "src_footy_ml_predict_matchprobs_as_tuple",
-      "community": 7,
-      "norm_label": ".as_tuple()"
-    },
-    {
-      "label": ".confidence()",
-      "file_type": "code",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L38",
-      "_origin": "ast",
-      "id": "src_footy_ml_predict_matchprobs_confidence",
-      "community": 7,
-      "norm_label": ".confidence()"
-    },
-    {
-      "label": ".__repr__()",
-      "file_type": "code",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L42",
-      "_origin": "ast",
-      "id": "src_footy_ml_predict_matchprobs_repr",
-      "community": 7,
-      "norm_label": ".__repr__()"
     },
     {
       "label": "_probs_from_model()",
       "file_type": "code",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L46",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "src_footy_ml_predict_probs_from_model",
-      "community": 4,
+      "community": 0,
       "norm_label": "_probs_from_model()"
     },
     {
@@ -2326,7 +2376,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ml_predict_py_any",
-      "community": 4,
+      "community": 0,
       "norm_label": "any"
     },
     {
@@ -2336,37 +2386,37 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ml_predict_py_dataframe",
-      "community": 4,
+      "community": 0,
       "norm_label": "dataframe"
     },
     {
       "label": "predict_match()",
       "file_type": "code",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L57",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "src_footy_ml_predict_predict_match",
-      "community": 4,
+      "community": 0,
       "norm_label": "predict_match()"
     },
     {
       "label": "predict_ensemble()",
       "file_type": "code",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L82",
+      "source_location": "L61",
       "_origin": "ast",
       "id": "src_footy_ml_predict_predict_ensemble",
-      "community": 4,
+      "community": 0,
       "norm_label": "predict_ensemble()"
     },
     {
       "label": "predict_ensemble_from_history()",
       "file_type": "code",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L131",
+      "source_location": "L110",
       "_origin": "ast",
       "id": "src_footy_ml_predict_predict_ensemble_from_history",
-      "community": 4,
+      "community": 0,
       "norm_label": "predict_ensemble_from_history()"
     },
     {
@@ -2376,77 +2426,47 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ml_predict_rationale_1",
-      "community": 4,
+      "community": 0,
       "norm_label": "produce 1x2 probabilities from a trained model.  example:     >>> probs = matchp"
-    },
-    {
-      "label": "Calibrated 1X2 probabilities for a single match.",
-      "file_type": "rationale",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L27",
-      "_origin": "ast",
-      "id": "src_footy_ml_predict_rationale_27",
-      "community": 7,
-      "norm_label": "calibrated 1x2 probabilities for a single match."
-    },
-    {
-      "label": "Return probabilities in (HOME, DRAW, AWAY) order.",
-      "file_type": "rationale",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L34",
-      "_origin": "ast",
-      "id": "src_footy_ml_predict_rationale_34",
-      "community": 7,
-      "norm_label": "return probabilities in (home, draw, away) order."
-    },
-    {
-      "label": "Confidence signal = the largest class probability.",
-      "file_type": "rationale",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L39",
-      "_origin": "ast",
-      "id": "src_footy_ml_predict_rationale_39",
-      "community": 7,
-      "norm_label": "confidence signal = the largest class probability."
     },
     {
       "label": "Run ``predict_proba`` on a single-row feature frame, ordered HOME/DRAW/AWAY.",
       "file_type": "rationale",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L47",
+      "source_location": "L26",
       "_origin": "ast",
-      "id": "src_footy_ml_predict_rationale_47",
-      "community": 4,
+      "id": "src_footy_ml_predict_rationale_26",
+      "community": 0,
       "norm_label": "run ``predict_proba`` on a single-row feature frame, ordered home/draw/away."
     },
     {
       "label": "Predict probabilities for ``match_id`` using leakage-safe history in ``matches_d",
       "file_type": "rationale",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L59",
+      "source_location": "L38",
       "_origin": "ast",
-      "id": "src_footy_ml_predict_rationale_59",
-      "community": 4,
+      "id": "src_footy_ml_predict_rationale_38",
+      "community": 0,
       "norm_label": "predict probabilities for ``match_id`` using leakage-safe history in ``matches_d"
     },
     {
       "label": "Average predict_proba across each model type's per-league model.      Args:",
       "file_type": "rationale",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L85",
+      "source_location": "L64",
       "_origin": "ast",
-      "id": "src_footy_ml_predict_rationale_85",
-      "community": 4,
+      "id": "src_footy_ml_predict_rationale_64",
+      "community": 0,
       "norm_label": "average predict_proba across each model type's per-league model.      args:"
     },
     {
       "label": "Like :func:`predict_ensemble`, but from raw match history (as :func:`predict_mat",
       "file_type": "rationale",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L134",
+      "source_location": "L113",
       "_origin": "ast",
-      "id": "src_footy_ml_predict_rationale_134",
-      "community": 4,
+      "id": "src_footy_ml_predict_rationale_113",
+      "community": 0,
       "norm_label": "like :func:`predict_ensemble`, but from raw match history (as :func:`predict_mat"
     },
     {
@@ -2456,7 +2476,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ml_registry",
-      "community": 4,
+      "community": 0,
       "norm_label": "registry.py"
     },
     {
@@ -2466,7 +2486,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_footy_ml_registry_dir",
-      "community": 4,
+      "community": 0,
       "norm_label": "_dir()"
     },
     {
@@ -2476,7 +2496,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ml_registry_py_path",
-      "community": 4,
+      "community": 0,
       "norm_label": "path"
     },
     {
@@ -2486,7 +2506,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_footy_ml_registry_save_model",
-      "community": 4,
+      "community": 0,
       "norm_label": "save_model()"
     },
     {
@@ -2496,7 +2516,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ml_registry_py_any",
-      "community": 4,
+      "community": 0,
       "norm_label": "any"
     },
     {
@@ -2506,7 +2526,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_footy_ml_registry_load_latest",
-      "community": 4,
+      "community": 0,
       "norm_label": "load_latest()"
     },
     {
@@ -2516,7 +2536,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ml_registry_rationale_1",
-      "community": 4,
+      "community": 0,
       "norm_label": "model artifact storage and versioning (joblib).  artifacts are named ``<model_na"
     },
     {
@@ -2526,7 +2546,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_footy_ml_registry_rationale_33",
-      "community": 4,
+      "community": 0,
       "norm_label": "persist ``model`` under a timestamped name and update the ``_latest`` pointer."
     },
     {
@@ -2536,7 +2556,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "src_footy_ml_registry_rationale_47",
-      "community": 4,
+      "community": 0,
       "norm_label": "load the current version of ``model_name``.      raises:         filenotfounderr"
     },
     {
@@ -2546,7 +2566,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ml_train",
-      "community": 3,
+      "community": 4,
       "norm_label": "train.py"
     },
     {
@@ -2556,7 +2576,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_footy_ml_train_build_pipeline",
-      "community": 3,
+      "community": 4,
       "norm_label": "build_pipeline()"
     },
     {
@@ -2566,7 +2586,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "pipeline",
-      "community": 3,
+      "community": 4,
       "norm_label": "pipeline"
     },
     {
@@ -2576,7 +2596,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_footy_ml_train_labelencodedxgbclassifier",
-      "community": 3,
+      "community": 4,
       "norm_label": "_labelencodedxgbclassifier"
     },
     {
@@ -2586,7 +2606,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "baseestimator",
-      "community": 3,
+      "community": 4,
       "norm_label": "baseestimator"
     },
     {
@@ -2596,7 +2616,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "classifiermixin",
-      "community": 3,
+      "community": 4,
       "norm_label": "classifiermixin"
     },
     {
@@ -2606,7 +2626,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_footy_ml_train_labelencodedxgbclassifier_init",
-      "community": 3,
+      "community": 4,
       "norm_label": ".__init__()"
     },
     {
@@ -2616,7 +2636,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_footy_ml_train_labelencodedxgbclassifier_fit",
-      "community": 3,
+      "community": 4,
       "norm_label": ".fit()"
     },
     {
@@ -2626,7 +2646,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ml_train_py_dataframe",
-      "community": 3,
+      "community": 4,
       "norm_label": "dataframe"
     },
     {
@@ -2636,7 +2656,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "series",
-      "community": 3,
+      "community": 4,
       "norm_label": "series"
     },
     {
@@ -2646,7 +2666,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_footy_ml_train_labelencodedxgbclassifier_predict_proba",
-      "community": 3,
+      "community": 4,
       "norm_label": ".predict_proba()"
     },
     {
@@ -2656,7 +2676,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ml_train_py_any",
-      "community": 3,
+      "community": 4,
       "norm_label": "any"
     },
     {
@@ -2666,7 +2686,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_footy_ml_train_build_xgboost_pipeline",
-      "community": 3,
+      "community": 4,
       "norm_label": "build_xgboost_pipeline()"
     },
     {
@@ -2676,7 +2696,7 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "src_footy_ml_train_build_random_forest_pipeline",
-      "community": 3,
+      "community": 4,
       "norm_label": "build_random_forest_pipeline()"
     },
     {
@@ -2686,7 +2706,7 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_footy_ml_train_resolve_algorithm",
-      "community": 3,
+      "community": 4,
       "norm_label": "_resolve_algorithm()"
     },
     {
@@ -2696,7 +2716,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_footy_ml_train_train_model",
-      "community": 3,
+      "community": 4,
       "norm_label": "train_model()"
     },
     {
@@ -2706,7 +2726,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ml_train_rationale_1",
-      "community": 3,
+      "community": 4,
       "norm_label": "train the baseline 1x2 model.  baseline is a scaled multinomial logistic regress"
     },
     {
@@ -2716,7 +2736,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_footy_ml_train_rationale_34",
-      "community": 3,
+      "community": 4,
       "norm_label": "return an untrained scaler + multinomial logistic-regression pipeline."
     },
     {
@@ -2726,7 +2746,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_footy_ml_train_rationale_44",
-      "community": 3,
+      "community": 4,
       "norm_label": "xgbclassifier (xgboost>=2.0) only accepts integer class labels - no more     use"
     },
     {
@@ -2736,7 +2756,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "src_footy_ml_train_rationale_100",
-      "community": 3,
+      "community": 4,
       "norm_label": "longest-prefix match against model_registry (handles \"random_forest\"'s own '_')."
     },
     {
@@ -2746,7 +2766,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "src_footy_ml_train_rationale_112",
-      "community": 3,
+      "community": 4,
       "norm_label": "train on finished matches in ``matches_df`` and persist the artifact.      args:"
     },
     {
@@ -2756,7 +2776,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ml_train_parallel",
-      "community": 5,
+      "community": 1,
       "norm_label": "train_parallel.py"
     },
     {
@@ -2766,7 +2786,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_footy_ml_train_parallel_train_one",
-      "community": 5,
+      "community": 1,
       "norm_label": "_train_one()"
     },
     {
@@ -2776,17 +2796,17 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_ml_train_parallel_py_dataframe",
-      "community": 5,
+      "community": 1,
       "norm_label": "dataframe"
     },
     {
       "label": "train_all_parallel()",
       "file_type": "code",
       "source_file": "src/footy/ml/train_parallel.py",
-      "source_location": "L33",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "src_footy_ml_train_parallel_train_all_parallel",
-      "community": 5,
+      "community": 1,
       "norm_label": "train_all_parallel()"
     },
     {
@@ -2796,27 +2816,27 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_ml_train_parallel_rationale_1",
-      "community": 5,
+      "community": 1,
       "norm_label": "train (league, algorithm) combinations in parallel worker processes."
     },
     {
-      "label": "Run in a worker process \u2014 receives an already-filtered DataFrame, no DB access h",
+      "label": "Run in a worker process \u2014 receives an already-filtered DataFrame and the     mod",
       "file_type": "rationale",
       "source_file": "src/footy/ml/train_parallel.py",
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_footy_ml_train_parallel_rationale_19",
-      "community": 5,
-      "norm_label": "run in a worker process \u2014 receives an already-filtered dataframe, no db access h"
+      "community": 1,
+      "norm_label": "run in a worker process \u2014 receives an already-filtered dataframe and the     mod"
     },
     {
       "label": "Train every (league, algorithm) pair, one worker process per pair.      Matches",
       "file_type": "rationale",
       "source_file": "src/footy/ml/train_parallel.py",
-      "source_location": "L36",
+      "source_location": "L44",
       "_origin": "ast",
-      "id": "src_footy_ml_train_parallel_rationale_36",
-      "community": 5,
+      "id": "src_footy_ml_train_parallel_rationale_44",
+      "community": 1,
       "norm_label": "train every (league, algorithm) pair, one worker process per pair.      matches"
     },
     {
@@ -2826,7 +2846,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_orm",
-      "community": 8,
+      "community": 15,
       "norm_label": "orm.py"
     },
     {
@@ -2836,7 +2856,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_footy_orm_base",
-      "community": 8,
+      "community": 15,
       "norm_label": "base"
     },
     {
@@ -2846,7 +2866,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "declarativebase",
-      "community": 8,
+      "community": 15,
       "norm_label": "declarativebase"
     },
     {
@@ -2856,7 +2876,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_footy_orm_match",
-      "community": 8,
+      "community": 15,
       "norm_label": "match"
     },
     {
@@ -2866,7 +2886,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_footy_orm_match_repr",
-      "community": 8,
+      "community": 15,
       "norm_label": ".__repr__()"
     },
     {
@@ -2876,7 +2896,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_footy_orm_prediction",
-      "community": 8,
+      "community": 15,
       "norm_label": "prediction"
     },
     {
@@ -2886,7 +2906,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_footy_orm_prediction_repr",
-      "community": 8,
+      "community": 15,
       "norm_label": ".__repr__()"
     },
     {
@@ -2896,7 +2916,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "src_footy_orm_odds",
-      "community": 8,
+      "community": 5,
       "norm_label": "odds"
     },
     {
@@ -2906,7 +2926,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "src_footy_orm_odds_repr",
-      "community": 8,
+      "community": 5,
       "norm_label": ".__repr__()"
     },
     {
@@ -2916,7 +2936,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "src_footy_orm_bet",
-      "community": 8,
+      "community": 15,
       "norm_label": "bet"
     },
     {
@@ -2926,7 +2946,7 @@
       "source_location": "L111",
       "_origin": "ast",
       "id": "src_footy_orm_bet_repr",
-      "community": 8,
+      "community": 15,
       "norm_label": ".__repr__()"
     },
     {
@@ -2936,7 +2956,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_orm_rationale_1",
-      "community": 8,
+      "community": 15,
       "norm_label": "sqlalchemy orm models mirroring schema.sql.  the raw schema.sql remains the sour"
     },
     {
@@ -2946,7 +2966,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_footy_orm_rationale_17",
-      "community": 8,
+      "community": 15,
       "norm_label": "declarative base for all orm models."
     },
     {
@@ -2956,7 +2976,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_predictions_init",
-      "community": 30,
+      "community": 34,
       "norm_label": "__init__.py"
     },
     {
@@ -3226,7 +3246,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_predictions_tracker",
-      "community": 18,
+      "community": 0,
       "norm_label": "tracker.py"
     },
     {
@@ -3236,7 +3256,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_footy_predictions_tracker_dec4",
-      "community": 18,
+      "community": 0,
       "norm_label": "_dec4()"
     },
     {
@@ -3246,7 +3266,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "src_footy_predictions_tracker_py_decimal",
-      "community": 18,
+      "community": 0,
       "norm_label": "decimal"
     },
     {
@@ -3256,7 +3276,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_footy_predictions_tracker_predictiontracker",
-      "community": 18,
+      "community": 0,
       "norm_label": "predictiontracker"
     },
     {
@@ -3266,7 +3286,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_footy_predictions_tracker_predictiontracker_record",
-      "community": 18,
+      "community": 0,
       "norm_label": ".record()"
     },
     {
@@ -3276,7 +3296,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_footy_predictions_tracker_predictiontracker_repr",
-      "community": 18,
+      "community": 0,
       "norm_label": ".__repr__()"
     },
     {
@@ -3286,7 +3306,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_predictions_tracker_rationale_1",
-      "community": 18,
+      "community": 0,
       "norm_label": "record pre-match predictions, guarding against duplicates.  example:     >>> tra"
     },
     {
@@ -3296,7 +3316,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_footy_predictions_tracker_rationale_27",
-      "community": 18,
+      "community": 0,
       "norm_label": "persist model predictions, one per (match, model).      the db carries a ``uniqu"
     },
     {
@@ -3306,7 +3326,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_footy_predictions_tracker_rationale_42",
-      "community": 18,
+      "community": 0,
       "norm_label": "insert a prediction. returns its id, or none if a duplicate was skipped."
     },
     {
@@ -3316,7 +3336,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_predictions_validator",
-      "community": 19,
+      "community": 23,
       "norm_label": "validator.py"
     },
     {
@@ -3326,7 +3346,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_footy_predictions_validator_predictionvalidator",
-      "community": 19,
+      "community": 23,
       "norm_label": "predictionvalidator"
     },
     {
@@ -3346,7 +3366,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_footy_predictions_validator_predictionvalidator_repr",
-      "community": 19,
+      "community": 23,
       "norm_label": ".__repr__()"
     },
     {
@@ -3356,7 +3376,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_footy_predictions_validator_rationale_1",
-      "community": 19,
+      "community": 23,
       "norm_label": "validate predictions against real results post-match.  example:     >>> predicti"
     },
     {
@@ -3366,7 +3386,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_footy_predictions_validator_rationale_25",
-      "community": 19,
+      "community": 23,
       "norm_label": "score every unvalidated prediction whose match has finished."
     },
     {
@@ -3386,7 +3406,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_init",
-      "community": 31,
+      "community": 35,
       "norm_label": "__init__.py"
     },
     {
@@ -3396,7 +3416,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_conftest",
-      "community": 1,
+      "community": 3,
       "norm_label": "conftest.py"
     },
     {
@@ -3406,7 +3426,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "tests_conftest_model_dir",
-      "community": 1,
+      "community": 3,
       "norm_label": "model_dir()"
     },
     {
@@ -3416,7 +3436,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_conftest_py_path",
-      "community": 1,
+      "community": 3,
       "norm_label": "path"
     },
     {
@@ -3426,7 +3446,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_conftest_py_monkeypatch",
-      "community": 1,
+      "community": 3,
       "norm_label": "monkeypatch"
     },
     {
@@ -3436,7 +3456,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "tests_conftest_fakeresponse",
-      "community": 1,
+      "community": 3,
       "norm_label": "fakeresponse"
     },
     {
@@ -3446,7 +3466,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "tests_conftest_fakeresponse_init",
-      "community": 1,
+      "community": 3,
       "norm_label": ".__init__()"
     },
     {
@@ -3456,7 +3476,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_conftest_py_any",
-      "community": 1,
+      "community": 3,
       "norm_label": "any"
     },
     {
@@ -3466,7 +3486,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "tests_conftest_fakeresponse_json",
-      "community": 1,
+      "community": 3,
       "norm_label": ".json()"
     },
     {
@@ -3476,7 +3496,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "tests_conftest_fakeresponse_raise_for_status",
-      "community": 1,
+      "community": 3,
       "norm_label": ".raise_for_status()"
     },
     {
@@ -3486,7 +3506,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_conftest_rationale_1",
-      "community": 1,
+      "community": 3,
       "norm_label": "shared test helpers for provider adapters."
     },
     {
@@ -3496,7 +3516,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "tests_conftest_rationale_15",
-      "community": 1,
+      "community": 3,
       "norm_label": "isolate ml.registry's model_dir to a tmp dir for the test's duration.      footy"
     },
     {
@@ -3506,7 +3526,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "tests_conftest_rationale_30",
-      "community": 1,
+      "community": 3,
       "norm_label": "minimal stand-in for ``httpx.response`` used to mock provider http calls."
     },
     {
@@ -3516,7 +3536,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_backtest",
-      "community": 10,
+      "community": 7,
       "norm_label": "test_backtest.py"
     },
     {
@@ -3526,7 +3546,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "tests_test_backtest_test_single_winner_roi",
-      "community": 10,
+      "community": 7,
       "norm_label": "test_single_winner_roi()"
     },
     {
@@ -3536,7 +3556,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "tests_test_backtest_test_win_then_loss_breaks_even",
-      "community": 10,
+      "community": 7,
       "norm_label": "test_win_then_loss_breaks_even()"
     },
     {
@@ -3546,7 +3566,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "tests_test_backtest_test_max_drawdown",
-      "community": 10,
+      "community": 7,
       "norm_label": "test_max_drawdown()"
     },
     {
@@ -3556,7 +3576,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "tests_test_backtest_test_clv",
-      "community": 10,
+      "community": 7,
       "norm_label": "test_clv()"
     },
     {
@@ -3566,7 +3586,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "tests_test_backtest_test_empty",
-      "community": 10,
+      "community": 7,
       "norm_label": "test_empty()"
     },
     {
@@ -3576,7 +3596,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_backtest_rationale_1",
-      "community": 10,
+      "community": 7,
       "norm_label": "backtest roi, hit-rate, drawdown, clv."
     },
     {
@@ -3586,7 +3606,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_features",
-      "community": 11,
+      "community": 8,
       "norm_label": "test_features.py"
     },
     {
@@ -3596,7 +3616,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "tests_test_features_matches",
-      "community": 11,
+      "community": 8,
       "norm_label": "_matches()"
     },
     {
@@ -3606,7 +3626,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_features_py_dataframe",
-      "community": 11,
+      "community": 8,
       "norm_label": "dataframe"
     },
     {
@@ -3616,7 +3636,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "tests_test_features_test_result_from_goals",
-      "community": 11,
+      "community": 8,
       "norm_label": "test_result_from_goals()"
     },
     {
@@ -3626,7 +3646,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "tests_test_features_test_columns_and_shape",
-      "community": 11,
+      "community": 8,
       "norm_label": "test_columns_and_shape()"
     },
     {
@@ -3636,7 +3656,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "tests_test_features_test_first_match_has_no_history",
-      "community": 11,
+      "community": 8,
       "norm_label": "test_first_match_has_no_history()"
     },
     {
@@ -3646,7 +3666,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "tests_test_features_test_no_leakage_result_column",
-      "community": 11,
+      "community": 8,
       "norm_label": "test_no_leakage_result_column()"
     },
     {
@@ -3656,7 +3676,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_features_rationale_1",
-      "community": 11,
+      "community": 8,
       "norm_label": "feature builder: shape, columns, and no look-ahead leakage."
     },
     {
@@ -3766,7 +3786,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_predict",
-      "community": 4,
+      "community": 0,
       "norm_label": "test_predict.py"
     },
     {
@@ -3776,7 +3796,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "tests_test_predict_fit_dummy",
-      "community": 4,
+      "community": 0,
       "norm_label": "_fit_dummy()"
     },
     {
@@ -3786,7 +3806,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "dummyclassifier",
-      "community": 4,
+      "community": 0,
       "norm_label": "dummyclassifier"
     },
     {
@@ -3796,7 +3816,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "tests_test_predict_matches_df",
-      "community": 4,
+      "community": 0,
       "norm_label": "_matches_df()"
     },
     {
@@ -3806,7 +3826,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_predict_py_dataframe",
-      "community": 4,
+      "community": 0,
       "norm_label": "dataframe"
     },
     {
@@ -3816,7 +3836,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "tests_test_predict_test_predict_ensemble_averages_found_models_and_skips_missing",
-      "community": 4,
+      "community": 0,
       "norm_label": "test_predict_ensemble_averages_found_models_and_skips_missing()"
     },
     {
@@ -3826,7 +3846,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_predict_py_path",
-      "community": 4,
+      "community": 0,
       "norm_label": "path"
     },
     {
@@ -3836,7 +3856,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "tests_test_predict_test_predict_ensemble_no_models_raises",
-      "community": 4,
+      "community": 0,
       "norm_label": "test_predict_ensemble_no_models_raises()"
     },
     {
@@ -3846,7 +3866,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "tests_test_predict_test_predict_ensemble_from_history_matches_direct_ensemble",
-      "community": 4,
+      "community": 0,
       "norm_label": "test_predict_ensemble_from_history_matches_direct_ensemble()"
     },
     {
@@ -3856,7 +3876,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_predict_rationale_1",
-      "community": 4,
+      "community": 0,
       "norm_label": "predict_ensemble / predict_ensemble_from_history."
     },
     {
@@ -3866,7 +3886,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "tests_test_predict_rationale_51",
-      "community": 4,
+      "community": 0,
       "norm_label": "same result whether called from raw history (match_id=2, unplayed) or a     prec"
     },
     {
@@ -3876,7 +3896,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_providers_api_football",
-      "community": 6,
+      "community": 14,
       "norm_label": "test_providers_api_football.py"
     },
     {
@@ -3886,7 +3906,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "tests_test_providers_api_football_fakeclient",
-      "community": 6,
+      "community": 14,
       "norm_label": "fakeclient"
     },
     {
@@ -3896,7 +3916,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "tests_test_providers_api_football_fakeclient_init",
-      "community": 6,
+      "community": 14,
       "norm_label": ".__init__()"
     },
     {
@@ -3906,7 +3926,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_providers_api_football_py_any",
-      "community": 6,
+      "community": 14,
       "norm_label": "any"
     },
     {
@@ -3916,7 +3936,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "tests_test_providers_api_football_fakeclient_get",
-      "community": 6,
+      "community": 14,
       "norm_label": ".get()"
     },
     {
@@ -3926,7 +3946,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "tests_test_providers_api_football_test_get_fixtures_maps_to_dto",
-      "community": 6,
+      "community": 14,
       "norm_label": "test_get_fixtures_maps_to_dto()"
     },
     {
@@ -3936,7 +3956,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "tests_test_providers_api_football_test_get_fixtures_unfinished_has_no_goals",
-      "community": 6,
+      "community": 14,
       "norm_label": "test_get_fixtures_unfinished_has_no_goals()"
     },
     {
@@ -3946,7 +3966,7 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "tests_test_providers_api_football_test_get_odds_extracts_match_winner_only",
-      "community": 6,
+      "community": 14,
       "norm_label": "test_get_odds_extracts_match_winner_only()"
     },
     {
@@ -3956,7 +3976,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_providers_api_football_rationale_1",
-      "community": 6,
+      "community": 14,
       "norm_label": "apifootballprovider: fixture/odds json -> dtos, via a fake transport (no network"
     },
     {
@@ -3966,7 +3986,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_providers_sportmonks",
-      "community": 0,
+      "community": 3,
       "norm_label": "test_providers_sportmonks.py"
     },
     {
@@ -3976,7 +3996,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "tests_test_providers_sportmonks_provider",
-      "community": 0,
+      "community": 3,
       "norm_label": "provider()"
     },
     {
@@ -3986,7 +4006,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "tests_test_providers_sportmonks_test_get_fixtures",
-      "community": 0,
+      "community": 3,
       "norm_label": "test_get_fixtures()"
     },
     {
@@ -3996,7 +4016,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_providers_sportmonks_py_monkeypatch",
-      "community": 0,
+      "community": 3,
       "norm_label": "monkeypatch"
     },
     {
@@ -4006,7 +4026,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "tests_test_providers_sportmonks_test_get_advanced_stats",
-      "community": 0,
+      "community": 3,
       "norm_label": "test_get_advanced_stats()"
     },
     {
@@ -4016,7 +4036,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "tests_test_providers_sportmonks_test_get_advanced_stats_missing",
-      "community": 0,
+      "community": 3,
       "norm_label": "test_get_advanced_stats_missing()"
     },
     {
@@ -4026,7 +4046,7 @@
       "source_location": "L75",
       "_origin": "ast",
       "id": "tests_test_providers_sportmonks_test_requires_api_key",
-      "community": 0,
+      "community": 3,
       "norm_label": "test_requires_api_key()"
     },
     {
@@ -4036,7 +4056,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_providers_sportmonks_rationale_1",
-      "community": 0,
+      "community": 3,
       "norm_label": "sportmonksprovider: mocked http json -> dtos (no network)."
     },
     {
@@ -4046,7 +4066,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_providers_the_odds_api",
-      "community": 1,
+      "community": 6,
       "norm_label": "test_providers_the_odds_api.py"
     },
     {
@@ -4056,7 +4076,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "tests_test_providers_the_odds_api_provider",
-      "community": 1,
+      "community": 6,
       "norm_label": "provider()"
     },
     {
@@ -4066,7 +4086,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "tests_test_providers_the_odds_api_test_get_odds_matches_by_team_and_kickoff",
-      "community": 1,
+      "community": 6,
       "norm_label": "test_get_odds_matches_by_team_and_kickoff()"
     },
     {
@@ -4076,7 +4096,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_providers_the_odds_api_py_monkeypatch",
-      "community": 1,
+      "community": 6,
       "norm_label": "monkeypatch"
     },
     {
@@ -4086,7 +4106,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "tests_test_providers_the_odds_api_test_get_odds_no_match_returns_empty",
-      "community": 1,
+      "community": 6,
       "norm_label": "test_get_odds_no_match_returns_empty()"
     },
     {
@@ -4096,7 +4116,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "tests_test_providers_the_odds_api_test_kickoff_outside_tolerance_no_match",
-      "community": 1,
+      "community": 6,
       "norm_label": "test_kickoff_outside_tolerance_no_match()"
     },
     {
@@ -4106,7 +4126,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_providers_the_odds_api_rationale_1",
-      "community": 1,
+      "community": 6,
       "norm_label": "theoddsapiprovider: mocked http json -> dtos, matched by team+kickoff (no networ"
     },
     {
@@ -4116,7 +4136,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_providers_thestatsapi",
-      "community": 1,
+      "community": 3,
       "norm_label": "test_providers_thestatsapi.py"
     },
     {
@@ -4126,7 +4146,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "tests_test_providers_thestatsapi_provider",
-      "community": 1,
+      "community": 3,
       "norm_label": "provider()"
     },
     {
@@ -4136,7 +4156,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "tests_test_providers_thestatsapi_test_get_advanced_stats",
-      "community": 1,
+      "community": 3,
       "norm_label": "test_get_advanced_stats()"
     },
     {
@@ -4146,7 +4166,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_providers_thestatsapi_py_monkeypatch",
-      "community": 1,
+      "community": 3,
       "norm_label": "monkeypatch"
     },
     {
@@ -4156,7 +4176,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "tests_test_providers_thestatsapi_test_get_advanced_stats_404_returns_none",
-      "community": 1,
+      "community": 3,
       "norm_label": "test_get_advanced_stats_404_returns_none()"
     },
     {
@@ -4166,7 +4186,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "tests_test_providers_thestatsapi_test_odds_unsupported",
-      "community": 1,
+      "community": 25,
       "norm_label": "test_odds_unsupported()"
     },
     {
@@ -4176,7 +4196,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_providers_thestatsapi_rationale_1",
-      "community": 1,
+      "community": 3,
       "norm_label": "thestatsapiprovider: mocked http json -> advancedstatsdto (no network)."
     },
     {
@@ -4186,7 +4206,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_staking",
-      "community": 13,
+      "community": 11,
       "norm_label": "test_staking.py"
     },
     {
@@ -4196,7 +4216,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "tests_test_staking_test_flat_stake",
-      "community": 13,
+      "community": 11,
       "norm_label": "test_flat_stake()"
     },
     {
@@ -4206,7 +4226,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "tests_test_staking_test_kelly_positive_edge",
-      "community": 13,
+      "community": 11,
       "norm_label": "test_kelly_positive_edge()"
     },
     {
@@ -4216,7 +4236,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "tests_test_staking_test_kelly_negative_edge_is_zero",
-      "community": 13,
+      "community": 11,
       "norm_label": "test_kelly_negative_edge_is_zero()"
     },
     {
@@ -4226,7 +4246,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "tests_test_staking_test_kelly_bad_odds_is_zero",
-      "community": 13,
+      "community": 11,
       "norm_label": "test_kelly_bad_odds_is_zero()"
     },
     {
@@ -4236,7 +4256,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_staking_rationale_1",
-      "community": 13,
+      "community": 11,
       "norm_label": "stake sizing: flat and fractional kelly."
     },
     {
@@ -4246,7 +4266,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_train",
-      "community": 3,
+      "community": 4,
       "norm_label": "test_train.py"
     },
     {
@@ -4256,7 +4276,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "tests_test_train_matches_df",
-      "community": 3,
+      "community": 4,
       "norm_label": "_matches_df()"
     },
     {
@@ -4266,7 +4286,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_train_py_dataframe",
-      "community": 3,
+      "community": 4,
       "norm_label": "dataframe"
     },
     {
@@ -4276,7 +4296,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "tests_test_train_test_resolve_algorithm_random_forest_not_truncated_to_random",
-      "community": 3,
+      "community": 4,
       "norm_label": "test_resolve_algorithm_random_forest_not_truncated_to_random()"
     },
     {
@@ -4286,7 +4306,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "tests_test_train_test_resolve_algorithm_unknown_raises",
-      "community": 3,
+      "community": 4,
       "norm_label": "test_resolve_algorithm_unknown_raises()"
     },
     {
@@ -4296,7 +4316,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "tests_test_train_test_train_model_legacy_two_arg_random_forest_compat",
-      "community": 3,
+      "community": 4,
       "norm_label": "test_train_model_legacy_two_arg_random_forest_compat()"
     },
     {
@@ -4306,7 +4326,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_train_py_path",
-      "community": 3,
+      "community": 4,
       "norm_label": "path"
     },
     {
@@ -4316,7 +4336,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "tests_test_train_test_train_model_explicit_algorithm_and_artifact",
-      "community": 3,
+      "community": 4,
       "norm_label": "test_train_model_explicit_algorithm_and_artifact()"
     },
     {
@@ -4326,7 +4346,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "tests_test_train_test_train_model_unknown_algorithm_with_explicit_artifact_raises",
-      "community": 3,
+      "community": 4,
       "norm_label": "test_train_model_unknown_algorithm_with_explicit_artifact_raises()"
     },
     {
@@ -4336,7 +4356,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "tests_test_train_test_model_registry_has_all_three_algorithms",
-      "community": 3,
+      "community": 4,
       "norm_label": "test_model_registry_has_all_three_algorithms()"
     },
     {
@@ -4346,7 +4366,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_train_rationale_1",
-      "community": 3,
+      "community": 4,
       "norm_label": "algorithm/artifact dispatch in ml/train.py."
     },
     {
@@ -4356,7 +4376,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "tests_test_train_rationale_26",
-      "community": 3,
+      "community": 4,
       "norm_label": "random_forest has its own underscore - a naive split(\"_\")[0] would     misroute"
     },
     {
@@ -4366,7 +4386,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "tests_test_train_rationale_38",
-      "community": 3,
+      "community": 4,
       "norm_label": "2-arg legacy call train_model(df, \"random_forest_<league>\") must still     resol"
     },
     {
@@ -4376,7 +4396,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_train_all",
-      "community": 5,
+      "community": 1,
       "norm_label": "test_train_all.py"
     },
     {
@@ -4386,7 +4406,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "tests_test_train_all_test_main_returns_nonzero_if_any_result_is_error",
-      "community": 5,
+      "community": 1,
       "norm_label": "test_main_returns_nonzero_if_any_result_is_error()"
     },
     {
@@ -4396,7 +4416,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "tests_test_train_all_py_monkeypatch",
-      "community": 5,
+      "community": 1,
       "norm_label": "monkeypatch"
     },
     {
@@ -4406,7 +4426,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "tests_test_train_all_test_main_returns_zero_if_all_succeed",
-      "community": 5,
+      "community": 1,
       "norm_label": "test_main_returns_zero_if_all_succeed()"
     },
     {
@@ -4416,7 +4436,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "tests_test_train_all_test_main_prints_every_result_even_on_failure",
-      "community": 5,
+      "community": 1,
       "norm_label": "test_main_prints_every_result_even_on_failure()"
     },
     {
@@ -4426,7 +4446,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "capturefixture",
-      "community": 5,
+      "community": 1,
       "norm_label": "capturefixture"
     },
     {
@@ -4436,7 +4456,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_train_all_rationale_1",
-      "community": 5,
+      "community": 1,
       "norm_label": "cli exit-code contract for scripts/train_all.py - no db/network, no real workers"
     },
     {
@@ -4536,7 +4556,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_value",
-      "community": 7,
+      "community": 5,
       "norm_label": "test_value.py"
     },
     {
@@ -4546,7 +4566,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "tests_test_value_test_edge_sign",
-      "community": 7,
+      "community": 5,
       "norm_label": "test_edge_sign()"
     },
     {
@@ -4556,7 +4576,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "tests_test_value_test_find_value_bet_selects_home",
-      "community": 7,
+      "community": 5,
       "norm_label": "test_find_value_bet_selects_home()"
     },
     {
@@ -4566,7 +4586,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "tests_test_value_test_find_value_bet_none_below_threshold",
-      "community": 7,
+      "community": 5,
       "norm_label": "test_find_value_bet_none_below_threshold()"
     },
     {
@@ -4576,7 +4596,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "tests_test_value_test_implied_probs_sum_to_one",
-      "community": 7,
+      "community": 5,
       "norm_label": "test_implied_probs_sum_to_one()"
     },
     {
@@ -4586,7 +4606,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_test_value_rationale_1",
-      "community": 7,
+      "community": 5,
       "norm_label": "value detection: edge signs and selection."
     },
     {
@@ -4689,7 +4709,7 @@
       "author": null,
       "contributor": null,
       "id": "_github_workflows_docker_publish_build_push",
-      "community": 12,
+      "community": 9,
       "norm_label": "build-push job (docker-publish.yml)"
     },
     {
@@ -4702,151 +4722,8 @@
       "author": null,
       "contributor": null,
       "id": "_github_workflows_docker_publish_web_build_push",
-      "community": 12,
+      "community": 9,
       "norm_label": "web-build-push job (docker-publish.yml)"
-    },
-    {
-      "label": "app service (docker-compose.yml, builds locally)",
-      "file_type": "code",
-      "source_file": "docker-compose.yml",
-      "source_location": "services.app",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "docker_compose_app",
-      "community": 12,
-      "norm_label": "app service (docker-compose.yml, builds locally)"
-    },
-    {
-      "label": "web service (docker-compose.yml, builds locally)",
-      "file_type": "code",
-      "source_file": "docker-compose.yml",
-      "source_location": "services.web",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "docker_compose_web",
-      "community": 12,
-      "norm_label": "web service (docker-compose.yml, builds locally)"
-    },
-    {
-      "label": "db service (docker-compose.yml, postgres)",
-      "file_type": "code",
-      "source_file": "docker-compose.yml",
-      "source_location": "services.db",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "docker_compose_db",
-      "community": 12,
-      "norm_label": "db service (docker-compose.yml, postgres)"
-    },
-    {
-      "label": "app service (docker-compose.prod.yml, prebuilt image)",
-      "file_type": "code",
-      "source_file": "docker-compose.prod.yml",
-      "source_location": "services.app",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "docker_compose_prod_app",
-      "community": 12,
-      "norm_label": "app service (docker-compose.prod.yml, prebuilt image)"
-    },
-    {
-      "label": "web service (docker-compose.prod.yml, Traefik-routed)",
-      "file_type": "code",
-      "source_file": "docker-compose.prod.yml",
-      "source_location": "services.web",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "docker_compose_prod_web",
-      "community": 12,
-      "norm_label": "web service (docker-compose.prod.yml, traefik-routed)"
-    },
-    {
-      "label": "db service (docker-compose.prod.yml, postgres)",
-      "file_type": "code",
-      "source_file": "docker-compose.prod.yml",
-      "source_location": "services.db",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "docker_compose_prod_db",
-      "community": 12,
-      "norm_label": "db service (docker-compose.prod.yml, postgres)"
-    },
-    {
-      "label": "base.html Jinja2 layout template",
-      "file_type": "code",
-      "source_file": "web/templates/base.html",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "web_templates_base_base",
-      "community": 12,
-      "norm_label": "base.html jinja2 layout template"
-    },
-    {
-      "label": "htmx.org@1.9.12 CDN script include",
-      "file_type": "code",
-      "source_file": "web/templates/base.html",
-      "source_location": "script src unpkg.com/htmx.org@1.9.12",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "web_templates_base_htmx_cdn",
-      "community": 12,
-      "norm_label": "htmx.org@1.9.12 cdn script include"
-    },
-    {
-      "label": "index.html Overview page template",
-      "file_type": "code",
-      "source_file": "web/templates/index.html",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "web_templates_index_index",
-      "community": 12,
-      "norm_label": "index.html overview page template"
-    },
-    {
-      "label": "models.html model comparison table template",
-      "file_type": "code",
-      "source_file": "web/templates/models.html",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "web_templates_models_models",
-      "community": 12,
-      "norm_label": "models.html model comparison table template"
-    },
-    {
-      "label": "predictions.html upcoming predictions template",
-      "file_type": "code",
-      "source_file": "web/templates/predictions.html",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "id": "web_templates_predictions_predictions",
-      "community": 12,
-      "norm_label": "predictions.html upcoming predictions template"
     },
     {
       "label": "Multi-algorithm training (MODEL_REGISTRY: baseline/xgboost/random_forest)",
@@ -4859,7 +4736,7 @@
       "contributor": null,
       "rationale": "Ensembling via predict_ensemble() is deferred until an algorithm actually beats baseline's Brier score in /models; until then a single model is simpler and just as good.",
       "id": "readme_multi_algorithm_training",
-      "community": 21,
+      "community": 22,
       "norm_label": "multi-algorithm training (model_registry: baseline/xgboost/random_forest)"
     },
     {
@@ -4873,7 +4750,7 @@
       "contributor": null,
       "rationale": "matches.py/odds.py/stats.py only consume normalized DTOs, never a provider's raw JSON shape, so providers are swappable via .env and new providers register in registry.py without touching ingestion consumers.",
       "id": "readme_provider_agnostic_ingestion",
-      "community": 16,
+      "community": 18,
       "norm_label": "provider-agnostic ingestion architecture"
     },
     {
@@ -4887,7 +4764,7 @@
       "contributor": null,
       "rationale": "web/ is read-only, GET-only, zero mutation, and depends on footy only as a library so it can't affect bot behavior.",
       "id": "readme_dashboard",
-      "community": 12,
+      "community": 9,
       "norm_label": "read-only fastapi+jinja2+htmx dashboard (web/)"
     },
     {
@@ -4901,7 +4778,7 @@
       "contributor": null,
       "rationale": "Hostinger MCP's VPS_createNewProjectV1 deploy path does not honor env_file:, only an inline environment: block, so secrets must be passed as literal values in that call rather than a .env on the VPS.",
       "id": "readme_production_vps",
-      "community": 12,
+      "community": 9,
       "norm_label": "production deployment (vps via hostinger mcp)"
     },
     {
@@ -4915,7 +4792,7 @@
       "contributor": null,
       "rationale": "No real-money execution; rationale documented in betting/ code comments.",
       "id": "readme_compliance",
-      "community": 23,
+      "community": 27,
       "norm_label": "compliance: paper/backtest only, no real-money execution"
     },
     {
@@ -4928,7 +4805,7 @@
       "author": null,
       "contributor": null,
       "id": "ml_train_model_registry",
-      "community": 21,
+      "community": 22,
       "norm_label": "model_registry (ml/train.py)"
     },
     {
@@ -4941,7 +4818,7 @@
       "author": null,
       "contributor": null,
       "id": "ml_predict_predict_ensemble",
-      "community": 21,
+      "community": 22,
       "norm_label": "predict_ensemble() (ml/predict.py)"
     },
     {
@@ -4954,7 +4831,7 @@
       "author": null,
       "contributor": null,
       "id": "ingest_schemas_fixturedto",
-      "community": 16,
+      "community": 18,
       "norm_label": "fixturedto (ingest/schemas.py)"
     },
     {
@@ -4967,7 +4844,7 @@
       "author": null,
       "contributor": null,
       "id": "ingest_schemas_oddsdto",
-      "community": 16,
+      "community": 18,
       "norm_label": "oddsdto (ingest/schemas.py)"
     },
     {
@@ -4980,7 +4857,7 @@
       "author": null,
       "contributor": null,
       "id": "ingest_schemas_advancedstatsdto",
-      "community": 16,
+      "community": 18,
       "norm_label": "advancedstatsdto (ingest/schemas.py)"
     },
     {
@@ -4993,7 +4870,7 @@
       "author": null,
       "contributor": null,
       "id": "ingest_schemas_oddsquery",
-      "community": 16,
+      "community": 18,
       "norm_label": "oddsquery (ingest/schemas.py)"
     },
     {
@@ -5006,7 +4883,7 @@
       "author": null,
       "contributor": null,
       "id": "ingest_providers_base_provider",
-      "community": 16,
+      "community": 18,
       "norm_label": "provider protocol (ingest/providers/base.py)"
     },
     {
@@ -5019,7 +4896,7 @@
       "author": null,
       "contributor": null,
       "id": "ingest_providers_registry",
-      "community": 16,
+      "community": 18,
       "norm_label": "provider registry _builders (ingest/providers/registry.py)"
     },
     {
@@ -5032,7 +4909,7 @@
       "author": null,
       "contributor": null,
       "id": "ingest_stats",
-      "community": 16,
+      "community": 18,
       "norm_label": "ingest/stats.py (xg/possession persistence)"
     },
     {
@@ -5045,7 +4922,7 @@
       "author": null,
       "contributor": null,
       "id": "ml_features",
-      "community": 16,
+      "community": 18,
       "norm_label": "ml/features.py"
     },
     {
@@ -5058,7 +4935,7 @@
       "author": null,
       "contributor": null,
       "id": "config_module",
-      "community": 16,
+      "community": 18,
       "norm_label": "config.py (provider config fields)"
     },
     {
@@ -5071,8 +4948,151 @@
       "author": null,
       "contributor": null,
       "id": "betting_module",
-      "community": 23,
+      "community": 27,
       "norm_label": "betting/ package (paper-betting strategy)"
+    },
+    {
+      "label": "app service (docker-compose.prod.yml, prebuilt image)",
+      "file_type": "code",
+      "source_file": "docker-compose.prod.yml",
+      "source_location": "services.app",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "docker_compose_prod_app",
+      "community": 9,
+      "norm_label": "app service (docker-compose.prod.yml, prebuilt image)"
+    },
+    {
+      "label": "web service (docker-compose.prod.yml, Traefik-routed)",
+      "file_type": "code",
+      "source_file": "docker-compose.prod.yml",
+      "source_location": "services.web",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "docker_compose_prod_web",
+      "community": 9,
+      "norm_label": "web service (docker-compose.prod.yml, traefik-routed)"
+    },
+    {
+      "label": "db service (docker-compose.prod.yml, postgres)",
+      "file_type": "code",
+      "source_file": "docker-compose.prod.yml",
+      "source_location": "services.db",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "docker_compose_prod_db",
+      "community": 9,
+      "norm_label": "db service (docker-compose.prod.yml, postgres)"
+    },
+    {
+      "label": "app service (docker-compose.yml, builds locally)",
+      "file_type": "code",
+      "source_file": "docker-compose.yml",
+      "source_location": "services.app",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "docker_compose_app",
+      "community": 9,
+      "norm_label": "app service (docker-compose.yml, builds locally)"
+    },
+    {
+      "label": "web service (docker-compose.yml, builds locally)",
+      "file_type": "code",
+      "source_file": "docker-compose.yml",
+      "source_location": "services.web",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "docker_compose_web",
+      "community": 9,
+      "norm_label": "web service (docker-compose.yml, builds locally)"
+    },
+    {
+      "label": "db service (docker-compose.yml, postgres)",
+      "file_type": "code",
+      "source_file": "docker-compose.yml",
+      "source_location": "services.db",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "docker_compose_db",
+      "community": 9,
+      "norm_label": "db service (docker-compose.yml, postgres)"
+    },
+    {
+      "label": "base.html Jinja2 layout template",
+      "file_type": "code",
+      "source_file": "web/templates/base.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "web_templates_base_base",
+      "community": 9,
+      "norm_label": "base.html jinja2 layout template"
+    },
+    {
+      "label": "htmx.org@1.9.12 CDN script include",
+      "file_type": "code",
+      "source_file": "web/templates/base.html",
+      "source_location": "script src unpkg.com/htmx.org@1.9.12",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "web_templates_base_htmx_cdn",
+      "community": 9,
+      "norm_label": "htmx.org@1.9.12 cdn script include"
+    },
+    {
+      "label": "index.html Overview page template",
+      "file_type": "code",
+      "source_file": "web/templates/index.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "web_templates_index_index",
+      "community": 9,
+      "norm_label": "index.html overview page template"
+    },
+    {
+      "label": "models.html model comparison table template",
+      "file_type": "code",
+      "source_file": "web/templates/models.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "web_templates_models_models",
+      "community": 9,
+      "norm_label": "models.html model comparison table template"
+    },
+    {
+      "label": "predictions.html upcoming predictions template",
+      "file_type": "code",
+      "source_file": "web/templates/predictions.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "web_templates_predictions_predictions",
+      "community": 9,
+      "norm_label": "predictions.html upcoming predictions template"
     }
   ],
   "links": [
@@ -5357,7 +5377,18 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L21",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "scripts_run_backtest",
+      "target": "src_footy_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/run_backtest.py",
+      "source_location": "L20",
       "weight": 1.0,
       "source": "scripts_run_backtest",
       "target": "src_footy_orm",
@@ -5367,7 +5398,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L38",
+      "source_location": "L37",
       "weight": 1.0,
       "source": "scripts_run_backtest",
       "target": "scripts_run_backtest_build_settled_bets",
@@ -5377,7 +5408,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L76",
+      "source_location": "L75",
       "weight": 1.0,
       "source": "scripts_run_backtest",
       "target": "scripts_run_backtest_main",
@@ -5387,7 +5418,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L27",
+      "source_location": "L26",
       "weight": 1.0,
       "source": "scripts_run_backtest",
       "target": "scripts_run_backtest_odds_for",
@@ -5408,7 +5439,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L48",
+      "source_location": "L47",
       "weight": 1.0,
       "source": "scripts_run_backtest_build_settled_bets",
       "target": "scripts_run_backtest_odds_for",
@@ -5420,7 +5451,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 0.8,
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L27",
+      "source_location": "L26",
       "weight": 1.0,
       "source": "scripts_run_backtest_odds_for",
       "target": "src_footy_orm_odds"
@@ -5429,9 +5460,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L28",
+      "source_location": "L27",
       "weight": 1.0,
-      "source": "scripts_run_backtest_rationale_28",
+      "source": "scripts_run_backtest_rationale_27",
       "target": "scripts_run_backtest_odds_for",
       "confidence_score": 1.0
     },
@@ -5440,7 +5471,7 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L38",
+      "source_location": "L37",
       "weight": 1.0,
       "source": "scripts_run_backtest_build_settled_bets",
       "target": "src_footy_betting_backtest_settledbet",
@@ -5452,7 +5483,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L55",
+      "source_location": "L54",
       "weight": 1.0,
       "source": "scripts_run_backtest_build_settled_bets",
       "target": "src_footy_betting_value_find_value_bet"
@@ -5463,7 +5494,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L39",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "scripts_run_backtest_build_settled_bets",
       "target": "src_footy_config_get_settings"
@@ -5474,7 +5505,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L41",
+      "source_location": "L40",
       "weight": 1.0,
       "source": "scripts_run_backtest_build_settled_bets",
       "target": "src_footy_db_session_scope"
@@ -5485,21 +5516,10 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L51",
+      "source_location": "L50",
       "weight": 1.0,
       "source": "scripts_run_backtest_build_settled_bets",
-      "target": "src_footy_ml_predict_matchprobs"
-    },
-    {
-      "relation": "indirect_call",
-      "context": "argument",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "scripts/run_backtest.py",
-      "source_location": "L44",
-      "weight": 1.0,
-      "source": "scripts_run_backtest_build_settled_bets",
-      "target": "src_footy_orm_match"
+      "target": "src_footy_domain_matchprobs"
     },
     {
       "relation": "indirect_call",
@@ -5510,6 +5530,17 @@
       "source_location": "L43",
       "weight": 1.0,
       "source": "scripts_run_backtest_build_settled_bets",
+      "target": "src_footy_orm_match"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "scripts/run_backtest.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "scripts_run_backtest_build_settled_bets",
       "target": "src_footy_orm_prediction"
     },
     {
@@ -5517,7 +5548,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L77",
+      "source_location": "L76",
       "weight": 1.0,
       "source": "scripts_run_backtest_main",
       "target": "scripts_run_backtest_build_settled_bets",
@@ -5529,7 +5560,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "scripts/run_backtest.py",
-      "source_location": "L78",
+      "source_location": "L77",
       "weight": 1.0,
       "source": "scripts_run_backtest_main",
       "target": "src_footy_betting_backtest_backtest"
@@ -6232,10 +6263,21 @@
       "target": "src_footy_betting_staking_kelly_stake"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/betting/value.py",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_footy_betting_value",
+      "target": "src_footy_domain",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L39",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "src_footy_betting_value",
       "target": "src_footy_betting_value_edge",
@@ -6245,7 +6287,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L51",
+      "source_location": "L50",
       "weight": 1.0,
       "source": "src_footy_betting_value",
       "target": "src_footy_betting_value_find_value_bet",
@@ -6255,7 +6297,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L44",
+      "source_location": "L43",
       "weight": 1.0,
       "source": "src_footy_betting_value",
       "target": "src_footy_betting_value_implied_probs",
@@ -6265,7 +6307,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L27",
+      "source_location": "L26",
       "weight": 1.0,
       "source": "src_footy_betting_value",
       "target": "src_footy_betting_value_valuebet",
@@ -6286,7 +6328,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L51",
+      "source_location": "L50",
       "weight": 1.0,
       "source": "src_footy_betting_value_find_value_bet",
       "target": "src_footy_betting_value_valuebet",
@@ -6296,9 +6338,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L28",
+      "source_location": "L27",
       "weight": 1.0,
-      "source": "src_footy_betting_value_rationale_28",
+      "source": "src_footy_betting_value_rationale_27",
       "target": "src_footy_betting_value_valuebet",
       "confidence_score": 1.0
     },
@@ -6306,7 +6348,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L35",
+      "source_location": "L34",
       "weight": 1.0,
       "source": "src_footy_betting_value_valuebet",
       "target": "src_footy_betting_value_valuebet_repr",
@@ -6316,10 +6358,10 @@
       "relation": "uses",
       "confidence": "INFERRED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L21",
+      "source_location": "L20",
       "weight": 0.8,
       "source": "src_footy_betting_value_valuebet",
-      "target": "src_footy_ml_predict_matchprobs",
+      "target": "src_footy_domain_matchprobs",
       "confidence_score": 0.5
     },
     {
@@ -6327,7 +6369,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L60",
+      "source_location": "L59",
       "weight": 1.0,
       "source": "src_footy_betting_value_find_value_bet",
       "target": "src_footy_betting_value_edge",
@@ -6337,9 +6379,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L40",
+      "source_location": "L39",
       "weight": 1.0,
-      "source": "src_footy_betting_value_rationale_40",
+      "source": "src_footy_betting_value_rationale_39",
       "target": "src_footy_betting_value_edge",
       "confidence_score": 1.0
     },
@@ -6359,7 +6401,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L44",
+      "source_location": "L43",
       "weight": 1.0,
       "source": "src_footy_betting_value_implied_probs",
       "target": "src_footy_orm_odds",
@@ -6369,9 +6411,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L45",
+      "source_location": "L44",
       "weight": 1.0,
-      "source": "src_footy_betting_value_rationale_45",
+      "source": "src_footy_betting_value_rationale_44",
       "target": "src_footy_betting_value_implied_probs",
       "confidence_score": 1.0
     },
@@ -6391,10 +6433,10 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L51",
+      "source_location": "L50",
       "weight": 1.0,
       "source": "src_footy_betting_value_find_value_bet",
-      "target": "src_footy_ml_predict_matchprobs",
+      "target": "src_footy_domain_matchprobs",
       "confidence_score": 1.0
     },
     {
@@ -6402,7 +6444,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L51",
+      "source_location": "L50",
       "weight": 1.0,
       "source": "src_footy_betting_value_find_value_bet",
       "target": "src_footy_orm_odds",
@@ -6412,9 +6454,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/betting/value.py",
-      "source_location": "L52",
+      "source_location": "L51",
       "weight": 1.0,
-      "source": "src_footy_betting_value_rationale_52",
+      "source": "src_footy_betting_value_rationale_51",
       "target": "src_footy_betting_value_find_value_bet",
       "confidence_score": 1.0
     },
@@ -6766,9 +6808,9 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/footy/ml/train_parallel.py",
-      "source_location": "L25",
+      "source_location": "L54",
       "weight": 1.0,
-      "source": "src_footy_ml_train_parallel_train_one",
+      "source": "src_footy_ml_train_parallel_train_all_parallel",
       "target": "src_footy_config_get_settings"
     },
     {
@@ -6883,7 +6925,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/footy/ml/train_parallel.py",
-      "source_location": "L45",
+      "source_location": "L53",
       "weight": 1.0,
       "source": "src_footy_ml_train_parallel_train_all_parallel",
       "target": "src_footy_data_matches_dataframe"
@@ -7221,6 +7263,281 @@
       "weight": 1.0,
       "source": "web_app_predictions",
       "target": "src_footy_db_session_scope"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "src_footy_domain",
+      "target": "src_footy_domain_matchprobs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "src_footy_domain",
+      "target": "src_footy_domain_result_from_goals",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_footy_domain_rationale_1",
+      "target": "src_footy_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/ml/features.py",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "src_footy_ml_features",
+      "target": "src_footy_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/ml/predict.py",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "src_footy_ml_predict",
+      "target": "src_footy_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/predictions/metrics.py",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "src_footy_predictions_metrics",
+      "target": "src_footy_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/predictions/tracker.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_footy_predictions_tracker",
+      "target": "src_footy_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/predictions/validator.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "src_footy_predictions_validator",
+      "target": "src_footy_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_value.py",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "tests_test_value",
+      "target": "src_footy_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_footy_domain_rationale_16",
+      "target": "src_footy_domain_result_from_goals",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/footy/ml/features.py",
+      "source_location": "L96",
+      "weight": 1.0,
+      "source": "src_footy_ml_features_compute_feature_frame",
+      "target": "src_footy_domain_result_from_goals"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/footy/predictions/validator.py",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "src_footy_predictions_validator_predictionvalidator_validate_finished",
+      "target": "src_footy_domain_result_from_goals"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_features.py",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "tests_test_features_test_result_from_goals",
+      "target": "src_footy_domain_result_from_goals"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "src_footy_domain_matchprobs",
+      "target": "src_footy_domain_matchprobs_as_tuple",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "src_footy_domain_matchprobs",
+      "target": "src_footy_domain_matchprobs_confidence",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "src_footy_domain_matchprobs",
+      "target": "src_footy_domain_matchprobs_repr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "src_footy_domain_rationale_26",
+      "target": "src_footy_domain_matchprobs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/ml/predict.py",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "src_footy_ml_predict_predict_match",
+      "target": "src_footy_domain_matchprobs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/ml/predict.py",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "src_footy_ml_predict_probs_from_model",
+      "target": "src_footy_domain_matchprobs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "src/footy/predictions/tracker.py",
+      "source_location": "L16",
+      "weight": 0.8,
+      "source": "src_footy_predictions_tracker_predictiontracker",
+      "target": "src_footy_domain_matchprobs",
+      "confidence_score": 0.5
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/predictions/tracker.py",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "src_footy_predictions_tracker_predictiontracker_record",
+      "target": "src_footy_domain_matchprobs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_value.py",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "tests_test_value_test_find_value_bet_none_below_threshold",
+      "target": "src_footy_domain_matchprobs"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "tests/test_value.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "tests_test_value_test_find_value_bet_selects_home",
+      "target": "src_footy_domain_matchprobs"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "src_footy_domain_matchprobs_confidence",
+      "target": "src_footy_domain_matchprobs_as_tuple",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "src_footy_domain_rationale_33",
+      "target": "src_footy_domain_matchprobs_as_tuple",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/domain.py",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "src_footy_domain_rationale_38",
+      "target": "src_footy_domain_matchprobs_confidence",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9638,7 +9955,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/features.py",
-      "source_location": "L52",
+      "source_location": "L44",
       "weight": 1.0,
       "source": "src_footy_ml_features",
       "target": "src_footy_ml_features_avg",
@@ -9648,20 +9965,10 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/features.py",
-      "source_location": "L56",
+      "source_location": "L48",
       "weight": 1.0,
       "source": "src_footy_ml_features",
       "target": "src_footy_ml_features_compute_feature_frame",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/features.py",
-      "source_location": "L43",
-      "weight": 1.0,
-      "source": "src_footy_ml_features",
-      "target": "src_footy_ml_features_result_from_goals",
       "confidence_score": 1.0
     },
     {
@@ -9679,50 +9986,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/features.py",
-      "source_location": "L104",
-      "weight": 1.0,
-      "source": "src_footy_ml_features_compute_feature_frame",
-      "target": "src_footy_ml_features_result_from_goals",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/features.py",
-      "source_location": "L44",
-      "weight": 1.0,
-      "source": "src_footy_ml_features_rationale_44",
-      "target": "src_footy_ml_features_result_from_goals",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/footy/predictions/validator.py",
-      "source_location": "L53",
-      "weight": 1.0,
-      "source": "src_footy_predictions_validator_predictionvalidator_validate_finished",
-      "target": "src_footy_ml_features_result_from_goals"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "tests/test_features.py",
-      "source_location": "L24",
-      "weight": 1.0,
-      "source": "tests_test_features_test_result_from_goals",
-      "target": "src_footy_ml_features_result_from_goals"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/features.py",
-      "source_location": "L89",
+      "source_location": "L81",
       "weight": 1.0,
       "source": "src_footy_ml_features_compute_feature_frame",
       "target": "src_footy_ml_features_avg",
@@ -9733,7 +9997,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/features.py",
-      "source_location": "L56",
+      "source_location": "L48",
       "weight": 1.0,
       "source": "src_footy_ml_features_compute_feature_frame",
       "target": "src_footy_ml_features_py_dataframe",
@@ -9743,9 +10007,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/features.py",
-      "source_location": "L57",
+      "source_location": "L49",
       "weight": 1.0,
-      "source": "src_footy_ml_features_rationale_57",
+      "source": "src_footy_ml_features_rationale_49",
       "target": "src_footy_ml_features_compute_feature_frame",
       "confidence_score": 1.0
     },
@@ -9755,7 +10019,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L146",
+      "source_location": "L125",
       "weight": 1.0,
       "source": "src_footy_ml_predict_predict_ensemble_from_history",
       "target": "src_footy_ml_features_compute_feature_frame"
@@ -9766,7 +10030,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L77",
+      "source_location": "L56",
       "weight": 1.0,
       "source": "src_footy_ml_predict_predict_match",
       "target": "src_footy_ml_features_compute_feature_frame"
@@ -9830,17 +10094,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L26",
-      "weight": 1.0,
-      "source": "src_footy_ml_predict",
-      "target": "src_footy_ml_predict_matchprobs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L82",
+      "source_location": "L61",
       "weight": 1.0,
       "source": "src_footy_ml_predict",
       "target": "src_footy_ml_predict_predict_ensemble",
@@ -9850,7 +10104,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L131",
+      "source_location": "L110",
       "weight": 1.0,
       "source": "src_footy_ml_predict",
       "target": "src_footy_ml_predict_predict_ensemble_from_history",
@@ -9860,7 +10114,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L57",
+      "source_location": "L36",
       "weight": 1.0,
       "source": "src_footy_ml_predict",
       "target": "src_footy_ml_predict_predict_match",
@@ -9870,7 +10124,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L46",
+      "source_location": "L25",
       "weight": 1.0,
       "source": "src_footy_ml_predict",
       "target": "src_footy_ml_predict_probs_from_model",
@@ -9887,170 +10141,34 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "method",
+      "relation": "calls",
+      "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L33",
+      "source_location": "L93",
       "weight": 1.0,
-      "source": "src_footy_ml_predict_matchprobs",
-      "target": "src_footy_ml_predict_matchprobs_as_tuple",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L38",
-      "weight": 1.0,
-      "source": "src_footy_ml_predict_matchprobs",
-      "target": "src_footy_ml_predict_matchprobs_confidence",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L42",
-      "weight": 1.0,
-      "source": "src_footy_ml_predict_matchprobs",
-      "target": "src_footy_ml_predict_matchprobs_repr",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "context": "return_type",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L57",
-      "weight": 1.0,
-      "source": "src_footy_ml_predict_predict_match",
-      "target": "src_footy_ml_predict_matchprobs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "context": "return_type",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L46",
-      "weight": 1.0,
-      "source": "src_footy_ml_predict_probs_from_model",
-      "target": "src_footy_ml_predict_matchprobs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L27",
-      "weight": 1.0,
-      "source": "src_footy_ml_predict_rationale_27",
-      "target": "src_footy_ml_predict_matchprobs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "uses",
-      "confidence": "INFERRED",
-      "source_file": "src/footy/predictions/tracker.py",
-      "source_location": "L16",
-      "weight": 0.8,
-      "source": "src_footy_predictions_tracker_predictiontracker",
-      "target": "src_footy_ml_predict_matchprobs",
-      "confidence_score": 0.5
-    },
-    {
-      "relation": "references",
-      "context": "parameter_type",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/predictions/tracker.py",
-      "source_location": "L34",
-      "weight": 1.0,
-      "source": "src_footy_predictions_tracker_predictiontracker_record",
-      "target": "src_footy_ml_predict_matchprobs",
+      "source": "src_footy_ml_predict_predict_ensemble",
+      "target": "src_footy_ml_predict_probs_from_model",
       "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "tests/test_value.py",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/ml/predict.py",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "src_footy_ml_predict_predict_match",
+      "target": "src_footy_ml_predict_probs_from_model",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/footy/ml/predict.py",
       "source_location": "L25",
       "weight": 1.0,
-      "source": "tests_test_value_test_find_value_bet_none_below_threshold",
-      "target": "src_footy_ml_predict_matchprobs"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "tests/test_value.py",
-      "source_location": "L17",
-      "weight": 1.0,
-      "source": "tests_test_value_test_find_value_bet_selects_home",
-      "target": "src_footy_ml_predict_matchprobs"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L40",
-      "weight": 1.0,
-      "source": "src_footy_ml_predict_matchprobs_confidence",
-      "target": "src_footy_ml_predict_matchprobs_as_tuple",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L34",
-      "weight": 1.0,
-      "source": "src_footy_ml_predict_rationale_34",
-      "target": "src_footy_ml_predict_matchprobs_as_tuple",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L39",
-      "weight": 1.0,
-      "source": "src_footy_ml_predict_rationale_39",
-      "target": "src_footy_ml_predict_matchprobs_confidence",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L114",
-      "weight": 1.0,
-      "source": "src_footy_ml_predict_predict_ensemble",
-      "target": "src_footy_ml_predict_probs_from_model",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L79",
-      "weight": 1.0,
-      "source": "src_footy_ml_predict_predict_match",
-      "target": "src_footy_ml_predict_probs_from_model",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "context": "parameter_type",
-      "confidence": "EXTRACTED",
-      "source_file": "src/footy/ml/predict.py",
-      "source_location": "L46",
-      "weight": 1.0,
       "source": "src_footy_ml_predict_probs_from_model",
       "target": "src_footy_ml_predict_py_any",
       "confidence_score": 1.0
@@ -10060,7 +10178,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L46",
+      "source_location": "L25",
       "weight": 1.0,
       "source": "src_footy_ml_predict_probs_from_model",
       "target": "src_footy_ml_predict_py_dataframe",
@@ -10070,9 +10188,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L47",
+      "source_location": "L26",
       "weight": 1.0,
-      "source": "src_footy_ml_predict_rationale_47",
+      "source": "src_footy_ml_predict_rationale_26",
       "target": "src_footy_ml_predict_probs_from_model",
       "confidence_score": 1.0
     },
@@ -10081,7 +10199,7 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L82",
+      "source_location": "L61",
       "weight": 1.0,
       "source": "src_footy_ml_predict_predict_ensemble",
       "target": "src_footy_ml_predict_py_any",
@@ -10092,7 +10210,7 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L131",
+      "source_location": "L110",
       "weight": 1.0,
       "source": "src_footy_ml_predict_predict_ensemble_from_history",
       "target": "src_footy_ml_predict_py_any",
@@ -10103,7 +10221,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L57",
+      "source_location": "L36",
       "weight": 1.0,
       "source": "src_footy_ml_predict_predict_match",
       "target": "src_footy_ml_predict_py_any",
@@ -10114,7 +10232,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L82",
+      "source_location": "L61",
       "weight": 1.0,
       "source": "src_footy_ml_predict_predict_ensemble",
       "target": "src_footy_ml_predict_py_dataframe",
@@ -10125,7 +10243,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L131",
+      "source_location": "L110",
       "weight": 1.0,
       "source": "src_footy_ml_predict_predict_ensemble_from_history",
       "target": "src_footy_ml_predict_py_dataframe",
@@ -10136,7 +10254,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L57",
+      "source_location": "L36",
       "weight": 1.0,
       "source": "src_footy_ml_predict_predict_match",
       "target": "src_footy_ml_predict_py_dataframe",
@@ -10148,7 +10266,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L76",
+      "source_location": "L55",
       "weight": 1.0,
       "source": "src_footy_ml_predict_predict_match",
       "target": "src_footy_ml_registry_load_latest"
@@ -10157,9 +10275,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L59",
+      "source_location": "L38",
       "weight": 1.0,
-      "source": "src_footy_ml_predict_rationale_59",
+      "source": "src_footy_ml_predict_rationale_38",
       "target": "src_footy_ml_predict_predict_match",
       "confidence_score": 1.0
     },
@@ -10169,7 +10287,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L110",
+      "source_location": "L89",
       "weight": 1.0,
       "source": "src_footy_ml_predict_predict_ensemble",
       "target": "src_footy_ml_registry_load_latest"
@@ -10179,7 +10297,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L148",
+      "source_location": "L127",
       "weight": 1.0,
       "source": "src_footy_ml_predict_predict_ensemble_from_history",
       "target": "src_footy_ml_predict_predict_ensemble",
@@ -10189,9 +10307,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L85",
+      "source_location": "L64",
       "weight": 1.0,
-      "source": "src_footy_ml_predict_rationale_85",
+      "source": "src_footy_ml_predict_rationale_64",
       "target": "src_footy_ml_predict_predict_ensemble",
       "confidence_score": 1.0
     },
@@ -10232,9 +10350,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/predict.py",
-      "source_location": "L134",
+      "source_location": "L113",
       "weight": 1.0,
-      "source": "src_footy_ml_predict_rationale_134",
+      "source": "src_footy_ml_predict_rationale_113",
       "target": "src_footy_ml_predict_predict_ensemble_from_history",
       "confidence_score": 1.0
     },
@@ -10722,7 +10840,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/footy/ml/train_parallel.py",
-      "source_location": "L24",
+      "source_location": "L32",
       "weight": 1.0,
       "source": "src_footy_ml_train_parallel_train_one",
       "target": "src_footy_ml_train_train_model"
@@ -10774,7 +10892,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/train_parallel.py",
-      "source_location": "L33",
+      "source_location": "L41",
       "weight": 1.0,
       "source": "src_footy_ml_train_parallel",
       "target": "src_footy_ml_train_parallel_train_all_parallel",
@@ -10815,7 +10933,7 @@
       "context": "argument",
       "confidence": "INFERRED",
       "source_file": "src/footy/ml/train_parallel.py",
-      "source_location": "L50",
+      "source_location": "L60",
       "weight": 1.0,
       "source": "src_footy_ml_train_parallel_train_all_parallel",
       "target": "src_footy_ml_train_parallel_train_one",
@@ -10836,9 +10954,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "src/footy/ml/train_parallel.py",
-      "source_location": "L36",
+      "source_location": "L44",
       "weight": 1.0,
-      "source": "src_footy_ml_train_parallel_rationale_36",
+      "source": "src_footy_ml_train_parallel_rationale_44",
       "target": "src_footy_ml_train_parallel_train_all_parallel",
       "confidence_score": 1.0
     },
@@ -13691,206 +13809,6 @@
       "target": "_github_workflows_docker_publish_web_build_push"
     },
     {
-      "relation": "shares_data_with",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docker-compose.yml",
-      "source_location": "DATABASE_URL postgresql+psycopg://footy:footy@db:5432/footy",
-      "weight": 1.0,
-      "source": "docker_compose_app",
-      "target": "docker_compose_db"
-    },
-    {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "docker-compose.prod.yml",
-      "source_location": "services.app",
-      "weight": 1.0,
-      "source": "docker_compose_prod_app",
-      "target": "docker_compose_app"
-    },
-    {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "docker-compose.prod.yml",
-      "source_location": "services.web",
-      "weight": 1.0,
-      "source": "docker_compose_prod_web",
-      "target": "docker_compose_web"
-    },
-    {
-      "relation": "shares_data_with",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docker-compose.yml",
-      "source_location": "DATABASE_URL postgresql+psycopg://footy:footy@db:5432/footy",
-      "weight": 1.0,
-      "source": "docker_compose_web",
-      "target": "docker_compose_db"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "Local: docker compose up -d then open http://localhost:8000",
-      "weight": 1.0,
-      "source": "readme_dashboard",
-      "target": "docker_compose_web"
-    },
-    {
-      "relation": "semantically_similar_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "docker-compose.prod.yml",
-      "source_location": "services.db",
-      "weight": 1.0,
-      "source": "docker_compose_prod_db",
-      "target": "docker_compose_db"
-    },
-    {
-      "relation": "shares_data_with",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docker-compose.prod.yml",
-      "source_location": "DATABASE_URL postgresql+psycopg://footy:footy@db:5432/footy",
-      "weight": 1.0,
-      "source": "docker_compose_prod_app",
-      "target": "docker_compose_prod_db"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "### Production (VPS)",
-      "weight": 1.0,
-      "source": "readme_production_vps",
-      "target": "docker_compose_prod_app"
-    },
-    {
-      "relation": "shares_data_with",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docker-compose.prod.yml",
-      "source_location": "DATABASE_URL postgresql+psycopg://footy:footy@db:5432/footy",
-      "weight": 1.0,
-      "source": "docker_compose_prod_web",
-      "target": "docker_compose_prod_db"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "Production: deployed alongside app/db, routed by Traefik",
-      "weight": 1.0,
-      "source": "readme_dashboard",
-      "target": "docker_compose_prod_web"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "### Production (VPS)",
-      "weight": 1.0,
-      "source": "readme_production_vps",
-      "target": "docker_compose_prod_web"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "### Production (VPS)",
-      "weight": 1.0,
-      "source": "readme_production_vps",
-      "target": "docker_compose_prod_db"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "## Dashboard",
-      "weight": 1.0,
-      "source": "readme_dashboard",
-      "target": "web_templates_base_base"
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/templates/index.html",
-      "source_location": "{% extends \"base.html\" %}",
-      "weight": 1.0,
-      "source": "web_templates_index_index",
-      "target": "web_templates_base_base"
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/templates/models.html",
-      "source_location": "{% extends \"base.html\" %}",
-      "weight": 1.0,
-      "source": "web_templates_models_models",
-      "target": "web_templates_base_base"
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/templates/predictions.html",
-      "source_location": "{% extends \"base.html\" %}",
-      "weight": 1.0,
-      "source": "web_templates_predictions_predictions",
-      "target": "web_templates_base_base"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "web/templates/predictions.html",
-      "source_location": "hx-get/hx-target/hx-swap attributes on select",
-      "weight": 1.0,
-      "source": "web_templates_predictions_predictions",
-      "target": "web_templates_base_htmx_cdn"
-    },
-    {
-      "relation": "references",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "README.md",
-      "source_location": "route table: / shows Match/prediction counts, synced leagues",
-      "weight": 1.0,
-      "source": "readme_dashboard",
-      "target": "web_templates_index_index"
-    },
-    {
-      "relation": "references",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "README.md",
-      "source_location": "route table: /models shows Brier/log-loss/accuracy per league/algorithm",
-      "weight": 1.0,
-      "source": "readme_dashboard",
-      "target": "web_templates_models_models"
-    },
-    {
-      "relation": "references",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "README.md",
-      "source_location": "route table: /predictions shows upcoming SCHEDULED matches filterable by league",
-      "weight": 1.0,
-      "source": "readme_dashboard",
-      "target": "web_templates_predictions_predictions"
-    },
-    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
@@ -14005,26 +13923,213 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
+      "source_location": "Production: deployed alongside app/db, routed by Traefik",
+      "weight": 1.0,
+      "source": "readme_dashboard",
+      "target": "docker_compose_prod_web"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "Local: docker compose up -d then open http://localhost:8000",
+      "weight": 1.0,
+      "source": "readme_dashboard",
+      "target": "docker_compose_web"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "## Dashboard",
+      "weight": 1.0,
+      "source": "readme_dashboard",
+      "target": "web_templates_base_base"
+    },
+    {
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "README.md",
+      "source_location": "route table: / shows Match/prediction counts, synced leagues",
+      "weight": 1.0,
+      "source": "readme_dashboard",
+      "target": "web_templates_index_index"
+    },
+    {
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "README.md",
+      "source_location": "route table: /models shows Brier/log-loss/accuracy per league/algorithm",
+      "weight": 1.0,
+      "source": "readme_dashboard",
+      "target": "web_templates_models_models"
+    },
+    {
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "README.md",
+      "source_location": "route table: /predictions shows upcoming SCHEDULED matches filterable by league",
+      "weight": 1.0,
+      "source": "readme_dashboard",
+      "target": "web_templates_predictions_predictions"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "### Production (VPS)",
+      "weight": 1.0,
+      "source": "readme_production_vps",
+      "target": "docker_compose_prod_app"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "### Production (VPS)",
+      "weight": 1.0,
+      "source": "readme_production_vps",
+      "target": "docker_compose_prod_db"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "### Production (VPS)",
+      "weight": 1.0,
+      "source": "readme_production_vps",
+      "target": "docker_compose_prod_web"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
       "source_location": "## Compliance",
       "weight": 1.0,
       "source": "readme_compliance",
       "target": "betting_module"
+    },
+    {
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docker-compose.prod.yml",
+      "source_location": "services.app",
+      "weight": 1.0,
+      "source": "docker_compose_prod_app",
+      "target": "docker_compose_app"
+    },
+    {
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.prod.yml",
+      "source_location": "DATABASE_URL postgresql+psycopg://footy:footy@db:5432/footy",
+      "weight": 1.0,
+      "source": "docker_compose_prod_app",
+      "target": "docker_compose_prod_db"
+    },
+    {
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.prod.yml",
+      "source_location": "DATABASE_URL postgresql+psycopg://footy:footy@db:5432/footy",
+      "weight": 1.0,
+      "source": "docker_compose_prod_web",
+      "target": "docker_compose_prod_db"
+    },
+    {
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docker-compose.prod.yml",
+      "source_location": "services.web",
+      "weight": 1.0,
+      "source": "docker_compose_prod_web",
+      "target": "docker_compose_web"
+    },
+    {
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "docker-compose.prod.yml",
+      "source_location": "services.db",
+      "weight": 1.0,
+      "source": "docker_compose_prod_db",
+      "target": "docker_compose_db"
+    },
+    {
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.yml",
+      "source_location": "DATABASE_URL postgresql+psycopg://footy:footy@db:5432/footy",
+      "weight": 1.0,
+      "source": "docker_compose_app",
+      "target": "docker_compose_db"
+    },
+    {
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.yml",
+      "source_location": "DATABASE_URL postgresql+psycopg://footy:footy@db:5432/footy",
+      "weight": 1.0,
+      "source": "docker_compose_web",
+      "target": "docker_compose_db"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/templates/index.html",
+      "source_location": "{% extends \"base.html\" %}",
+      "weight": 1.0,
+      "source": "web_templates_index_index",
+      "target": "web_templates_base_base"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/templates/models.html",
+      "source_location": "{% extends \"base.html\" %}",
+      "weight": 1.0,
+      "source": "web_templates_models_models",
+      "target": "web_templates_base_base"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/templates/predictions.html",
+      "source_location": "{% extends \"base.html\" %}",
+      "weight": 1.0,
+      "source": "web_templates_predictions_predictions",
+      "target": "web_templates_base_base"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "web/templates/predictions.html",
+      "source_location": "hx-get/hx-target/hx-swap attributes on select",
+      "weight": 1.0,
+      "source": "web_templates_predictions_predictions",
+      "target": "web_templates_base_htmx_cdn"
     }
   ],
   "hyperedges": [
-    {
-      "id": "docker_compose_local_stack",
-      "label": "Local docker-compose stack (db, app, web)",
-      "nodes": [
-        "docker_compose_db",
-        "docker_compose_app",
-        "docker_compose_web"
-      ],
-      "relation": "participate_in",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docker-compose.yml"
-    },
     {
       "id": "docker_compose_prod_stack",
       "label": "Production docker-compose stack (db, app, web) behind Traefik",
@@ -14037,6 +14142,19 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docker-compose.prod.yml"
+    },
+    {
+      "id": "docker_compose_local_stack",
+      "label": "Local docker-compose stack (db, app, web)",
+      "nodes": [
+        "docker_compose_db",
+        "docker_compose_app",
+        "docker_compose_web"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.yml"
     },
     {
       "id": "web_dashboard_template_inheritance",
@@ -14053,5 +14171,5 @@
       "source_file": "web/templates/base.html"
     }
   ],
-  "built_at_commit": "abb4cf6cd1348c9e8949b83c4171efad14a6b3fe"
+  "built_at_commit": "4362cf23e73ff22dd2eebf7894a2989882ea129b"
 }

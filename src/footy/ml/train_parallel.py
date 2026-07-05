@@ -17,19 +17,16 @@ log = logging.getLogger("footy.ml.train_parallel")
 
 def _train_one(league: str, algorithm: str, df: pd.DataFrame, model_dir: str) -> tuple[str, str]:
     """Run in a worker process — receives an already-filtered DataFrame and the
-    model_dir to use, no DB access and no get_settings() call of its own here
-    (a SQLAlchemy engine/session isn't safe to carry across a process boundary,
-    and the parent already resolved model_dir once for every worker to share).
-
-    Note: train_model() -> save_model() still reads get_settings().model_dir
-    internally when model_dir isn't passed to it directly - train_model()'s
-    API is out of scope to change here, so this only removes the *redundant*
-    get_settings() calls _train_one() used to make for its own pointer lookup.
+    model_dir to use, no DB access and no get_settings() call at all in this
+    process (a SQLAlchemy engine/session isn't safe to carry across a process
+    boundary, and the parent already resolved model_dir once for every worker
+    to share). train_model() now takes model_dir directly, so it no longer
+    falls back to get_settings() internally either.
     """
     key = f"{algorithm}_{league.replace(' ', '_')}"
     log.info("worker start: %s", key)
     try:
-        train_model(df, algorithm, key)
+        train_model(df, algorithm, key, model_dir=model_dir)
         pointer = Path(model_dir) / f"{key}_latest"
         result = str(Path(model_dir) / pointer.read_text(encoding="utf-8").strip())
     except Exception as exc:

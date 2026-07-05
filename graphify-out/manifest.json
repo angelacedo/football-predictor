@@ -25,9 +25,9 @@
     "semantic_hash": "e47c325cbef241537dcb6f20f40f05da"
   },
   "scripts/run_backtest.py": {
-    "mtime": 1783201041.2863665,
-    "ast_hash": "a07345ed35ee10aec3408be30eb7d98f",
-    "semantic_hash": "a07345ed35ee10aec3408be30eb7d98f"
+    "mtime": 1783248021.547467,
+    "ast_hash": "ae2ee8b818d24d96db761e5ceade1169",
+    "semantic_hash": "ae2ee8b818d24d96db761e5ceade1169"
   },
   "scripts/train_model.py": {
     "mtime": 1783201000.8670025,
@@ -65,9 +65,9 @@
     "semantic_hash": "a9129a68484a324e8eab1508158a5abe"
   },
   "src/footy/betting/value.py": {
-    "mtime": 1783200856.6518118,
-    "ast_hash": "16707d9d97a0eb8be25aa5df289be32f",
-    "semantic_hash": "16707d9d97a0eb8be25aa5df289be32f"
+    "mtime": 1783248038.4217231,
+    "ast_hash": "f969a6d29bb64c9bb58f724d136db5ae",
+    "semantic_hash": "f969a6d29bb64c9bb58f724d136db5ae"
   },
   "src/footy/config.py": {
     "mtime": 1783240773.9879637,
@@ -110,14 +110,14 @@
     "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "src/footy/ml/features.py": {
-    "mtime": 1783201241.8500023,
-    "ast_hash": "811eea8784415b8c144da1b05389b3bd",
-    "semantic_hash": "811eea8784415b8c144da1b05389b3bd"
+    "mtime": 1783248047.9732153,
+    "ast_hash": "9298bb625866af2bd310bb5095115572",
+    "semantic_hash": "9298bb625866af2bd310bb5095115572"
   },
   "src/footy/ml/predict.py": {
-    "mtime": 1783245084.150469,
-    "ast_hash": "f343d815066b9fefc1186e28ca196840",
-    "semantic_hash": "f343d815066b9fefc1186e28ca196840"
+    "mtime": 1783248059.332499,
+    "ast_hash": "c602b6656dc3a2080eb46b6607be2ec7",
+    "semantic_hash": "c602b6656dc3a2080eb46b6607be2ec7"
   },
   "src/footy/ml/registry.py": {
     "mtime": 1783200717.8082337,
@@ -140,19 +140,19 @@
     "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
   },
   "src/footy/predictions/metrics.py": {
-    "mtime": 1783242144.9656398,
-    "ast_hash": "ae5a54d240fd6835c5472ad7cd75254e",
-    "semantic_hash": "ae5a54d240fd6835c5472ad7cd75254e"
+    "mtime": 1783247147.0242164,
+    "ast_hash": "4b74252b4c42d660a07e78664ad9d71d",
+    "semantic_hash": "4b74252b4c42d660a07e78664ad9d71d"
   },
   "src/footy/predictions/tracker.py": {
-    "mtime": 1783201192.174286,
-    "ast_hash": "e062df9873e03c0060e180678b69f8e5",
-    "semantic_hash": "e062df9873e03c0060e180678b69f8e5"
+    "mtime": 1783247164.778781,
+    "ast_hash": "a15d517e25e7cdb88b87248f9a72f6c1",
+    "semantic_hash": "a15d517e25e7cdb88b87248f9a72f6c1"
   },
   "src/footy/predictions/validator.py": {
-    "mtime": 1783200822.728362,
-    "ast_hash": "1d581ec5c556189498ad57582e27eed3",
-    "semantic_hash": "1d581ec5c556189498ad57582e27eed3"
+    "mtime": 1783247157.1917412,
+    "ast_hash": "7c53631cd6eadcfeb0650589ee2fa5a8",
+    "semantic_hash": "7c53631cd6eadcfeb0650589ee2fa5a8"
   },
   "tests/__init__.py": {
     "mtime": 1783200573.8063562,
@@ -185,9 +185,9 @@
     "semantic_hash": "356175e45c7601e959e4846d216777db"
   },
   "tests/test_value.py": {
-    "mtime": 1783201202.0231562,
-    "ast_hash": "cd5c437e662a6c1e9e94c85aaf7c7a5a",
-    "semantic_hash": "cd5c437e662a6c1e9e94c85aaf7c7a5a"
+    "mtime": 1783248028.8443162,
+    "ast_hash": "f7daa8d326e2a25fc8bbfab99a7127dd",
+    "semantic_hash": "f7daa8d326e2a25fc8bbfab99a7127dd"
   },
   "scripts/sync_matches.py": {
     "mtime": 1783211408.59209,
@@ -245,9 +245,9 @@
     "semantic_hash": "154d736c0b0ea0c625b7d0e42705b9f5"
   },
   "src/footy/ml/train_parallel.py": {
-    "mtime": 1783240836.407284,
-    "ast_hash": "9158d8bfa4246a94a2b891a1e08fd98a",
-    "semantic_hash": "9158d8bfa4246a94a2b891a1e08fd98a"
+    "mtime": 1783248076.5121021,
+    "ast_hash": "fa5edc267057b9b85006b7f2c8f75799",
+    "semantic_hash": "fa5edc267057b9b85006b7f2c8f75799"
   },
   "tests/conftest.py": {
     "mtime": 1783245111.8303072,
@@ -333,5 +333,10 @@
     "mtime": 1783242035.3971207,
     "ast_hash": "e7aea5fe5da34433e7c9af3fc3427300",
     "semantic_hash": "e7aea5fe5da34433e7c9af3fc3427300"
+  },
+  "src/footy/domain.py": {
+    "mtime": 1783247110.9333658,
+    "ast_hash": "c66495b3f7957aeff3deee2229b0ef73",
+    "semantic_hash": "c66495b3f7957aeff3deee2229b0ef73"
   }
 }

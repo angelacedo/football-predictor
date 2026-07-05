@@ -108,6 +108,7 @@ def train_model(
     matches_df: pd.DataFrame,
     algorithm_name: str = MODEL_NAME,
     artifact_name: str | None = None,
+    model_dir: str | None = None,
 ) -> Pipeline:
     """Train on finished matches in ``matches_df`` and persist the artifact.
 
@@ -121,6 +122,9 @@ def train_model(
             ``"xgboost_La_Liga"``): it becomes the artifact name, and the real
             algorithm is derived from it via longest-prefix match — same
             two-positional-arg call as before this split.
+        model_dir: Passed through to :func:`footy.ml.registry.save_model`. If
+            None (default), falls back to ``get_settings().model_dir`` exactly
+            as before this parameter existed.
 
     Returns:
         The fitted pipeline.
@@ -146,7 +150,7 @@ def train_model(
     y = played["result"].astype(str)
     pipe = MODEL_REGISTRY[algorithm_name]()
     pipe.fit(x, y)
-    artifact = save_model(pipe, artifact_name)
+    artifact = save_model(pipe, artifact_name, model_dir=model_dir)
     log.info(
         "Trained '%s' (%s) on %d matches -> %s",
         artifact_name, algorithm_name, len(played), artifact,
