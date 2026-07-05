@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Predictions - football-predictor{% endblock %}
+{% block heading %}Upcoming predictions{% endblock %}
+{% block content %}
+<label>League:
+  <select name="league" hx-get="/predictions" hx-target="#results"
+          hx-select="#results" hx-swap="outerHTML" hx-push-url="true">
+    <option value="">All</option>
+    {% for l in leagues %}
+    <option value="{{ l }}" {% if l == selected_league %}selected{% endif %}>{{ l }}</option>
+    {% endfor %}
+  </select>
+</label>
+<div id="results">
+  <table>
+    <thead>
+      <tr>
+        <th>Kickoff</th><th>League</th><th>Home</th><th>Away</th>
+        <th>Model</th><th>Home %</th><th>Draw %</th><th>Away %</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td>{{ r.kickoff }}</td>
+        <td>{{ r.league }}</td>
+        <td>{{ r.home_team }}</td>
+        <td>{{ r.away_team }}</td>
+        <td>{{ r.model_name }}</td>
+        <td>{{ "%.1f"|format(r.prob_home_win * 100) }}</td>
+        <td>{{ "%.1f"|format(r.prob_draw * 100) }}</td>
+        <td>{{ "%.1f"|format(r.prob_away_win * 100) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if not rows %}<p>No upcoming predictions.</p>{% endif %}
+</div>
+{% endblock %}

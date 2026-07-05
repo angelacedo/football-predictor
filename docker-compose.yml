@@ -25,5 +25,17 @@ services:
         condition: service_healthy
     command: ["python", "scripts/predict_upcoming.py"]
 
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg://footy:footy@db:5432/footy
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   db_data:

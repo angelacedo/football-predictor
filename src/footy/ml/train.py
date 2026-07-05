@@ -12,12 +12,14 @@ Example:
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 import pandas as pd
+from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 from xgboost import XGBClassifier
 
 from footy.ml.features import FEATURE_COLUMNS, compute_feature_frame
@@ -38,19 +40,42 @@ def build_pipeline() -> Pipeline:
     )
 
 
+class _LabelEncodedXGBClassifier(BaseEstimator, ClassifierMixin):  # type: ignore[misc]
+    """XGBClassifier (xgboost>=2.0) only accepts integer class labels - no more
+    use_label_encoder. Encode "HOME"/"DRAW"/"AWAY" internally, expose classes_
+    as the original strings so ml/predict.py's model.classes_ lookup still works."""
+
+    def __init__(
+        self, n_estimators: int = 300, max_depth: int = 4,
+        learning_rate: float = 0.05, eval_metric: str = "mlogloss",
+    ) -> None:
+        self.n_estimators = n_estimators
+        self.max_depth = max_depth
+        self.learning_rate = learning_rate
+        self.eval_metric = eval_metric
+
+    def fit(self, x: pd.DataFrame, y: pd.Series) -> _LabelEncodedXGBClassifier:
+        self._label_encoder = LabelEncoder()
+        y_encoded = self._label_encoder.fit_transform(y)
+        self._model = XGBClassifier(
+            n_estimators=self.n_estimators,
+            max_depth=self.max_depth,
+            learning_rate=self.learning_rate,
+            eval_metric=self.eval_metric,
+        )
+        self._model.fit(x, y_encoded)
+        self.classes_ = self._label_encoder.classes_
+        return self
+
+    def predict_proba(self, x: pd.DataFrame) -> Any:
+        return self._model.predict_proba(x)
+
+
 def build_xgboost_pipeline() -> Pipeline:
     return Pipeline(
         [
             ("scale", StandardScaler()),
-            (
-                "clf",
-                XGBClassifier(
-                    n_estimators=300,
-                    max_depth=4,
-                    learning_rate=0.05,
-                    eval_metric="mlogloss",
-                ),
-            ),
+            ("clf", _LabelEncodedXGBClassifier()),
         ]
     )
 
@@ -71,27 +96,47 @@ MODEL_REGISTRY = {
 }
 
 
-def _resolve_builder(model_name: str) -> Pipeline:
+def _resolve_algorithm(name: str) -> str:
+    """Longest-prefix match against MODEL_REGISTRY (handles "random_forest"'s own '_')."""
     for key in sorted(MODEL_REGISTRY, key=len, reverse=True):
-        if model_name == key or model_name.startswith(key + "_"):
-            return MODEL_REGISTRY[key]()
-    raise ValueError(f"Unknown model type in '{model_name}'; registry: {sorted(MODEL_REGISTRY)}")
+        if name == key or name.startswith(key + "_"):
+            return key
+    raise ValueError(f"Unknown model type in '{name}'; registry: {sorted(MODEL_REGISTRY)}")
 
 
-def train_model(matches_df: pd.DataFrame, model_name: str = MODEL_NAME) -> Pipeline:
+def train_model(
+    matches_df: pd.DataFrame,
+    algorithm_name: str = MODEL_NAME,
+    artifact_name: str | None = None,
+) -> Pipeline:
     """Train on finished matches in ``matches_df`` and persist the artifact.
 
     Args:
         matches_df: Matches with the columns required by
             :func:`footy.ml.features.compute_feature_frame`.
-        model_name: Registry name to save under.
+        algorithm_name: Key into ``MODEL_REGISTRY`` selecting which estimator
+            to build.
+        artifact_name: Registry name to save under. If omitted, ``algorithm_name``
+            is treated as a legacy combined ``model_name`` (e.g.
+            ``"xgboost_La_Liga"``): it becomes the artifact name, and the real
+            algorithm is derived from it via longest-prefix match — same
+            two-positional-arg call as before this split.
 
     Returns:
         The fitted pipeline.
 
     Raises:
-        ValueError: if there are no finished matches to train on.
+        ValueError: if there are no finished matches to train on, or the
+            algorithm isn't registered.
     """
+    if artifact_name is None:
+        artifact_name = algorithm_name
+        algorithm_name = _resolve_algorithm(algorithm_name)
+    elif algorithm_name not in MODEL_REGISTRY:
+        raise ValueError(
+            f"Unknown model type in '{algorithm_name}'; registry: {sorted(MODEL_REGISTRY)}"
+        )
+
     feats = compute_feature_frame(matches_df)
     played = feats[feats["result"].notna()]
     if played.empty:
@@ -99,8 +144,11 @@ def train_model(matches_df: pd.DataFrame, model_name: str = MODEL_NAME) -> Pipel
 
     x = played[list(FEATURE_COLUMNS)]
     y = played["result"].astype(str)
-    pipe = _resolve_builder(model_name)
+    pipe = MODEL_REGISTRY[algorithm_name]()
     pipe.fit(x, y)
-    artifact = save_model(pipe, model_name)
-    log.info("Trained '%s' on %d matches -> %s", model_name, len(played), artifact)
+    artifact = save_model(pipe, artifact_name)
+    log.info(
+        "Trained '%s' (%s) on %d matches -> %s",
+        artifact_name, algorithm_name, len(played), artifact,
+    )
     return pipe

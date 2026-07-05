@@ -8,6 +8,7 @@ __pycache__/
 models/*.pkl
 models/*_latest
 *.egg-info/
+build/
 .DS_Store
 
 # graphify: keep graph.html/json/report/manifest, drop local cache + machine paths

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Overview - football-predictor{% endblock %}
+{% block heading %}Overview{% endblock %}
+{% block content %}
+<div>
+  <span class="stat"><b>{{ n_matches }}</b>matches</span>
+  <span class="stat"><b>{{ n_scheduled }}</b>scheduled</span>
+  <span class="stat"><b>{{ n_predictions }}</b>predictions</span>
+  <span class="stat"><b>{{ n_validated }}</b>validated</span>
+</div>
+<h2>Leagues</h2>
+<ul>
+  {% for l in leagues %}<li>{{ l }}</li>{% endfor %}
+  {% if not leagues %}<li>none synced yet</li>{% endif %}
+</ul>
+{% endblock %}

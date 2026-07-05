@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Models - football-predictor{% endblock %}
+{% block heading %}Model comparison (validated predictions){% endblock %}
+{% block content %}
+<table>
+  <thead>
+    <tr><th>League</th><th>Model</th><th>N</th><th>Accuracy</th><th>Brier</th><th>Log loss</th></tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.league }}</td>
+      <td>{{ row.model_name }}</td>
+      <td>{{ row.n | int }}</td>
+      <td>{{ "%.3f"|format(row.accuracy) if row.accuracy == row.accuracy else "-" }}</td>
+      <td>{{ "%.4f"|format(row.brier) if row.brier == row.brier else "-" }}</td>
+      <td>{{ "%.4f"|format(row.log_loss) if row.log_loss == row.log_loss else "-" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% if not rows %}<p>No validated predictions yet — run validate_predictions.py once matches finish.</p>{% endif %}
+{% endblock %}

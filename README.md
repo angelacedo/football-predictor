@@ -20,6 +20,23 @@ train_model.py -> predict_upcoming.py + fetch_odds.py -> (match ends) ->
 validate_predictions.py -> run_backtest.py
 ```
 
+## Multi-algorithm training
+
+`ml/train.py` has three registered algorithms (`MODEL_REGISTRY`): `baseline`
+(logistic regression), `xgboost`, `random_forest`. Models are trained per
+league, artifact-named `"{algorithm}_{league}"` (e.g. `xgboost_La_Liga`):
+
+```bash
+python scripts/train_all.py --leagues "La Liga" "Premier League" \
+    --algorithms baseline xgboost --workers 4
+```
+
+Defaults come from `.env`'s `LEAGUES`/`ACTIVE_ALGORITHMS`/`TRAIN_WORKERS`.
+`ml/predict.py`'s `predict_ensemble()` averages `predict_proba` across
+whichever of a league's algorithms are actually registered — use it once
+`/models` (below) shows an algorithm actually beats `baseline`'s Brier score;
+until then a single model is simpler and just as good.
+
 ## Docker
 
 ```bash
@@ -54,6 +71,25 @@ Deployed via the Hostinger MCP server (`VPS_createNewProjectV1`) — that
 deploy path does **not** honor `env_file:`, only an inline `environment:`
 block in the compose YAML actually sent, so secrets must be passed as literal
 values in that call rather than relying on a separate `.env` on the VPS.
+
+## Dashboard
+
+`web/` is a separate FastAPI + Jinja2 + HTMX app — **read-only, GET-only,
+zero mutation** — reading the same DB the bot writes to. Its own `Dockerfile`
+and image (`ghcr.io/angelacedo/football-predictor-web`); depends on `footy`
+as a library only, doesn't touch `src/footy/` behavior.
+
+| Route | Shows |
+|---|---|
+| `/` | Match/prediction counts, synced leagues |
+| `/predictions` | Upcoming (`SCHEDULED`) matches + probabilities, filterable by league |
+| `/models` | Brier/log-loss/accuracy per (league, algorithm) — `predictions.metrics.breakdown_by_league_and_model` |
+
+Local: `docker compose up -d` then open `http://localhost:8000`. Production:
+deployed alongside `app`/`db` in the same compose project (same Docker
+network, reaches `db` by service name — no port published), routed by the
+existing Traefik instance via labels (`Host(\`footy.stackmint.cloud\`)`,
+`certresolver=letsencrypt`, no auth middleware for now).
 
 ## Providers
 

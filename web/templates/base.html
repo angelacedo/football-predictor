@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <title>{% block title %}football-predictor{% endblock %}</title>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 960px;
+           color: #222; padding: 0 1rem; }
+    nav a { margin-right: 1rem; color: #06c; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    th, td { border: 1px solid #ddd; padding: 0.4rem 0.6rem; text-align: left; font-size: 0.9rem; }
+    th { background: #f5f5f5; }
+    .stat { display: inline-block; margin-right: 2.5rem; }
+    .stat b { font-size: 1.6rem; display: block; }
+    select { padding: 0.3rem; font-size: 0.95rem; }
+    footer { margin-top: 3rem; font-size: 0.8rem; color: #888; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Overview</a>
+    <a href="/predictions">Predictions</a>
+    <a href="/models">Models</a>
+  </nav>
+  <h1>{% block heading %}{% endblock %}</h1>
+  {% block content %}{% endblock %}
+  <footer>football-predictor — read-only, paper/backtest only, no real bets placed.</footer>
+</body>
+</html>

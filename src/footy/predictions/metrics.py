@@ -99,6 +99,24 @@ def breakdown_by(df: pd.DataFrame, column: str) -> dict[str, dict[str, float]]:
     return {str(key): summary(group) for key, group in df.groupby(column)}
 
 
+def breakdown_by_league_and_model(df: pd.DataFrame) -> list[dict[str, str | float]]:
+    """One :func:`summary` row per (league, model_name) — decides whether an
+    ensemble is worth it, or one model/algorithm just dominates.
+
+    Returns:
+        Rows sorted by (league, model_name), each ``{"league": ..., "model_name":
+        ..., "n": ..., "accuracy": ..., "brier": ..., "log_loss": ...}``.
+    """
+    if df.empty:
+        return []
+    rows: list[dict[str, str | float]] = []
+    for (league, model_name), group in df.groupby(["league", "model_name"]):
+        row: dict[str, str | float] = {"league": str(league), "model_name": str(model_name)}
+        row.update(summary(group))
+        rows.append(row)
+    return sorted(rows, key=lambda r: (str(r["league"]), str(r["model_name"])))
+
+
 def calibration_by_class(
     df: pd.DataFrame, n_bins: int = 10
 ) -> Mapping[str, tuple[list[float], list[float]]]:

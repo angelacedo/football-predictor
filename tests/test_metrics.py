@@ -5,7 +5,13 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from footy.predictions.metrics import breakdown_by, mean_brier, overall_accuracy, summary
+from footy.predictions.metrics import (
+    breakdown_by,
+    breakdown_by_league_and_model,
+    mean_brier,
+    overall_accuracy,
+    summary,
+)
 
 
 def _df() -> pd.DataFrame:
@@ -19,6 +25,7 @@ def _df() -> pd.DataFrame:
             "brier_score": [0.14, 0.9, 0.3],
             "log_loss": [0.5, 1.2, 0.7],
             "league": ["EPL", "EPL", "LaLiga"],
+            "model_name": ["baseline", "baseline", "xgboost"],
         }
     )
 
@@ -41,3 +48,15 @@ def test_breakdown_by_league() -> None:
     bd = breakdown_by(_df(), "league")
     assert bd["EPL"]["n"] == 2
     assert bd["LaLiga"]["accuracy"] == pytest.approx(1.0)
+
+
+def test_breakdown_by_league_and_model() -> None:
+    rows = breakdown_by_league_and_model(_df())
+    assert rows == [
+        {"league": "EPL", "model_name": "baseline", **summary(_df().iloc[[0, 1]])},
+        {"league": "LaLiga", "model_name": "xgboost", **summary(_df().iloc[[2]])},
+    ]
+
+
+def test_breakdown_by_league_and_model_empty() -> None:
+    assert breakdown_by_league_and_model(_df().iloc[0:0]) == []

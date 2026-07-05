@@ -1,10 +1,12 @@
-"""Train (league, model_type) combinations in parallel worker processes."""
+"""Train (league, algorithm) combinations in parallel worker processes."""
 
 from __future__ import annotations
 
 import logging
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
+
+import pandas as pd
 
 from footy.config import get_settings
 from footy.data import matches_dataframe
@@ -13,12 +15,13 @@ from footy.ml.train import train_model
 log = logging.getLogger("footy.ml.train_parallel")
 
 
-def _train_one(league: str, model_type: str) -> tuple[str, str]:
-    key = f"{model_type}_{league.replace(' ', '_')}"
+def _train_one(league: str, algorithm: str, df: pd.DataFrame) -> tuple[str, str]:
+    """Run in a worker process — receives an already-filtered DataFrame, no DB access here
+    (a SQLAlchemy engine/session isn't safe to carry across a process boundary)."""
+    key = f"{algorithm}_{league.replace(' ', '_')}"
     log.info("worker start: %s", key)
     try:
-        df = matches_dataframe(league=league)
-        train_model(df, key)
+        train_model(df, algorithm, key)
         pointer = Path(get_settings().model_dir) / f"{key}_latest"
         result = str(Path(get_settings().model_dir) / pointer.read_text(encoding="utf-8").strip())
     except Exception as exc:
@@ -28,20 +31,28 @@ def _train_one(league: str, model_type: str) -> tuple[str, str]:
 
 
 def train_all_parallel(
-    leagues: list[str], model_types: list[str], workers: int = 4
+    leagues: list[str], algorithms: list[str], workers: int = 4
 ) -> dict[str, str]:
-    """Train every (league, model_type) pair, one worker process per pair.
+    """Train every (league, algorithm) pair, one worker process per pair.
+
+    Matches are fetched per league here, in the parent process; workers only
+    ever see the resulting DataFrame.
 
     Returns:
-        Mapping of ``"{model_type}_{league}"`` to its artifact path, or an
+        Mapping of ``"{algorithm}_{league}"`` to its artifact path, or an
         ``"ERROR: ..."`` string if that combination failed.
     """
+    league_frames = {league: matches_dataframe(league=league) for league in leagues}
+
     results: dict[str, str] = {}
-    pairs = [(league, model_type) for league in leagues for model_type in model_types]
     with ProcessPoolExecutor(max_workers=workers) as executor:
         futures = {
-            executor.submit(_train_one, league, model_type): (league, model_type)
-            for league, model_type in pairs
+            executor.submit(_train_one, league, algorithm, league_frames[league]): (
+                league,
+                algorithm,
+            )
+            for league in leagues
+            for algorithm in algorithms
         }
         for future in as_completed(futures):
             key, result = future.result()

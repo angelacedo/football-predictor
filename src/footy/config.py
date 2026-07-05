@@ -50,7 +50,7 @@ class Settings(BaseSettings):
         edge_threshold: Minimum value edge to select a paper bet.
         kelly_fraction: Fractional-Kelly multiplier (0..1); 1.0 = full Kelly.
         leagues: Leagues trained/predicted by default (scripts/train_all.py).
-        active_model_types: Model types trained by default.
+        active_algorithms: Algorithms trained by default.
         train_workers: Parallel worker processes for scripts/train_all.py.
     """
 
@@ -86,10 +86,10 @@ class Settings(BaseSettings):
     leagues: Annotated[list[str], NoDecode] = Field(
         default=["La Liga", "Premier League", "Bundesliga", "Serie A", "Ligue 1"]
     )
-    active_model_types: Annotated[list[str], NoDecode] = Field(default=["baseline", "xgboost"])
+    active_algorithms: Annotated[list[str], NoDecode] = Field(default=["baseline", "xgboost"])
     train_workers: int = Field(default=4)
 
-    @field_validator("leagues", "active_model_types", mode="before")
+    @field_validator("leagues", "active_algorithms", mode="before")
     @classmethod
     def _split_csv(cls, value: object) -> object:
         """Allow comma-separated env values, e.g. ``LEAGUES=La Liga,Serie A``."""
