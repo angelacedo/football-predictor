@@ -6,10 +6,12 @@ import pandas as pd
 import pytest
 
 from footy.predictions.metrics import (
+    best_model_per_league,
     breakdown_by,
     breakdown_by_league_and_model,
     mean_brier,
     overall_accuracy,
+    pairs_needing_retrain,
     summary,
 )
 
@@ -60,3 +62,60 @@ def test_breakdown_by_league_and_model() -> None:
 
 def test_breakdown_by_league_and_model_empty() -> None:
     assert breakdown_by_league_and_model(_df().iloc[0:0]) == []
+
+
+def _row(league: str, model_name: str, n: float, brier: float) -> dict[str, str | float]:
+    return {"league": league, "model_name": model_name, "n": n, "accuracy": 0.0,
+            "brier": brier, "log_loss": 0.0}
+
+
+def test_best_model_per_league_picks_lowest_brier_meeting_min_n() -> None:
+    rows = [
+        _row("La Liga", "baseline_La_Liga", 15, 0.60),
+        _row("La Liga", "xgboost_La_Liga", 15, 0.55),
+        _row("La Liga", "random_forest_La_Liga", 3, 0.10),  # below min_n - ignored
+        _row("Premier League", "baseline_Premier_League", 12, 0.62),
+    ]
+    assert best_model_per_league(rows, min_n=10) == {
+        "La Liga": "xgboost_La_Liga",
+        "Premier League": "baseline_Premier_League",
+    }
+
+
+def test_best_model_per_league_empty_when_nothing_qualifies() -> None:
+    rows = [_row("La Liga", "baseline_La_Liga", 3, 0.10)]
+    assert best_model_per_league(rows, min_n=10) == {}
+
+
+def test_pairs_needing_retrain_flags_real_degradation() -> None:
+    current = [_row("La Liga", "xgboost_La_Liga", 8, 0.75)]
+    baseline = [_row("La Liga", "xgboost_La_Liga", 30, 0.65)]
+    result = pairs_needing_retrain(current, baseline, degradation=0.05)
+    assert result == [
+        {"league": "La Liga", "model_name": "xgboost_La_Liga",
+         "current_brier": 0.75, "baseline_brier": 0.65}
+    ]
+
+
+def test_pairs_needing_retrain_ignores_noise_within_margin() -> None:
+    current = [_row("La Liga", "xgboost_La_Liga", 8, 0.68)]
+    baseline = [_row("La Liga", "xgboost_La_Liga", 30, 0.65)]
+    assert pairs_needing_retrain(current, baseline, degradation=0.05) == []
+
+
+def test_pairs_needing_retrain_skips_insufficient_baseline() -> None:
+    current = [_row("La Liga", "xgboost_La_Liga", 8, 0.90)]
+    baseline = [_row("La Liga", "xgboost_La_Liga", 5, 0.65)]  # below min_baseline
+    assert pairs_needing_retrain(current, baseline) == []
+
+
+def test_pairs_needing_retrain_skips_insufficient_current() -> None:
+    current = [_row("La Liga", "xgboost_La_Liga", 2, 0.90)]
+    baseline = [_row("La Liga", "xgboost_La_Liga", 30, 0.65)]
+    assert pairs_needing_retrain(current, baseline) == []
+
+
+def test_pairs_needing_retrain_skips_pair_with_no_baseline_at_all() -> None:
+    current = [_row("Ligue 1", "xgboost_Ligue_1", 8, 0.90)]
+    baseline: list[dict[str, str | float]] = []
+    assert pairs_needing_retrain(current, baseline) == []

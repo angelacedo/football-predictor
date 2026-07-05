@@ -117,6 +117,83 @@ def breakdown_by_league_and_model(df: pd.DataFrame) -> list[dict[str, str | floa
     return sorted(rows, key=lambda r: (str(r["league"]), str(r["model_name"])))
 
 
+def best_model_per_league(
+    rows: list[dict[str, str | float]], min_n: int = 10
+) -> dict[str, str]:
+    """Pick the lowest-brier ``model_name`` per league, among rows with at
+    least ``min_n`` validated predictions (fewer than that is too noisy to
+    trust - e.g. 2 lucky predictions isn't "this algorithm is better").
+
+    Args:
+        rows: Output of :func:`breakdown_by_league_and_model`.
+
+    Returns:
+        ``{league: model_name}`` — leagues with no row meeting ``min_n`` are
+        simply absent; the caller (``predict_upcoming.py``) falls back to the
+        global baseline model for any league missing here.
+    """
+    best: dict[str, tuple[float, str]] = {}
+    for row in rows:
+        if float(row["n"]) < min_n:
+            continue
+        league, model_name, brier = str(row["league"]), str(row["model_name"]), float(row["brier"])
+        if league not in best or brier < best[league][0]:
+            best[league] = (brier, model_name)
+    return {league: model_name for league, (_, model_name) in best.items()}
+
+
+def pairs_needing_retrain(
+    current_rows: list[dict[str, str | float]],
+    baseline_rows: list[dict[str, str | float]],
+    min_current: int = 5,
+    min_baseline: int = 20,
+    degradation: float = 0.05,
+) -> list[dict[str, str | float]]:
+    """(league, model_name) pairs whose *recent* brier is meaningfully worse
+    than their own historical baseline - degradation, not absolute quality.
+
+    Deliberately relative: a real backtest on this repo's live La Liga 2025
+    data showed brier ~0.65-0.72 even for a healthy, working model (barely
+    better than the 0.667 uniform-guess score - the feature set is weak, not
+    broken). An absolute "well-calibrated" threshold would fire on every
+    single pair, forever. Comparing a pair against its *own* prior
+    performance instead catches real breakage (data pipeline issues, drift)
+    without chasing an inherent performance ceiling.
+
+    Args:
+        current_rows: :func:`breakdown_by_league_and_model` over the recent window.
+        baseline_rows: Same, over the earlier/longer historical window.
+        min_current: Minimum n in the recent window to trust its brier at all.
+        min_baseline: Minimum n in the baseline window - a pair with no real
+            baseline yet (new league, or system just launched) is skipped,
+            not guessed at.
+        degradation: Absolute brier increase over baseline that counts as
+            "got worse", not just noise.
+
+    Returns:
+        Rows (league, model_name, current_brier, baseline_brier) needing retrain.
+    """
+    baseline_by_key = {(str(r["league"]), str(r["model_name"])): r for r in baseline_rows}
+    out: list[dict[str, str | float]] = []
+    for row in current_rows:
+        if float(row["n"]) < min_current:
+            continue
+        key = (str(row["league"]), str(row["model_name"]))
+        baseline = baseline_by_key.get(key)
+        if baseline is None or float(baseline["n"]) < min_baseline:
+            continue
+        if float(row["brier"]) > float(baseline["brier"]) + degradation:
+            out.append(
+                {
+                    "league": key[0],
+                    "model_name": key[1],
+                    "current_brier": row["brier"],
+                    "baseline_brier": baseline["brier"],
+                }
+            )
+    return out
+
+
 def calibration_by_class(
     df: pd.DataFrame, n_bins: int = 10
 ) -> Mapping[str, tuple[list[float], list[float]]]:

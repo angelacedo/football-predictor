@@ -31,14 +31,16 @@ def matches_dataframe(league: str | None = None) -> pd.DataFrame:
 
 
 def validated_predictions_dataframe() -> pd.DataFrame:
-    """Return validated predictions joined to their match league/model, for metrics."""
+    """Return validated predictions joined to their match league/model/kickoff,
+    for metrics (kickoff is used to window current-vs-baseline periods for
+    degradation checks, not just to display)."""
     with session_scope() as session:
         rows = session.execute(
             select(
                 Prediction.prob_home_win, Prediction.prob_draw, Prediction.prob_away_win,
                 Prediction.actual_result, Prediction.is_correct,
                 Prediction.brier_score, Prediction.log_loss, Match.league,
-                Prediction.model_name,
+                Prediction.model_name, Match.kickoff,
             )
             .join(Match, Prediction.match_id == Match.id)
             .where(Prediction.validated_at.is_not(None))
@@ -47,7 +49,7 @@ def validated_predictions_dataframe() -> pd.DataFrame:
         rows,
         columns=[
             "prob_home_win", "prob_draw", "prob_away_win", "actual_result",
-            "is_correct", "brier_score", "log_loss", "league", "model_name",
+            "is_correct", "brier_score", "log_loss", "league", "model_name", "kickoff",
         ],
     )
     for col in ("prob_home_win", "prob_draw", "prob_away_win", "brier_score", "log_loss"):

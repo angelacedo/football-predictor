@@ -22,8 +22,12 @@ import run_backtest
 import train_all
 from footy.betting.backtest import backtest
 from footy.config import f1_current_season, football_current_season, get_settings
+from footy.data import matches_dataframe, validated_predictions_dataframe
 from footy.db import get_engine, session_scope
 from footy.ingest.matches import sync_league
+from footy.ingest.providers.base import to_naive_utc
+from footy.ml.train import train_model
+from footy.predictions.metrics import breakdown_by_league_and_model, pairs_needing_retrain
 from footy.predictions.validator import PredictionValidator
 from joblog import JobLogBase, record
 from sports.f1.ingest.sessions import sync_season as f1_sync_season
@@ -103,6 +107,60 @@ def football_validate() -> None:
     except Exception as exc:
         record("football_validate", "ERROR", str(exc))
         log.exception("football_validate failed")
+        return
+    football_retrain_check()
+
+
+_RETRAIN_CURRENT_WINDOW = timedelta(days=7)
+_RETRAIN_BASELINE_WINDOW = timedelta(days=90)
+
+
+def football_retrain_check() -> None:
+    """Runs right after football_validate: compares each (league, algorithm)
+    pair's brier over the last 7 days against its own prior 90-day baseline,
+    and retrains immediately on real degradation instead of waiting for
+    Monday's scheduled football_train.
+
+    Deliberately relative, not an absolute quality bar - a real walk-forward
+    backtest on this repo's live 2025 La Liga data showed brier ~0.65-0.72
+    even for a working model (barely better than 0.667 uniform-guess; the
+    feature set is weak, not broken). See pairs_needing_retrain's docstring.
+
+    World Cup is excluded by construction: it's never in settings.leagues, so
+    train_all never trains it and no artifact exists to retrain.
+    """
+    settings = get_settings()
+    now = to_naive_utc(datetime.now(UTC))
+    df = validated_predictions_dataframe()
+    df = df[df["league"].isin(settings.leagues)]
+    if df.empty:
+        record("football_retrain_check", "SKIPPED", "no validated predictions for a trained league")
+        return
+
+    current = df[df["kickoff"] >= now - _RETRAIN_CURRENT_WINDOW]
+    baseline = df[
+        (df["kickoff"] >= now - _RETRAIN_BASELINE_WINDOW)
+        & (df["kickoff"] < now - _RETRAIN_CURRENT_WINDOW)
+    ]
+    pairs = pairs_needing_retrain(
+        breakdown_by_league_and_model(current), breakdown_by_league_and_model(baseline)
+    )
+    if not pairs:
+        record("football_retrain_check", "SUCCESS", "no degraded pairs")
+        return
+
+    for pair in pairs:
+        league, model_name = str(pair["league"]), str(pair["model_name"])
+        try:
+            train_model(matches_dataframe(league), model_name)
+            record(
+                "football_retrain_check", "SUCCESS",
+                f"retrained {model_name}: brier {pair['baseline_brier']:.3f} "
+                f"-> {pair['current_brier']:.3f}",
+            )
+        except Exception as exc:
+            record("football_retrain_check", "ERROR", f"{model_name}: {exc}")
+            log.exception("Retrain failed for '%s'", model_name)
 
 
 def football_train() -> None:
