@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import logging
 import sys
+import time
 
 from sqlalchemy import select
 
@@ -21,6 +22,11 @@ from footy.ingest.odds import fetch_odds
 from footy.orm import Match
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+log = logging.getLogger("footy.fetch_odds")
+
+# ponytail: fixed delay, not a real rate limiter - swap for one if a provider's
+# actual per-minute quota needs tighter/looser pacing than this.
+REQUEST_DELAY_SECONDS = 0.5
 
 
 def main() -> None:
@@ -30,8 +36,17 @@ def main() -> None:
             select(Match.api_fixture_id).where(Match.status == "SCHEDULED")
         ).all()
 
+    failed = 0
     for api_fixture_id in fixtures:
-        fetch_odds(api_fixture_id, is_closing=is_closing)
+        try:
+            fetch_odds(api_fixture_id, is_closing=is_closing)
+        except Exception:
+            failed += 1
+            log.exception("Odds fetch failed for fixture %d, skipping", api_fixture_id)
+        time.sleep(REQUEST_DELAY_SECONDS)
+
+    if failed:
+        log.warning("%d/%d fixture(s) failed", failed, len(fixtures))
 
 
 if __name__ == "__main__":
