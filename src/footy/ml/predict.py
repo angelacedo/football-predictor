@@ -10,6 +10,7 @@ Example:
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from typing import Any
 
@@ -17,6 +18,8 @@ import pandas as pd
 
 from footy.ml.features import FEATURE_COLUMNS, RESULT_CLASSES, compute_feature_frame
 from footy.ml.registry import load_latest
+
+log = logging.getLogger("footy.ml.predict")
 
 
 @dataclass(frozen=True)
@@ -74,3 +77,52 @@ def predict_match(matches_df: pd.DataFrame, match_id: int, model: Any | None = N
     feats = compute_feature_frame(matches_df)
     row = feats.loc[[match_id]]
     return _probs_from_model(est, row)
+
+
+def predict_ensemble(
+    match_features_df: pd.DataFrame, league: str, model_types: list[str]
+) -> dict[str, Any]:
+    """Average predict_proba across each model type's per-league model.
+
+    Args:
+        match_features_df: A single-row feature frame (already built by
+            :func:`compute_feature_frame`), with :data:`FEATURE_COLUMNS`.
+        league: League name; models are registered as ``f"{model_type}_{league}"``
+            with spaces replaced by underscores.
+        model_types: Model types to ensemble, e.g. ``["baseline", "xgboost"]``.
+
+    Returns:
+        ``{"HOME": float, "DRAW": float, "AWAY": float, "models_used": [str]}``,
+        equal-weight average over whichever models were actually found.
+
+    Raises:
+        ValueError: if none of ``model_types`` has a registered model for ``league``.
+    """
+    key_suffix = league.replace(" ", "_")
+    home_probs: list[float] = []
+    draw_probs: list[float] = []
+    away_probs: list[float] = []
+    models_used: list[str] = []
+
+    for model_type in model_types:
+        key = f"{model_type}_{key_suffix}"
+        try:
+            model = load_latest(key)
+        except FileNotFoundError:
+            log.warning("No model registered for '%s', skipping", key)
+            continue
+        probs = _probs_from_model(model, match_features_df)
+        home_probs.append(probs.home)
+        draw_probs.append(probs.draw)
+        away_probs.append(probs.away)
+        models_used.append(key)
+
+    if not models_used:
+        raise ValueError(f"No models available for league '{league}' among {model_types}")
+
+    return {
+        "HOME": sum(home_probs) / len(models_used),
+        "DRAW": sum(draw_probs) / len(models_used),
+        "AWAY": sum(away_probs) / len(models_used),
+        "models_used": models_used,
+    }

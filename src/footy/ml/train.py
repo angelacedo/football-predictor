@@ -14,9 +14,11 @@ from __future__ import annotations
 import logging
 
 import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+from xgboost import XGBClassifier
 
 from footy.ml.features import FEATURE_COLUMNS, compute_feature_frame
 from footy.ml.registry import save_model
@@ -34,6 +36,46 @@ def build_pipeline() -> Pipeline:
             ("clf", LogisticRegression(max_iter=1000)),  # multinomial by default
         ]
     )
+
+
+def build_xgboost_pipeline() -> Pipeline:
+    return Pipeline(
+        [
+            ("scale", StandardScaler()),
+            (
+                "clf",
+                XGBClassifier(
+                    n_estimators=300,
+                    max_depth=4,
+                    learning_rate=0.05,
+                    eval_metric="mlogloss",
+                ),
+            ),
+        ]
+    )
+
+
+def build_random_forest_pipeline() -> Pipeline:
+    return Pipeline(
+        [
+            ("scale", StandardScaler()),
+            ("clf", RandomForestClassifier(n_estimators=200, random_state=42)),
+        ]
+    )
+
+
+MODEL_REGISTRY = {
+    "baseline": build_pipeline,
+    "xgboost": build_xgboost_pipeline,
+    "random_forest": build_random_forest_pipeline,
+}
+
+
+def _resolve_builder(model_name: str) -> Pipeline:
+    for key in sorted(MODEL_REGISTRY, key=len, reverse=True):
+        if model_name == key or model_name.startswith(key + "_"):
+            return MODEL_REGISTRY[key]()
+    raise ValueError(f"Unknown model type in '{model_name}'; registry: {sorted(MODEL_REGISTRY)}")
 
 
 def train_model(matches_df: pd.DataFrame, model_name: str = MODEL_NAME) -> Pipeline:
@@ -57,7 +99,7 @@ def train_model(matches_df: pd.DataFrame, model_name: str = MODEL_NAME) -> Pipel
 
     x = played[list(FEATURE_COLUMNS)]
     y = played["result"].astype(str)
-    pipe = build_pipeline()
+    pipe = _resolve_builder(model_name)
     pipe.fit(x, y)
     artifact = save_model(pipe, model_name)
     log.info("Trained '%s' on %d matches -> %s", model_name, len(played), artifact)

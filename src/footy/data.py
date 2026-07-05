@@ -13,15 +13,20 @@ MATCH_COLUMNS = (
 )
 
 
-def matches_dataframe() -> pd.DataFrame:
-    """Return all matches as a DataFrame with the columns the feature builder needs."""
+def matches_dataframe(league: str | None = None) -> pd.DataFrame:
+    """Return matches as a DataFrame with the columns the feature builder needs.
+
+    Args:
+        league: If given, only matches in this league.
+    """
+    query = select(
+        Match.id, Match.kickoff, Match.league, Match.home_team,
+        Match.away_team, Match.home_goals, Match.away_goals,
+    )
+    if league is not None:
+        query = query.where(Match.league == league)
     with session_scope() as session:
-        rows = session.execute(
-            select(
-                Match.id, Match.kickoff, Match.league, Match.home_team,
-                Match.away_team, Match.home_goals, Match.away_goals,
-            )
-        ).all()
+        rows = session.execute(query).all()
     return pd.DataFrame(rows, columns=list(MATCH_COLUMNS))
 
 

@@ -10,9 +10,10 @@ Example:
 from __future__ import annotations
 
 from functools import lru_cache
+from typing import Annotated
 
-from pydantic import Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field, field_validator
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 # Providers that can serve odds, keyed by the value used in
 # odds_provider_primary/odds_provider_fallback, mapped to the Settings field
@@ -48,6 +49,9 @@ class Settings(BaseSettings):
         model_dir: Directory holding joblib model artifacts.
         edge_threshold: Minimum value edge to select a paper bet.
         kelly_fraction: Fractional-Kelly multiplier (0..1); 1.0 = full Kelly.
+        leagues: Leagues trained/predicted by default (scripts/train_all.py).
+        active_model_types: Model types trained by default.
+        train_workers: Parallel worker processes for scripts/train_all.py.
     """
 
     model_config = SettingsConfigDict(
@@ -78,6 +82,20 @@ class Settings(BaseSettings):
     model_dir: str = Field(default="models")
     edge_threshold: float = Field(default=0.05)
     kelly_fraction: float = Field(default=0.25)
+
+    leagues: Annotated[list[str], NoDecode] = Field(
+        default=["La Liga", "Premier League", "Bundesliga", "Serie A", "Ligue 1"]
+    )
+    active_model_types: Annotated[list[str], NoDecode] = Field(default=["baseline", "xgboost"])
+    train_workers: int = Field(default=4)
+
+    @field_validator("leagues", "active_model_types", mode="before")
+    @classmethod
+    def _split_csv(cls, value: object) -> object:
+        """Allow comma-separated env values, e.g. ``LEAGUES=La Liga,Serie A``."""
+        if isinstance(value, str):
+            return [item.strip() for item in value.split(",") if item.strip()]
+        return value
 
     def require_odds_provider(self) -> None:
         """Raise if neither the primary nor the fallback odds provider has a key set.
