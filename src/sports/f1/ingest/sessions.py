@@ -7,6 +7,7 @@ separate DB for F1), but writes only to F1's own f1_-prefixed tables.
 from __future__ import annotations
 
 import logging
+import time
 
 from sqlalchemy import select
 
@@ -19,6 +20,11 @@ from sports.f1.orm import F1Entry, F1Session
 log = logging.getLogger("sports.f1.ingest.sessions")
 
 DEFAULT_PROVIDER = "openf1"
+
+# ponytail: fixed delay, not a real rate limiter - same tradeoff as
+# footy.ingest.odds's REQUEST_DELAY_SECONDS. OpenF1 429s hard and often; swap
+# for a real rate limiter if this stops being enough.
+REQUEST_DELAY_SECONDS = 0.5
 
 
 def upsert_sessions(sessions: list[SessionDTO]) -> int:
@@ -101,6 +107,12 @@ def sync_season(season: int, session_type: str = "RACE", provider: F1Provider | 
     written = upsert_sessions(sessions)
     for sx in sessions:
         if sx.finished:
-            entries = active.get_entries(sx.external_session_id)
-            upsert_entries(sx.external_session_id, entries)
+            try:
+                entries = active.get_entries(sx.external_session_id)
+                upsert_entries(sx.external_session_id, entries)
+            except Exception:
+                log.exception(
+                    "Entries fetch failed for session %d, skipping", sx.external_session_id
+                )
+            time.sleep(REQUEST_DELAY_SECONDS)
     return written
