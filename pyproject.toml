@@ -39,7 +39,7 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 python_version = "3.12"
 strict = true
 mypy_path = "src"
-packages = ["footy", "sports"]
+packages = ["footy", "sports", "joblog"]
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
