@@ -104,6 +104,9 @@ CREATE TABLE IF NOT EXISTS f1_entries (
     driver_number   INTEGER     NOT NULL,
     driver_name     VARCHAR(80) NOT NULL,
     team            VARCHAR(80) NOT NULL,
+    team_colour     VARCHAR(6),   -- hex, no '#' - from OpenF1 drivers.team_colour, used for
+                                   -- dashboard badge backgrounds; NULL falls back to a
+                                   -- hash-derived color (see web/badges.py)
     grid_position   INTEGER,      -- NULL: not reliably available via OpenF1, see adapter docstring
     finish_position INTEGER,
     status          VARCHAR(10) NOT NULL DEFAULT 'FINISHED',  -- FINISHED|DNF|DNS|DSQ
@@ -111,6 +114,7 @@ CREATE TABLE IF NOT EXISTS f1_entries (
 
     UNIQUE (session_id, driver_number)
 );
+ALTER TABLE f1_entries ADD COLUMN IF NOT EXISTS team_colour VARCHAR(6);
 
 CREATE TABLE IF NOT EXISTS f1_predictions (
     id                 SERIAL PRIMARY KEY,

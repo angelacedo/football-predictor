@@ -2,15 +2,22 @@
 {% block title %}Overview - football-predictor{% endblock %}
 {% block heading %}Overview{% endblock %}
 {% block content %}
+<h2>Football</h2>
 <div>
-  <span class="stat"><b>{{ n_matches }}</b>matches</span>
-  <span class="stat"><b>{{ n_scheduled }}</b>scheduled</span>
-  <span class="stat"><b>{{ n_predictions }}</b>predictions</span>
-  <span class="stat"><b>{{ n_validated }}</b>validated</span>
+  <span class="stat"><b>{{ n_matches }}</b><span class="label">matches</span></span>
+  <span class="stat"><b>{{ n_scheduled }}</b><span class="label">scheduled</span></span>
+  <span class="stat"><b>{{ n_predictions }}</b><span class="label">predictions</span></span>
+  <span class="stat"><b>{{ n_validated }}</b><span class="label">validated</span></span>
 </div>
-<h2>Leagues</h2>
-<ul>
-  {% for l in leagues %}<li>{{ l }}</li>{% endfor %}
-  {% if not leagues %}<li>none synced yet</li>{% endif %}
-</ul>
+<p>
+  {% for l in leagues %}{{ l }}{{ ", " if not loop.last }}{% endfor %}
+  {% if not leagues %}no leagues synced yet{% endif %}
+</p>
+
+<h2>F1</h2>
+<div>
+  <span class="stat"><b>{{ n_f1_sessions }}</b><span class="label">sessions</span></span>
+  <span class="stat"><b>{{ n_f1_scheduled }}</b><span class="label">scheduled</span></span>
+  <span class="stat"><b>{{ n_f1_predictions }}</b><span class="label">predictions</span></span>
+</div>
 {% endblock %}

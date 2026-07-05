@@ -14,6 +14,9 @@ Verified live against the real API (2026-07-05):
   MVP trains on rolling form + circuit history only.
 - `session_result` is the real endpoint for finishing position/points/DNF
   (not "position", which is a lap-by-lap time series, not a final result).
+- `drivers` includes a real `team_colour` hex field (e.g. "3671C6" for Red
+  Bull Racing) - used for dashboard badge backgrounds instead of a guessed
+  crest image.
 """
 
 from __future__ import annotations
@@ -96,6 +99,7 @@ class OpenF1Provider:
                     finish_position=r["position"] if status == "FINISHED" else None,
                     status=status,
                     points=r.get("points"),
+                    team_colour=driver.get("team_colour"),
                 )
             )
         return entries

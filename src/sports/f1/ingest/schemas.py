@@ -26,3 +26,4 @@ class EntryDTO:
     finish_position: int | None
     status: str  # FINISHED | DNF | DNS | DSQ
     points: float | None
+    team_colour: str | None = None  # hex, no '#'

@@ -2,22 +2,49 @@
 {% block title %}Models - football-predictor{% endblock %}
 {% block heading %}Model comparison (validated predictions){% endblock %}
 {% block content %}
-<table>
+<table id="models-table">
   <thead>
     <tr><th>League</th><th>Model</th><th>N</th><th>Accuracy</th><th>Brier</th><th>Log loss</th></tr>
   </thead>
   <tbody>
     {% for row in rows %}
     <tr>
-      <td>{{ row.league }}</td>
-      <td>{{ row.model_name }}</td>
-      <td>{{ row.n | int }}</td>
-      <td>{{ "%.3f"|format(row.accuracy) if row.accuracy == row.accuracy else "-" }}</td>
-      <td>{{ "%.4f"|format(row.brier) if row.brier == row.brier else "-" }}</td>
-      <td>{{ "%.4f"|format(row.log_loss) if row.log_loss == row.log_loss else "-" }}</td>
+      <td data-label="League">{{ row.league }}</td>
+      <td data-label="Model">{{ row.model_name }}</td>
+      <td data-label="N">{{ row.n | int }}</td>
+      <td data-label="Accuracy">{{ "%.3f"|format(row.accuracy) if row.accuracy == row.accuracy else "-" }}</td>
+      <td data-label="Brier">
+        {% if row.brier == row.brier %}
+        <span class="metric-cell" style="background:{{ brier_color(row.brier) }};color:{{ badge_text_color(brier_color(row.brier)) }}">{{ "%.4f"|format(row.brier) }}</span>
+        {% else %}-{% endif %}
+      </td>
+      <td data-label="Log loss">
+        {% if row.log_loss == row.log_loss %}
+        <span class="metric-cell" style="background:{{ log_loss_color(row.log_loss) }};color:{{ badge_text_color(log_loss_color(row.log_loss)) }}">{{ "%.4f"|format(row.log_loss) }}</span>
+        {% else %}-{% endif %}
+      </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 {% if not rows %}<p>No validated predictions yet — run validate_predictions.py once matches finish.</p>{% endif %}
+<script>
+  document.querySelectorAll("#models-table th").forEach(function (th, idx) {
+    th.addEventListener("click", function () {
+      var table = th.closest("table");
+      var tbody = table.querySelector("tbody");
+      var rows = Array.from(tbody.querySelectorAll("tr"));
+      var asc = th.dataset.asc !== "true";
+      rows.sort(function (a, b) {
+        var av = a.children[idx].innerText.trim();
+        var bv = b.children[idx].innerText.trim();
+        var an = parseFloat(av), bn = parseFloat(bv);
+        var cmp = (!isNaN(an) && !isNaN(bn)) ? an - bn : av.localeCompare(bv);
+        return asc ? cmp : -cmp;
+      });
+      th.dataset.asc = asc;
+      rows.forEach(function (r) { tbody.appendChild(r); });
+    });
+  });
+</script>
 {% endblock %}

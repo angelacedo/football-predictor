@@ -43,6 +43,7 @@ class F1Entry(F1Base):
     driver_number: Mapped[int]
     driver_name: Mapped[str] = mapped_column(String(80))
     team: Mapped[str] = mapped_column(String(80))
+    team_colour: Mapped[str | None] = mapped_column(String(6), default=None)  # hex, no '#'
     grid_position: Mapped[int | None] = mapped_column(default=None)
     finish_position: Mapped[int | None] = mapped_column(default=None)
     status: Mapped[str] = mapped_column(String(10), default="FINISHED")  # FINISHED|DNF|DNS|DSQ

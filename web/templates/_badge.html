@@ -1,0 +1,4 @@
+{% macro badge(name, color=None) %}
+{% set bg = color or badge_color(name) %}
+<span class="badge" style="background:{{ bg }};color:{{ badge_text_color(bg) }};" title="{{ name }}">{{ badge_initials(name) }}</span>
+{% endmacro %}

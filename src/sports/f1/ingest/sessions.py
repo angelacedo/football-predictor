@@ -73,6 +73,7 @@ def upsert_entries(external_session_id: int, entries: list[EntryDTO]) -> int:
                 "finish_position": en.finish_position,
                 "status": en.status,
                 "points": en.points,
+                "team_colour": en.team_colour,
             }
             if existing is None:
                 session.add(F1Entry(**values))
