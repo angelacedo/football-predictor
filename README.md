@@ -146,6 +146,9 @@ ruff check .
 mypy
 ```
 
+`tests/test_web.py` needs the `web` extra (`pip install -e ".[dev,web]"`) —
+skipped automatically otherwise, not a failure.
+
 ## Compliance
 
 Paper/backtest only. No real-money execution. See code comments in

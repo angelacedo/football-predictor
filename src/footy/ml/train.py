@@ -1,9 +1,9 @@
-"""Train the baseline 1X2 model.
+"""Train a 1X2 model using one of MODEL_REGISTRY's algorithms.
 
-Baseline is a scaled multinomial logistic regression — cheap, gives calibrated-ish
-probabilities, and is a proper reference before reaching for gradient boosting.
-``ponytail:`` swap in XGBoost only once the baseline Brier is measured and found
-lacking.
+``baseline`` (scaled multinomial logistic regression) is cheap and gives
+calibrated-ish probabilities — a proper reference to compare ``xgboost``/
+``random_forest`` against via predictions.metrics.breakdown_by_league_and_model
+before trusting predict_ensemble() over a single model.
 
 Example:
     >>> pipe = train_model(finished_matches_df, "baseline")  # doctest: +SKIP
