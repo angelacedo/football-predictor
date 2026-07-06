@@ -140,3 +140,25 @@ def test_world_cup_uses_its_own_model_when_artifact_exists(predict_db: None) -> 
     assert pred.model_name == "baseline_World_Cup"
     # DummyClassifier(constant="AWAY") -> prob_away_win should be the max.
     assert float(pred.prob_away_win) > float(pred.prob_home_win)
+
+
+def test_world_cup_new_model_replaces_stale_fallback_prediction(predict_db: None) -> None:
+    """Real bug found live: a match predicted once via the club-baseline
+    fallback, then again later via baseline_World_Cup once trained, must end
+    up with exactly one prediction row - not both stacked side by side."""
+    save_model(_dummy("HOME"), MODEL_NAME)
+
+    match_id = _add_scheduled_match("World Cup", api_fixture_id=5)
+    with session_scope() as session:
+        session.add(Prediction(
+            match_id=match_id, model_name=MODEL_NAME,
+            prob_home_win=0.4, prob_draw=0.3, prob_away_win=0.3,
+        ))
+
+    save_model(_dummy_worldcup("AWAY"), "baseline_World_Cup")
+    predict_upcoming.main()
+
+    with session_scope() as session:
+        preds = session.query(Prediction).filter(Prediction.match_id == match_id).all()
+    assert len(preds) == 1
+    assert preds[0].model_name == "baseline_World_Cup"

@@ -30,7 +30,7 @@ import logging
 from typing import Any
 
 import pandas as pd
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from footy.data import matches_dataframe, validated_predictions_dataframe
 from footy.db import session_scope
@@ -43,7 +43,7 @@ from footy.ml.features_worldcup import (
 from footy.ml.predict import predict_match
 from footy.ml.registry import load_latest
 from footy.ml.train import MODEL_NAME
-from footy.orm import Match
+from footy.orm import Match, Prediction
 from footy.predictions.metrics import best_model_per_league, breakdown_by_league_and_model
 from footy.predictions.tracker import PredictionTracker
 
@@ -53,6 +53,25 @@ log = logging.getLogger("footy.predict_upcoming")
 MIN_VALIDATED_TO_TRUST = 10
 WORLD_CUP_LEAGUE = "World Cup"
 WORLD_CUP_MODEL_NAME = "baseline_World_Cup"
+
+
+def _clear_other_model_predictions(match_id: int, keep_model_name: str) -> None:
+    """Delete any other model's prediction row for this match.
+
+    Real bug found live (2026-07-06): Prediction only has UNIQUE(match_id,
+    model_name), not "one current prediction per match" - when the World Cup
+    model went from missing (fallback to "baseline") to trained
+    ("baseline_World_Cup"), the dashboard showed BOTH rows side by side for
+    the same match, since neither insert was a duplicate of the other. A
+    match should show its one current prediction, not accumulate a row per
+    model that's ever predicted it.
+    """
+    with session_scope() as session:
+        session.execute(
+            delete(Prediction).where(
+                Prediction.match_id == match_id, Prediction.model_name != keep_model_name
+            )
+        )
 
 
 def _probs_from_worldcup_model(model: Any, features: pd.DataFrame) -> MatchProbs:
@@ -102,6 +121,7 @@ def main() -> None:
     for match_id, league in scheduled:
         if league == WORLD_CUP_LEAGUE and wc_model is not None and wc_feats is not None:
             probs = _probs_from_worldcup_model(wc_model, wc_feats.loc[[match_id]])
+            _clear_other_model_predictions(match_id, WORLD_CUP_MODEL_NAME)
             tracker.record(match_id, WORLD_CUP_MODEL_NAME, probs)
             continue
 
