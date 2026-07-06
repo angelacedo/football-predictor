@@ -28,7 +28,11 @@
         <td data-label="League">
           {% if r.league == "World Cup" %}
           <span class="wc-tag">🏆 World Cup 2026</span>
+          {% if r.model_name == "baseline_World_Cup" %}
+          <span class="wc-note" title="FIFA ranking data is a static snapshot from September 2024 (source repo abandoned, no live feed exists) - blind to any team's real ranking/form shift since then.">ranking frozen Sept 2024 · not live</span>
+          {% else %}
           <span class="wc-note" title="Club-trained model applied to a national-team knockout: neutral venue, out-of-distribution, in-tournament form only. Treat as experimental.">form-based · unvalidated</span>
+          {% endif %}
           {% else %}{{ r.league }}{% endif %}
         </td>
         <td data-label="Match">

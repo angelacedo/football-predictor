@@ -5,12 +5,20 @@ Idempotent: re-running skips matches already predicted by this model.
 Per league, uses the best validated ``train_all``-produced artifact (e.g.
 ``xgboost_La_Liga``) if it has enough validated history to trust; otherwise
 falls back to the single global ``baseline`` model trained across every
-league. A league never in ``settings.leagues`` (World Cup, by design - see
-``run_scheduler.py``) is never trained by ``train_all``, so no such artifact
-file exists on disk for it in practice - the ``FileNotFoundError`` catch below
-is what actually guarantees the baseline fallback, not any league-name check
-here (``best_model_per_league`` has no awareness of ``settings.leagues`` at
-all; it just reads whatever's in ``validated_predictions_dataframe()``).
+league. A league never in ``settings.leagues`` is never trained by
+``train_all``, so no such artifact file exists on disk for it in practice -
+the ``FileNotFoundError`` catch below is what actually guarantees the
+baseline fallback, not any league-name check here (``best_model_per_league``
+has no awareness of ``settings.leagues`` at all; it just reads whatever's in
+``validated_predictions_dataframe()``).
+
+World Cup is the one explicit exception: it gets its own purpose-built
+model/features (FIFA ranking + host-nation, see
+footy.ml.features_worldcup's docstring for why club-football's rolling-form
+features don't transfer) rather than falling back to the club baseline. If
+that artifact hasn't been trained yet (scripts/train_world_cup.py, a manual
+one-off), World Cup matches fall back to the same baseline as everything
+else - never a hard failure.
 
 Usage:
     python scripts/predict_upcoming.py
@@ -19,11 +27,19 @@ Usage:
 from __future__ import annotations
 
 import logging
+from typing import Any
 
+import pandas as pd
 from sqlalchemy import select
 
 from footy.data import matches_dataframe, validated_predictions_dataframe
 from footy.db import session_scope
+from footy.domain import MatchProbs
+from footy.ml.features_worldcup import (
+    FEATURE_COLUMNS_WORLDCUP,
+    compute_feature_frame_worldcup,
+    load_rankings,
+)
 from footy.ml.predict import predict_match
 from footy.ml.registry import load_latest
 from footy.ml.train import MODEL_NAME
@@ -35,6 +51,21 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name
 log = logging.getLogger("footy.predict_upcoming")
 
 MIN_VALIDATED_TO_TRUST = 10
+WORLD_CUP_LEAGUE = "World Cup"
+WORLD_CUP_MODEL_NAME = "baseline_World_Cup"
+
+
+def _probs_from_worldcup_model(model: Any, features: pd.DataFrame) -> MatchProbs:
+    """Same shape as footy.ml.predict._probs_from_model, but reads
+    FEATURE_COLUMNS_WORLDCUP - kept separate rather than parameterizing the
+    shared one, matching features_worldcup.py's isolation-over-branching call."""
+    raw = model.predict_proba(features[list(FEATURE_COLUMNS_WORLDCUP)])[0]
+    by_class = dict(zip(model.classes_, raw, strict=True))
+    return MatchProbs(
+        home=float(by_class.get("HOME", 0.0)),
+        draw=float(by_class.get("DRAW", 0.0)),
+        away=float(by_class.get("AWAY", 0.0)),
+    )
 
 
 def main() -> None:
@@ -53,7 +84,27 @@ def main() -> None:
     df = matches_dataframe()
     tracker = PredictionTracker()
     models: dict[str, object] = {MODEL_NAME: load_latest(MODEL_NAME)}
+
+    wc_model: Any | None = None
+    wc_feats: pd.DataFrame | None = None
+    if any(league == WORLD_CUP_LEAGUE for _match_id, league in scheduled):
+        try:
+            wc_model = load_latest(WORLD_CUP_MODEL_NAME)
+            wc_feats = compute_feature_frame_worldcup(
+                matches_dataframe(WORLD_CUP_LEAGUE), load_rankings()
+            )
+        except FileNotFoundError:
+            log.warning(
+                "No '%s' artifact yet (run scripts/train_world_cup.py) - "
+                "World Cup matches fall back to baseline", WORLD_CUP_MODEL_NAME,
+            )
+
     for match_id, league in scheduled:
+        if league == WORLD_CUP_LEAGUE and wc_model is not None and wc_feats is not None:
+            probs = _probs_from_worldcup_model(wc_model, wc_feats.loc[[match_id]])
+            tracker.record(match_id, WORLD_CUP_MODEL_NAME, probs)
+            continue
+
         model_name = best_by_league.get(league, MODEL_NAME)
         if model_name not in models:
             try:

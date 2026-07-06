@@ -10,6 +10,7 @@ COPY pyproject.toml ./
 COPY src ./src
 COPY scripts ./scripts
 COPY schema.sql ./
+COPY data ./data
 
 RUN pip install --no-cache-dir .
 

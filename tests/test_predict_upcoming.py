@@ -12,6 +12,7 @@ from sklearn.dummy import DummyClassifier
 import predict_upcoming
 from footy.db import session_scope
 from footy.ml.features import FEATURE_COLUMNS
+from footy.ml.features_worldcup import FEATURE_COLUMNS_WORLDCUP
 from footy.ml.registry import save_model
 from footy.ml.train import MODEL_NAME
 from footy.orm import Base, Match, Prediction
@@ -37,6 +38,12 @@ def predict_db(tmp_path, monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
 
 def _dummy(label: str) -> DummyClassifier:
     x = pd.DataFrame([[0.0] * len(FEATURE_COLUMNS)] * 3, columns=list(FEATURE_COLUMNS))
+    return DummyClassifier(strategy="constant", constant=label).fit(x, ["HOME", "DRAW", "AWAY"])
+
+
+def _dummy_worldcup(label: str) -> DummyClassifier:
+    cols = list(FEATURE_COLUMNS_WORLDCUP)
+    x = pd.DataFrame([[0.0] * len(cols)] * 3, columns=cols)
     return DummyClassifier(strategy="constant", constant=label).fit(x, ["HOME", "DRAW", "AWAY"])
 
 
@@ -117,3 +124,19 @@ def test_world_cup_falls_back_to_baseline_when_no_artifact_file_exists(predict_d
     with session_scope() as session:
         pred = session.query(Prediction).filter(Prediction.match_id == match_id).one()
     assert pred.model_name == MODEL_NAME
+
+
+def test_world_cup_uses_its_own_model_when_artifact_exists(predict_db: None) -> None:
+    """Once scripts/train_world_cup.py has run, World Cup must use its own
+    ranking/host-nation model - not the club baseline, not best_by_league."""
+    save_model(_dummy("HOME"), MODEL_NAME)
+    save_model(_dummy_worldcup("AWAY"), "baseline_World_Cup")
+
+    match_id = _add_scheduled_match("World Cup", api_fixture_id=4)
+    predict_upcoming.main()
+
+    with session_scope() as session:
+        pred = session.query(Prediction).filter(Prediction.match_id == match_id).one()
+    assert pred.model_name == "baseline_World_Cup"
+    # DummyClassifier(constant="AWAY") -> prob_away_win should be the max.
+    assert float(pred.prob_away_win) > float(pred.prob_home_win)

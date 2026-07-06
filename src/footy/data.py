@@ -9,7 +9,7 @@ from footy.db import session_scope
 from footy.orm import Match, Prediction
 
 MATCH_COLUMNS = (
-    "id", "kickoff", "league", "home_team", "away_team", "home_goals", "away_goals",
+    "id", "kickoff", "league", "season", "home_team", "away_team", "home_goals", "away_goals",
     "xg_home", "xg_away", "possession_home", "possession_away",
 )
 _STATS_COLUMNS = ("xg_home", "xg_away", "possession_home", "possession_away")
@@ -22,7 +22,7 @@ def matches_dataframe(league: str | None = None) -> pd.DataFrame:
         league: If given, only matches in this league.
     """
     query = select(
-        Match.id, Match.kickoff, Match.league, Match.home_team,
+        Match.id, Match.kickoff, Match.league, Match.season, Match.home_team,
         Match.away_team, Match.home_goals, Match.away_goals,
         Match.xg_home, Match.xg_away, Match.possession_home, Match.possession_away,
     )
