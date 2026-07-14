@@ -55,23 +55,26 @@ WORLD_CUP_LEAGUE = "World Cup"
 WORLD_CUP_MODEL_NAME = "baseline_World_Cup"
 
 
-def _clear_other_model_predictions(match_id: int, keep_model_name: str) -> None:
-    """Delete any other model's prediction row for this match.
+def _clear_existing_predictions(match_id: int) -> None:
+    """Delete every existing prediction row for this match, any model name.
 
     Real bug found live (2026-07-06): Prediction only has UNIQUE(match_id,
     model_name), not "one current prediction per match" - when the World Cup
     model went from missing (fallback to "baseline") to trained
     ("baseline_World_Cup"), the dashboard showed BOTH rows side by side for
-    the same match, since neither insert was a duplicate of the other. A
-    match should show its one current prediction, not accumulate a row per
-    model that's ever predicted it.
+    the same match, since neither insert was a duplicate of the other.
+
+    Second real bug found live (2026-07-14): clearing only *other*-model rows
+    wasn't enough - retraining baseline_World_Cup itself (same model name,
+    new weights) left the match's old baseline_World_Cup row in place, and
+    PredictionTracker.record's new insert silently lost to the UNIQUE
+    constraint and got logged+skipped as a "duplicate", so the corrected
+    probabilities never actually landed. A match must always get a fresh row
+    for its current prediction, regardless of whether the same model name
+    predicted it before.
     """
     with session_scope() as session:
-        session.execute(
-            delete(Prediction).where(
-                Prediction.match_id == match_id, Prediction.model_name != keep_model_name
-            )
-        )
+        session.execute(delete(Prediction).where(Prediction.match_id == match_id))
 
 
 def _probs_from_worldcup_model(model: Any, features: pd.DataFrame) -> MatchProbs:
@@ -137,7 +140,7 @@ def main() -> None:
             probs = _probs_from_worldcup_model(wc_model, wc_feats.loc[[match_id]])
             if wc_feats.loc[match_id, "is_knockout"] == 1.0:
                 probs = _zero_out_draw(probs)
-            _clear_other_model_predictions(match_id, WORLD_CUP_MODEL_NAME)
+            _clear_existing_predictions(match_id)
             tracker.record(match_id, WORLD_CUP_MODEL_NAME, probs)
             continue
 

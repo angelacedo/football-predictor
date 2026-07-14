@@ -165,6 +165,31 @@ def test_world_cup_new_model_replaces_stale_fallback_prediction(predict_db: None
     assert preds[0].model_name == "baseline_World_Cup"
 
 
+def test_world_cup_retrain_overwrites_stale_same_model_prediction(predict_db: None) -> None:
+    """Real bug found live 2026-07-14: retraining baseline_World_Cup (same
+    model name, new weights) left the match's old baseline_World_Cup row in
+    place - PredictionTracker.record's insert silently lost to the
+    UNIQUE(match_id, model_name) constraint and got skipped as a
+    "duplicate", so the corrected probabilities never landed. Must always
+    replace, not just skip, even when the model name hasn't changed."""
+    save_model(_dummy("HOME"), MODEL_NAME)
+
+    match_id = _add_scheduled_match("World Cup", api_fixture_id=8)
+    with session_scope() as session:
+        session.add(Prediction(
+            match_id=match_id, model_name="baseline_World_Cup",
+            prob_home_win=0.3, prob_draw=0.4, prob_away_win=0.3,
+        ))
+
+    save_model(_dummy_worldcup("AWAY"), "baseline_World_Cup")
+    predict_upcoming.main()
+
+    with session_scope() as session:
+        preds = session.query(Prediction).filter(Prediction.match_id == match_id).all()
+    assert len(preds) == 1
+    assert float(preds[0].prob_away_win) > float(preds[0].prob_home_win)
+
+
 def test_knockout_match_never_shows_draw_probability(predict_db: None) -> None:
     """Real bug found live 2026-07-14: a semifinal (Round of 16+) can't end
     in a draw - ET/penalties always decide a winner - but the model can
