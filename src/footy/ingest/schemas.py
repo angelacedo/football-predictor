@@ -29,6 +29,9 @@ class FixtureDTO:
     finished: bool
     home_goals: int | None
     away_goals: int | None
+    round: str | None = None
+    winner_home: bool | None = None
+    winner_away: bool | None = None
 
 
 @dataclass(frozen=True)

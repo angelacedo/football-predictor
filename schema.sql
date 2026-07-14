@@ -15,7 +15,10 @@ CREATE TABLE IF NOT EXISTS matches (
     xg_home         DECIMAL(5, 2),  -- expected goals, from a stats provider
     xg_away         DECIMAL(5, 2),
     possession_home DECIMAL(5, 2),  -- percent, 0-100
-    possession_away DECIMAL(5, 2)
+    possession_away DECIMAL(5, 2),
+    round        VARCHAR(40),   -- provider's round/stage label, e.g. "Round of 16"
+    winner_home  BOOLEAN,       -- null/null = draw; true/false decided (incl. penalties)
+    winner_away  BOOLEAN
 );
 CREATE INDEX IF NOT EXISTS idx_matches_status  ON matches (status);
 CREATE INDEX IF NOT EXISTS idx_matches_kickoff ON matches (kickoff);
@@ -26,6 +29,9 @@ ALTER TABLE matches ADD COLUMN IF NOT EXISTS xg_home DECIMAL(5, 2);
 ALTER TABLE matches ADD COLUMN IF NOT EXISTS xg_away DECIMAL(5, 2);
 ALTER TABLE matches ADD COLUMN IF NOT EXISTS possession_home DECIMAL(5, 2);
 ALTER TABLE matches ADD COLUMN IF NOT EXISTS possession_away DECIMAL(5, 2);
+ALTER TABLE matches ADD COLUMN IF NOT EXISTS round VARCHAR(40);
+ALTER TABLE matches ADD COLUMN IF NOT EXISTS winner_home BOOLEAN;
+ALTER TABLE matches ADD COLUMN IF NOT EXISTS winner_away BOOLEAN;
 
 CREATE TABLE IF NOT EXISTS predictions (
     id                 SERIAL PRIMARY KEY,

@@ -48,6 +48,14 @@ def _fixture_from_json(item: dict[str, Any]) -> FixtureDTO:
         finished=finished,
         home_goals=goals["home"] if finished else None,
         away_goals=goals["away"] if finished else None,
+        round=league.get("round"),
+        # "winner" is null/null for a genuine draw, true/false once decided -
+        # including by penalties, where goals.home/goals.away is only the
+        # 120-min score and can tie even though the match had a real winner.
+        # Confirmed live 2026-07-14 against the real 2022 final (Argentina
+        # beat France on penalties): goals=3-3, winner=true/false.
+        winner_home=teams["home"].get("winner") if finished else None,
+        winner_away=teams["away"].get("winner") if finished else None,
     )
 
 

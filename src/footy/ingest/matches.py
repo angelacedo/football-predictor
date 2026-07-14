@@ -43,6 +43,9 @@ def upsert_matches(fixtures: list[FixtureDTO]) -> int:
                 "status": "FINISHED" if fx.finished else "SCHEDULED",
                 "home_goals": fx.home_goals,
                 "away_goals": fx.away_goals,
+                "round": fx.round,
+                "winner_home": fx.winner_home,
+                "winner_away": fx.winner_away,
             }
             if existing is None:
                 session.add(Match(**values))

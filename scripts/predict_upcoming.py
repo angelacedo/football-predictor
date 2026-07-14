@@ -87,6 +87,20 @@ def _probs_from_worldcup_model(model: Any, features: pd.DataFrame) -> MatchProbs
     )
 
 
+def _zero_out_draw(probs: MatchProbs) -> MatchProbs:
+    """A knockout match always has a real winner (ET/penalties decide any
+    tie) - a draw is structurally impossible, regardless of what residual
+    probability the model assigns it (see features_worldcup.py's module
+    docstring: the training-label fix alone doesn't guarantee this, since a
+    classifier fit on both group and knockout rows can still learn some
+    nonzero draw weight). Redistribute proportionally rather than dropping
+    the model's home/away split."""
+    total = probs.home + probs.away
+    if total <= 0:
+        return MatchProbs(home=0.5, draw=0.0, away=0.5)
+    return MatchProbs(home=probs.home / total, draw=0.0, away=probs.away / total)
+
+
 def main() -> None:
     with session_scope() as session:
         scheduled = session.execute(
@@ -121,6 +135,8 @@ def main() -> None:
     for match_id, league in scheduled:
         if league == WORLD_CUP_LEAGUE and wc_model is not None and wc_feats is not None:
             probs = _probs_from_worldcup_model(wc_model, wc_feats.loc[[match_id]])
+            if wc_feats.loc[match_id, "is_knockout"] == 1.0:
+                probs = _zero_out_draw(probs)
             _clear_other_model_predictions(match_id, WORLD_CUP_MODEL_NAME)
             tracker.record(match_id, WORLD_CUP_MODEL_NAME, probs)
             continue

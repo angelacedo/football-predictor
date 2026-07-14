@@ -10,6 +10,19 @@ each team's FIFA ranking as of a fixed pre-tournament snapshot date (never
 live, never updates mid-tournament, leakage-safe by construction since the
 snapshot always predates kickoff), plus a static host-nation flag.
 
+Also plus a static is_knockout flag: real bug found live 2026-07-14 - a
+knockout match tied after extra time and decided by penalties (e.g. the real
+2022 final, Argentina beat France) has goals.home == goals.away, which
+result_from_goals would mislabel DRAW. A knockout match always has a real
+winner, so training labels use the provider's own winner_home/winner_away
+flags (true/false once decided, including by penalties; null/null only for
+a genuine drawn group-stage game) instead of comparing goals directly.
+is_knockout also lets scripts/predict_upcoming.py hard-zero the draw
+probability it shows for knockout fixtures - a classifier fit on both
+group (draws real) and knockout (draws impossible) rows can still assign
+some residual draw probability to a knockout row's features, so the label
+fix alone doesn't guarantee 0% shown; the serving-side renormalization does.
+
 Ranking data: data/fifa_rankings_snapshot.csv, vendored from
 github.com/Dato-Futbol/fifa-ranking (community-maintained; verified live
 2026-07-06 against all 65 real WC-participating teams across 2010-2026,
@@ -45,7 +58,15 @@ FEATURE_COLUMNS_WORLDCUP: tuple[str, ...] = (
     "fifa_rank_away",
     "is_host_home",
     "is_host_away",
+    "is_knockout",
 )
+
+# Group-stage rounds are named "Group Stage - N" by API-Football; everything
+# else (Round of 16, Quarter-finals, ...) is knockout - a real winner is
+# always decided (via ET/penalties if needed), a draw is structurally
+# impossible. Missing round (older rows not yet re-synced) defaults to 0.0 -
+# never force a match into the knockout bucket without real round data.
+_GROUP_STAGE_MARKER = "Group"
 
 DEFAULT_RANKINGS_PATH = Path("data/fifa_rankings_snapshot.csv")
 # ponytail: one worse than the worst real WC-participant rank seen (105) by
@@ -73,8 +94,9 @@ def compute_feature_frame_worldcup(df: pd.DataFrame, rankings: pd.DataFrame) -> 
 
     Args:
         df: Matches with columns ``id, season, home_team, away_team,
-            home_goals, away_goals`` (season = tournament year, e.g. 2026 -
-            same shape footy.data.matches_dataframe already returns).
+            home_goals, away_goals, round, winner_home, winner_away``
+            (season = tournament year, e.g. 2026 - same shape
+            footy.data.matches_dataframe already returns).
         rankings: Output of :func:`load_rankings`.
 
     Returns:
@@ -94,7 +116,23 @@ def compute_feature_frame_worldcup(df: pd.DataFrame, rankings: pd.DataFrame) -> 
         hosts = _HOST_NATIONS.get(season, frozenset())
         result = None
         if pd.notna(rec.get("home_goals")) and pd.notna(rec.get("away_goals")):
-            result = result_from_goals(int(rec["home_goals"]), int(rec["away_goals"]))
+            winner_home = rec.get("winner_home")
+            winner_away = rec.get("winner_away")
+            if pd.notna(winner_home) and bool(winner_home):
+                result = "HOME"
+            elif pd.notna(winner_away) and bool(winner_away):
+                result = "AWAY"
+            else:
+                # Real draw, or older row missing winner_home/winner_away
+                # (not yet re-synced) - goal comparison is the correct
+                # fallback either way.
+                result = result_from_goals(int(rec["home_goals"]), int(rec["away_goals"]))
+        round_val = rec.get("round")
+        is_knockout = (
+            1.0
+            if (pd.notna(round_val) and _GROUP_STAGE_MARKER not in str(round_val))
+            else 0.0
+        )
         rows.append(
             {
                 "id": rec["id"],
@@ -102,6 +140,7 @@ def compute_feature_frame_worldcup(df: pd.DataFrame, rankings: pd.DataFrame) -> 
                 "fifa_rank_away": rank_lookup.get((season, away), _UNRANKED_DEFAULT),
                 "is_host_home": 1.0 if home in hosts else 0.0,
                 "is_host_away": 1.0 if away in hosts else 0.0,
+                "is_knockout": is_knockout,
                 "result": result,
             }
         )

@@ -34,6 +34,9 @@ class Match(Base):
     xg_away: Mapped[Decimal | None] = mapped_column(Numeric(5, 2), default=None)
     possession_home: Mapped[Decimal | None] = mapped_column(Numeric(5, 2), default=None)
     possession_away: Mapped[Decimal | None] = mapped_column(Numeric(5, 2), default=None)
+    round: Mapped[str | None] = mapped_column(String(40), default=None)
+    winner_home: Mapped[bool | None] = mapped_column(Boolean, default=None)
+    winner_away: Mapped[bool | None] = mapped_column(Boolean, default=None)
 
     def __repr__(self) -> str:
         return (

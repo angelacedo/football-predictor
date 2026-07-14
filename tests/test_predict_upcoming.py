@@ -47,11 +47,12 @@ def _dummy_worldcup(label: str) -> DummyClassifier:
     return DummyClassifier(strategy="constant", constant=label).fit(x, ["HOME", "DRAW", "AWAY"])
 
 
-def _add_scheduled_match(league: str, api_fixture_id: int) -> int:
+def _add_scheduled_match(league: str, api_fixture_id: int, round_name: str | None = None) -> int:
     with session_scope() as session:
         match = Match(
             api_fixture_id=api_fixture_id, league=league, season=2026,
             home_team="A", away_team="B", kickoff=datetime.now(), status="SCHEDULED",
+            round=round_name,
         )
         session.add(match)
         session.flush()
@@ -162,3 +163,40 @@ def test_world_cup_new_model_replaces_stale_fallback_prediction(predict_db: None
         preds = session.query(Prediction).filter(Prediction.match_id == match_id).all()
     assert len(preds) == 1
     assert preds[0].model_name == "baseline_World_Cup"
+
+
+def test_knockout_match_never_shows_draw_probability(predict_db: None) -> None:
+    """Real bug found live 2026-07-14: a semifinal (Round of 16+) can't end
+    in a draw - ET/penalties always decide a winner - but the model can
+    still assign nonzero draw probability since it's fit on both group
+    (draws real) and knockout (draws impossible) rows. Serving must hard-zero
+    it, not just rely on the training-label fix."""
+    save_model(_dummy("HOME"), MODEL_NAME)
+    cols = list(FEATURE_COLUMNS_WORLDCUP)
+    x = pd.DataFrame([[0.0] * len(cols)] * 3, columns=cols)
+    uniform_model = DummyClassifier(strategy="uniform").fit(x, ["HOME", "DRAW", "AWAY"])
+    save_model(uniform_model, "baseline_World_Cup")
+
+    match_id = _add_scheduled_match("World Cup", api_fixture_id=6, round_name="Semi-finals")
+    predict_upcoming.main()
+
+    with session_scope() as session:
+        pred = session.query(Prediction).filter(Prediction.match_id == match_id).one()
+    assert float(pred.prob_draw) == 0.0
+    assert abs(float(pred.prob_home_win) + float(pred.prob_away_win) - 1.0) < 1e-6
+
+
+def test_group_stage_match_keeps_draw_probability(predict_db: None) -> None:
+    """Group-stage draws are real (part of standings) - must not be zeroed."""
+    save_model(_dummy("HOME"), MODEL_NAME)
+    cols = list(FEATURE_COLUMNS_WORLDCUP)
+    x = pd.DataFrame([[0.0] * len(cols)] * 3, columns=cols)
+    uniform_model = DummyClassifier(strategy="uniform").fit(x, ["HOME", "DRAW", "AWAY"])
+    save_model(uniform_model, "baseline_World_Cup")
+
+    match_id = _add_scheduled_match("World Cup", api_fixture_id=7, round_name="Group Stage - 1")
+    predict_upcoming.main()
+
+    with session_scope() as session:
+        pred = session.query(Prediction).filter(Prediction.match_id == match_id).one()
+    assert float(pred.prob_draw) > 0.0
